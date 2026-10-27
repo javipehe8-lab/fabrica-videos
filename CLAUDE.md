@@ -29,3 +29,6 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 - `bash hacer_episodio.sh N en` → `videos/en/The_Grinner_PartN.mp4` (voz `am_onyx`, inglés de EE. UU.).
 - Canal: "The Grinner Files". NO se publica por Metricool (el plan gratuito solo tiene una marca): Javi lo sube a mano cada día desde la app de YouTube, programado a las 00:30 Europe/Madrid. Prepárale el vídeo y los textos en inglés: título con " #shorts", descripción + hashtags (#horror #scarystories #creepy #animation #stickman #shorts #thegrinner), primer comentario, y recuérdale: Short, público, "No, no es para niños".
 - URL: `https://raw.githubusercontent.com/javipehe8-lab/fabrica-videos/main/videos/en/The_Grinner_PartN.mp4`.
+
+## Subir a GitHub (vídeos grandes)
+- Haz un commit por vídeo (no metas dos MP4 en el mismo push) y empuja con `git -c http.postBuffer=524288000 push origin HEAD:main`. Si falla con "remote end hung up", repite una vez y comprueba con `git fetch origin main && git log -1 origin/main`.
