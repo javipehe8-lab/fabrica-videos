@@ -183,6 +183,28 @@ def main(voz, out):
         if n == "giro" and os.environ.get("EP") == "3":
             t_ = T(D * 0.6); put(sfx, lp(rng.normal(0, 1, len(t_)), 1500) * 0.15, a, 1.0)
             put(sfx, sting(1.4), a + D * 0.68, 1.1); put(sfx, boom(), a + D * 0.68, 1.0)
+        # ---- episodio 3 ----
+        if n == "sonrisa": put(sfx, sting(1.2) * 0.6, a + D * 0.5, 1.0); put(sfx, static(0.4), a + D * 0.5, 0.5)
+        if n == "pared":
+            for i in range(int(D / 0.5)): put(sfx, beep(0.03, 1800) * 0.6, a + i * 0.5, 1.0)
+        if n == "espejos":
+            for i in range(3): put(sfx, impact() * 0.6, a + 0.25 + i * 0.35, 0.8); put(sfx, hp(rng.normal(0, 1, int(SR * 0.3)), 3000) * np.exp(-T(0.3) * 12) * 0.5, a + 0.25 + i * 0.35, 1.0)
+        if n == "rayos": put(sfx, buzz(D * 0.8), a + 0.2, 1.0); put(sfx, sting(1.2), a + D * 0.55, 0.8)
+        if n == "prohibido": put(sfx, impact(), a + D * 0.55, 0.9); put(sfx, heartbeat(3, 90), a, 0.6)
+        if n == "mirada": put(sfx, heartbeat(5, 120), a, 0.9); put(sfx, riser(D * 0.7), a, 0.7); put(sfx, boom(2.0, 40), a + D * 0.75, 1.1)
+        if n in ("mundo", "jaula"): put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0)
+        if n == "gigante": put(sfx, boom(2.5, 45), a + 0.2, 1.1); put(sfx, scream(1.5) * 0.6, a + D * 0.5, 0.7)
+        if n == "linterna": put(sfx, beep(0.05, 3000), a + D * 0.65, 1.0); put(sfx, shimmer(), a + D * 0.65, 1.0)
+        if n == "destellos":
+            for h in (0.3, 0.55, 0.8): put(sfx, boom(0.8, 90), a + D * h, 1.0); put(sfx, shimmer() * 0.8, a + D * h, 1.0)
+            put(sfx, scream(D * 0.6) * 0.6, a + D * 0.32, 0.6)
+        if n == "rescate": put(sfx, impact(), a + D * 0.15, 1.0); put(sfx, whoosh(0.5, False), a + D * 0.18, 0.8); put(sfx, chime() * 0.5, a + D * 0.6, 1.0)
+        if n == "puerta":
+            for i in range(int(D / 0.19)): put(sfx, step(), a + i * 0.19, 0.9)
+            put(sfx, riser(D), a, 0.6)
+        if n == "giro" and os.environ.get("EP") == "3":
+            t_ = T(D * 0.6); put(sfx, lp(rng.normal(0, 1, len(t_)), 1500) * 0.15, a, 1.0)
+            put(sfx, sting(1.4), a + D * 0.68, 1.1); put(sfx, boom(), a + D * 0.68, 1.0)
         if n == "giro" and os.environ.get("EP") == "2":
             tt = a + 0.2
             while tt < a + D * 0.2: put(sfx, beep(), tt, 1.0); tt += 0.625

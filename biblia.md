@@ -18,6 +18,8 @@ Serie de terror paranormal en Shorts verticales (1080x1920), animada con stickma
 1. **Parte 1 – "No lo mires a los ojos"**: aparece en la ventana de Leo, apagón, el ejército cierra el barrio, el doctor explica la regla de los ojos, Leo lo había mirado. Ataque nocturno: las balas no le hacen nada. Nora usa un espejo y el Sonriente estalla. Giro: en el espejo sigue sonriendo.
 2. **Parte 2 – "La luz no fue suficiente"**: Nora encierra el espejo en una caja con tres candados, la caja golpea y se agrieta. Un libro antiguo dice que solo se le puede encerrar en la luz del faro. Convoy militar, la caja revienta, el Sonriente se lleva a los soldados. Huida por los 114 escalones, palanca atascada, Nora lo mira a los ojos para ganar tiempo, Leo enciende el faro y lo atrapa. Giro: Nora despierta en el hospital… sonriendo (poseída).
 
+3. **Parte 3 – "Dentro de Nora"**: Nora vuelve a casa poseída: mira la pared durante horas y rompe todos los espejos. La radiografía del doctor muestra al Sonriente dentro de ella. Para sacarlo, Leo la mira a los ojos y cae en el mundo del Sonriente (gris, lleno de caras sonrientes flotando). Nora está atrapada en una jaula de luz; el Sonriente aparece gigante. Leo lo hace retroceder con tres destellos de linterna, rompe la jaula y huyen por la única puerta con luz. Despiertan a salvo en el hospital. Giro: esa noche el reflejo del doctor le sonríe (el doctor es el siguiente huésped).
+
 ## Para escribir el siguiente episodio
 - Continúa justo donde acabó el anterior. Un problema, una escalada y un giro final.
 - Frases cortas, de 1-2 líneas por escena. Primera frase con gancho fuerte.
