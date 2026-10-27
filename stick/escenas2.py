@@ -131,7 +131,7 @@ def golpes(t, D, fi):
     if last > 0 and t - last < 0.3:
         d = ImageDraw.Draw(img); s = ease_back(seg(t, last, last + 0.12))
         r = random.Random(int(last * 100))
-        d.text((540 + r.randint(-220, 220), 760 + r.randint(-60, 60)), "¡BUM!", font=font(150 * s), fill=(255, 214, 0), anchor="mm",
+        d.text((540 + r.randint(-220, 220), 760 + r.randint(-60, 60)), tr("¡BUM!"), font=font(150 * s), fill=(255, 214, 0), anchor="mm",
                stroke_width=int(12 * s), stroke_fill=(0, 0, 0))
     return img, dict(dark=0.25, flash=((255, 255, 255), 0.25 * math.exp(-(t - last) * 12) if last > 0 else 0))
 
@@ -342,7 +342,7 @@ def palanca(t, D, fi):
     img = F.finish()
     if t > D * 0.55:
         d = ImageDraw.Draw(img); s = ease_back(seg(t, D * 0.55, D * 0.65))
-        d.text((540 + noise(t * 30) * 8, 520), "¡ATASCADA!", font=font(110 * s), fill=(255, 60, 60), anchor="mm", stroke_width=int(10 * s), stroke_fill=(0, 0, 0))
+        d.text((540 + noise(t * 30) * 8, 520), tr("¡ATASCADA!"), font=font(110 * s), fill=(255, 60, 60), anchor="mm", stroke_width=int(10 * s), stroke_fill=(0, 0, 0))
     return img, {}
 
 def frente(t, D, fi):
@@ -414,11 +414,11 @@ def final(t, D, fi):
     d = ImageDraw.Draw(img)
     p = ease_back(seg(t, 0.05, 0.4))
     if p > 0:
-        d.text((540, 560), "PARTE 3", font=font(190 * p), fill=(255, 214, 0), anchor="mm", stroke_width=int(14 * p), stroke_fill=(0, 0, 0))
+        d.text((540, 560), tr("PARTE 3"), font=font(190 * p), fill=(255, 214, 0), anchor="mm", stroke_width=int(14 * p), stroke_fill=(0, 0, 0))
     q = ease_back(seg(t, 1.2, 1.5)) * (1 + 0.06 * math.sin(t * 9))
     if q > 0:
         d.rounded_rectangle((210, 740, 870, 880), 30, fill=(230, 30, 50))
-        d.text((540, 810), "SÍGUEME →", font=font(84 * min(q, 1.06)), fill=(255, 255, 255), anchor="mm")
+        d.text((540, 810), tr("SÍGUEME →"), font=font(84 * min(q, 1.06)), fill=(255, 255, 255), anchor="mm")
     return img, dict(glitch=0.3 if not on else 0.0, tint=((255, 0, 30), 0.12))
 
 ESCENA_FN = dict(caja=caja, golpes=golpes, grieta=grieta, libro=libro, faro=faro, convoy=convoy, revienta=revienta, ataque=ataque,

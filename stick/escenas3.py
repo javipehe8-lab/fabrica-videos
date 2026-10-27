@@ -185,7 +185,7 @@ def destellos(t, D, fi):
     img = F.finish()
     if last > 0 and t - last < 0.35:
         d = ImageDraw.Draw(img); s = ease_back(seg(t, last, last + 0.12))
-        d.text((540, 620), ["¡UNO!", "¡DOS!", "¡TRES!"][k - 1], font=font(170 * s), fill=YEL, anchor="mm", stroke_width=int(14 * s), stroke_fill=(0, 0, 0))
+        d.text((540, 620), tr(["¡UNO!", "¡DOS!", "¡TRES!"][k - 1]), font=font(170 * s), fill=YEL, anchor="mm", stroke_width=int(14 * s), stroke_fill=(0, 0, 0))
     return img, dict(flash=((255, 252, 230), 0.85 * math.exp(-(t - last) * 9) if last > 0 else 0))
 
 def rescate(t, D, fi):
@@ -245,11 +245,11 @@ def final(t, D, fi):
     if on: big(DOCTOR, 3.4, F, STAND, 540, 2900, f=1, face="possessed")
     img = F.finish(); d = ImageDraw.Draw(img)
     p = ease_back(seg(t, 0.05, 0.4))
-    if p > 0: d.text((540, 560), "PARTE 4", font=font(190 * p), fill=YEL, anchor="mm", stroke_width=int(14 * p), stroke_fill=(0, 0, 0))
+    if p > 0: d.text((540, 560), tr("PARTE 4"), font=font(190 * p), fill=YEL, anchor="mm", stroke_width=int(14 * p), stroke_fill=(0, 0, 0))
     q = ease_back(seg(t, 1.2, 1.5)) * (1 + 0.06 * math.sin(t * 9))
     if q > 0:
         d.rounded_rectangle((210, 740, 870, 880), 30, fill=(230, 30, 50))
-        d.text((540, 810), "SÍGUEME →", font=font(84 * min(q, 1.06)), fill=(255, 255, 255), anchor="mm")
+        d.text((540, 810), tr("SÍGUEME →"), font=font(84 * min(q, 1.06)), fill=(255, 255, 255), anchor="mm")
     return img, dict(glitch=0.3 if not on else 0.0, tint=((255, 0, 30), 0.12))
 
 ESCENA_FN = dict(sonrisa=sonrisa, pared=pared, espejos=espejos, rayos=rayos, prohibido=prohibido, mirada=mirada, mundo=mundo, jaula=jaula,

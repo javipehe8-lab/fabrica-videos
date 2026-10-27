@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from motor import *
 import importlib
 EP = os.environ.get("EP", "")
-_g = importlib.import_module("guion" + EP); ESCENAS, TITULO, PARTE = _g.ESCENAS, _g.TITULO, _g.PARTE
+_g = importlib.import_module("guion" + EP + ("_en" if os.environ.get("IDIOMA") == "en" else "")); ESCENAS, TITULO, PARTE = _g.ESCENAS, _g.TITULO, _g.PARTE
 _e = importlib.import_module("escenas" + EP); ESCENA_FN, PAUSA = _e.ESCENA_FN, _e.PAUSA
 
 VOZ_DELAY = 0.12
@@ -39,7 +39,7 @@ def render_frame(tl, fi):
     if sc["name"] != "final":
         img = captions(img, sc["words"], t)
         d = ImageDraw.Draw(img)
-        d.text((60, 190), f"{TITULO} · PARTE {PARTE}", font=font(34), fill=(255, 255, 255), anchor="lm", stroke_width=4, stroke_fill=(0, 0, 0))
+        d.text((60, 190), f"{TITULO} · {tr('PARTE')} {PARTE}", font=font(34), fill=(255, 255, 255), anchor="lm", stroke_width=4, stroke_fill=(0, 0, 0))
     return img
 
 def worker(args):

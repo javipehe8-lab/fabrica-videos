@@ -1,5 +1,5 @@
 """Motor de animación stickman: cámara, figuras con esqueleto, primitivas y efectos. Lienzo vertical 1080x1920."""
-import math, random
+import math, random, os
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
@@ -280,3 +280,14 @@ def captions(img, words, t, y=1540):
             d.text((x, yy_), clean[i], font=f, fill=col, anchor="lm", stroke_width=int(size * 0.11), stroke_fill=(0, 0, 0))
             x += widths[i] + gap
     return img
+
+
+# ---------- idioma ----------
+IDIOMA = os.environ.get("IDIOMA", "es")
+EN = {"PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
+      "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT"}
+def tr(s):
+    """traduce textos fijos de pantalla al idioma activo"""
+    if IDIOMA != "en": return s
+    if s.startswith("PARTE "): return "PART " + s[6:]
+    return EN.get(s, s)

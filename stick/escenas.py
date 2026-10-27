@@ -105,7 +105,7 @@ def ejercito(t, D, fi):
                fill=(220, 40, 40) if i % 2 == 0 else (245, 245, 245))
     F.line([(770, 1040), (770, 1250)], (60, 60, 60), 10)
     F.rect(650, 880, 890, 1040, fill=(255, 205, 0), outline=(20, 20, 20), w=6)
-    F.text((770, 932), "ZONA", 50, (20, 20, 20)); F.text((770, 992), "CERRADA", 50, (20, 20, 20))
+    F.text((770, 932), tr("ZONA"), 50, (20, 20, 20)); F.text((770, 992), tr("CERRADA"), 50, (20, 20, 20))
     for i in range(5):
         x = -150 + i * 160 + 150 * t
         SOLDADO.draw(F, add(walk(t + i * 0.08), {"a1u": 55, "a1l": 30, "a2u": 40, "a2l": 60}), x, 1395 + (i % 2) * 18, f=1, face="angry")
@@ -313,11 +313,11 @@ def final(t, D, fi):
     d = ImageDraw.Draw(img)
     p = ease_back(seg(t, 0.05, 0.4))
     if p > 0:
-        d.text((540, 560), "PARTE 2", font=font(190 * p), fill=(255, 214, 0), anchor="mm", stroke_width=int(14 * p), stroke_fill=(0, 0, 0))
+        d.text((540, 560), tr("PARTE 2"), font=font(190 * p), fill=(255, 214, 0), anchor="mm", stroke_width=int(14 * p), stroke_fill=(0, 0, 0))
     q = ease_back(seg(t, 1.2, 1.5)) * (1 + 0.06 * math.sin(t * 9))
     if q > 0:
         d.rounded_rectangle((210, 740, 870, 880), 30, fill=(230, 30, 50))
-        d.text((540, 810), "SÍGUEME →", font=font(84 * min(q, 1.06)), fill=(255, 255, 255), anchor="mm")
+        d.text((540, 810), tr("SÍGUEME →"), font=font(84 * min(q, 1.06)), fill=(255, 255, 255), anchor="mm")
     return img, dict(glitch=0.3 if not on else 0.0)
 
 ESCENA_FN = dict(ventana=ventana, cara=cara, nora=nora, ciudad=ciudad, ejercito=ejercito, doctor=doctor, leo_ojos=leo_ojos,

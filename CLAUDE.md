@@ -22,3 +22,10 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 - SIEMPRE: `type: "short"`, `privacy: "public"`, `madeForKids: false`, `category: "FILM_ANIMATION"`, título con " #shorts", descripción con hashtags y `firstCommentText` con una pregunta para los comentarios.
 - Hora por defecto: 23:00 Europe/Madrid del mismo día.
 - Añade la publicación a `publicaciones.json` y haz commit.
+
+## Versión en inglés ("The Grinner")
+- Misma animación, texto traducido: `stick/guionN_en.py` con los MISMOS nombres de escena que `guionN.py`. Serie: "THE GRINNER", el Sonriente = "the Grinner". Traduce de forma natural (inglés de EE. UU.), no literal; mantén las frases cortas.
+- Los textos fijos de pantalla se traducen con `tr()` de `motor.py`. Si una escena nueva dibuja texto, envuélvelo en `tr("...")` y añade la traducción al diccionario `EN`.
+- `bash hacer_episodio.sh N en` → `videos/en/The_Grinner_PartN.mp4` (voz `am_onyx`, inglés de EE. UU.).
+- Metricool: marca del canal inglés (ver `publicaciones_en.json` → `blogId`), a las 00:30 Europe/Madrid del día siguiente (18:30-19:30 en la costa este de EE. UU.). Mismos ajustes: short, public, madeForKids false, FILM_ANIMATION, título en inglés con " #shorts", hashtags en inglés (#horror #scarystories #creepy #animation #stickman #shorts #thegrinner) y primer comentario en inglés.
+- URL: `https://raw.githubusercontent.com/javipehe8-lab/fabrica-videos/main/videos/en/The_Grinner_PartN.mp4`.

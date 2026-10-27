@@ -9,7 +9,9 @@ TTS = os.path.join(HERE, "..", "tts")
 spec = importlib.util.spec_from_file_location("narrar", os.path.join(TTS, "narrar.py"))
 nar = importlib.util.module_from_spec(spec); spec.loader.exec_module(nar)
 sys.path.insert(0, HERE)
-ESCENAS = __import__('guion' + os.environ.get('EP', '')).ESCENAS
+ESCENAS = __import__('guion' + os.environ.get('EP', '') + ('_en' if os.environ.get('IDIOMA') == 'en' else '')).ESCENAS
+if os.environ.get('IDIOMA') == 'en':
+    os.environ.setdefault('TTS_LANG', 'en-us'); os.environ.setdefault('VOZ', 'am_onyx'); os.environ.setdefault('VELOCIDAD', '1.0')
 
 VOZ = os.environ.get("VOZ", "em_alex")
 VEL = float(os.environ.get("VELOCIDAD", "1.08"))
