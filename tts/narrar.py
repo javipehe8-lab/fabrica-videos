@@ -16,7 +16,7 @@ VOCAB = {c: i for i, c in enumerate([_pad] + list(_punct) + list(_letters) + lis
 def espeak(text):
     env = dict(os.environ, LD_LIBRARY_PATH=os.path.join(HERE, "piper"))
     out = subprocess.run([os.path.join(HERE, "piper/espeak-ng"), "--path=" + os.path.join(HERE, "piper"),
-                          "-v", "es", "-q", "--ipa"], input=text, capture_output=True, text=True, env=env).stdout
+                          "-v", os.environ.get("TTS_LANG", "es"), "-q", "--ipa"], input=text, capture_output=True, text=True, env=env).stdout
     return " ".join(out.split()).replace("tʃ", "ʧ").replace("dʒ", "ʤ")
 
 def phonemize(sentence):

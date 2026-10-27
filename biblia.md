@@ -20,6 +20,22 @@ Serie de terror paranormal en Shorts verticales (1080x1920), animada con stickma
 
 3. **Parte 3 – "Dentro de Nora"**: Nora vuelve a casa poseída: mira la pared durante horas y rompe todos los espejos. La radiografía del doctor muestra al Sonriente dentro de ella. Para sacarlo, Leo la mira a los ojos y cae en el mundo del Sonriente (gris, lleno de caras sonrientes flotando). Nora está atrapada en una jaula de luz; el Sonriente aparece gigante. Leo lo hace retroceder con tres destellos de linterna, rompe la jaula y huyen por la única puerta con luz. Despiertan a salvo en el hospital. Giro: esa noche el reflejo del doctor le sonríe (el doctor es el siguiente huésped).
 
+## Arco de la temporada 1 (Partes 4-10) — SEGUIR ESTE PLAN
+Objetivo: que la historia avance y descubra cosas nuevas. NO repetir "el Sonriente se mete en otro personaje". La posesión ya se usó (Nora y doctor): no vuelve a usarse en lo que queda de temporada.
+4. **La grabación**: el doctor, antes de perder el control, se graba un mensaje para Leo y Nora y se encierra a sí mismo en la sala de rayos X. En la grabación revela de dónde salió el Sonriente: un antiguo hospital abandonado, Santa Brígida, habitación 114. Giro: la grabación termina con una voz que no es la del doctor diciendo "os estoy esperando".
+5. **Santa Brígida**: Leo y Nora entran en el hospital abandonado (pasillos, camillas, linterna). En la habitación 114 encuentran dibujos infantiles del Sonriente de 1986. Giro: alguien ya estaba allí, una anciana con linterna.
+6. **La abuela Carmen** (nueva aliada fija, stickman con moño gris y bastón): sobrevivió al Sonriente de niña. Explica que se alimenta del miedo y que tiene un nombre verdadero; quien lo pronuncia dentro de la luz lo destruye. Giro: el doctor ha desaparecido de la sala de rayos X.
+7. **El coronel** (nuevo villano humano, uniforme y gorra militar): el ejército quiere capturar al Sonriente para usarlo como arma. Secuestra a la abuela Carmen. Giro: el coronel tiene una caja de espejos preparada.
+8. **La trampa de espejos**: el coronel atrapa al Sonriente en un contenedor de espejos. Leo y Nora rescatan a Carmen, pero descubren el plan: soltarlo en otra ciudad. Giro: el contenedor empieza a sonreír por fuera.
+9. **La ciudad dormida**: el Sonriente escapa y duerme a toda la ciudad. Solo Leo y Nora siguen despiertos, porque ya sobrevivieron a su mirada. Carmen les da la última pista del nombre. Giro: el Sonriente se presenta con la cara de Carmen.
+10. **FINAL DE TEMPORADA**: en el faro, dentro de la luz, Nora y Leo pronuncian su nombre verdadero. El Sonriente se convierte en un niño perdido de 1986 y desaparece en paz. La ciudad despierta. Giro de temporada 2: en otra ventana, en otra ciudad, algo nuevo empieza a sonreír.
+
+## Reglas de variedad (siempre)
+- Cada episodio debe tener al menos UNA cosa nueva: un lugar, un personaje, una pista o una regla del monstruo.
+- Alterna el tipo de tensión: persecución, misterio/pista, trampa, rescate, traición. Nunca dos episodios seguidos del mismo tipo.
+- El giro final no puede ser siempre una posesión ni una sonrisa en un espejo. Usa revelaciones, desapariciones, personajes que no son quien parecen y lugares nuevos.
+- Un personaje de relleno puede tener una escena con frase, pero los protagonistas siguen siendo Leo y Nora.
+
 ## Para escribir el siguiente episodio
 - Continúa justo donde acabó el anterior. Un problema, una escalada y un giro final.
 - Frases cortas, de 1-2 líneas por escena. Primera frase con gancho fuerte.
