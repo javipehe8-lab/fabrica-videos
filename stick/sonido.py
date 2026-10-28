@@ -69,7 +69,7 @@ def chime():
 # ---------- música ----------
 def musica(total, cuts):
     t = T(total); out = np.zeros_like(t)
-    cs = cuts.get("amanecer") or cuts.get("encerrado")
+    cs = cuts.get("amanecer") or cuts.get("encerrado") or cuts.get("cinta") or (0.0, 0.0)
     calm_from, calm_to = cs
     calm = ((t >= calm_from) & (t < calm_to)).astype(float)
     calm = lp(calm, 3)  # transición suave
@@ -213,6 +213,32 @@ def main(voz, out):
             while tt < a + D * 0.2: put(sfx, beep(), tt, 1.0); tt += 0.625
             put(sfx, beep(D * 0.42, 1000) * 0.9, a + D * 0.2, 1.0)
             put(sfx, sting(1.4), a + D * 0.62, 1.1); put(sfx, boom(), a + D * 0.62, 1.0)
+        # ---- episodio 4 ----
+        if n == "camara": put(sfx, heartbeat(5, 110), a, 0.8); put(sfx, beep(0.08, 1400), a + D * 0.45, 1.0); put(sfx, static(0.4), a + D * 0.55, 0.6)
+        if n == "grabando": put(sfx, buzz(D), a, 0.7); put(sfx, static(D) * 0.3, a, 0.5)
+        if n == "sala":
+            for i in range(int(D * 0.42 / 0.3)): put(sfx, step(), a + i * 0.3, 0.8)
+            put(sfx, boom(1.2, 80), a + D * 0.6, 1.1); put(sfx, impact(), a + D * 0.6, 0.8)
+            for i in range(3): put(sfx, beep(0.04, 3200 + 500 * i), a + D * 0.72 + i * 0.07, 0.8)
+        if n == "cinta": put(sfx, chime() * 0.5, a, 1.0)
+        if n == "tele": put(sfx, static(D * 0.4), a, 0.9); put(sfx, beep(0.05, 600), a + D * 0.4, 1.0); put(sfx, buzz(D * 0.6), a + D * 0.4, 0.6)
+        if n == "mensaje": put(sfx, buzz(D) * 0.7, a, 0.6)
+        if n == "brigida":
+            t_ = T(D); put(sfx, hp(rng.normal(0, 1, len(t_)), 2500) * 0.12, a, 1.0)
+            put(sfx, boom(2.4, 40), a + D * 0.3, 1.2)
+        if n == "habitacion":
+            t_ = T(D * 0.5); f_ = 180 + 120 * np.sin(2 * np.pi * 0.8 * t_)
+            put(sfx, bp(np.sign(np.sin(2 * np.pi * np.cumsum(f_) / SR)), 300, 2000) * 0.15 * np.sin(np.pi * t_ / (D * 0.5)), a + D * 0.15, 1.0)
+            put(sfx, sting(1.4), a + D * 0.55, 1.0); put(sfx, static(0.5), a + D * 0.55, 0.6)
+        if n == "numero": put(sfx, impact(), a + 0.05, 1.0); put(sfx, ding(), a + D * 0.4, 1.0)
+        if n == "fallo":
+            put(sfx, static(D), a, 0.9)
+            for i in range(5): put(sfx, impact() * 0.4, a + D * (0.15 + 0.17 * i), 0.6)
+        if n == "ojos": put(sfx, heartbeat(5, 100), a, 0.9); put(sfx, riser(D * 0.9), a, 0.6)
+        if n == "apagar":
+            for i in range(int(D * 0.75 * 2.2)): put(sfx, beep(0.025, 420), a + i / 2.2, 1.2); put(sfx, static(0.15), a + i / 2.2, 0.5)
+        if n == "cable": put(sfx, sting(1.4), a + D * 0.3, 1.0); put(sfx, heartbeat(4, 130), a + D * 0.3, 0.8)
+        if n == "voz": put(sfx, static(D), a, 0.6); put(sfx, boom(2.5, 40), a + D * 0.3, 1.2); put(sfx, scream(1.6) * 0.6, a + D * 0.35, 0.7)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:

@@ -290,7 +290,8 @@ def captions(img, words, t, y=1540):
 # ---------- idioma ----------
 IDIOMA = os.environ.get("IDIOMA", "es")
 EN = {"PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
-      "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT"}
+      "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",
+      "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
