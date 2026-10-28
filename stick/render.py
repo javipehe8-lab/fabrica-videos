@@ -25,7 +25,7 @@ def timeline(voz):
             ws = fr["text"].split(); tot = sum(len(w) + 2 for w in ws); t = fr["start"]
             for w in ws:
                 d = (fr["end"] - fr["start"]) * (len(w) + 2) / tot
-                words.append((t + VOZ_DELAY, t + VOZ_DELAY + d, w)); t += d
+                words.append((t + VOZ_DELAY, t + VOZ_DELAY + d, w, fr.get("quien", "NARRADOR"))); t += d
         tl.append(dict(name=name, start=t0, D=D, words=words, voz=len([s for s in tl if s["name"] != "gancho"])))
         t0 += D
     return tl, t0

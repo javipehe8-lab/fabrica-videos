@@ -213,12 +213,24 @@ def main(voz, out):
             while tt < a + D * 0.2: put(sfx, beep(), tt, 1.0); tt += 0.625
             put(sfx, beep(D * 0.42, 1000) * 0.9, a + D * 0.2, 1.0)
             put(sfx, sting(1.4), a + D * 0.62, 1.1); put(sfx, boom(), a + D * 0.62, 1.0)
+    # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as td:
+        wavfile.write(os.path.join(td, "v.wav"), SR, (mixv / (np.abs(mixv).max() + 1e-9) * 0.9 * 32767).astype(np.int16))
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", os.path.join(td, "v.wav"), "-af",
+                        "highpass=f=75,acompressor=threshold=-24dB:ratio=4:attack=3:release=80:makeup=4,"
+                        "equalizer=f=170:t=q:w=1:g=2,equalizer=f=3000:t=q:w=1.2:g=4,deesser=i=0.35,"
+                        "aecho=0.9:0.4:28:0.12,alimiter=limit=0.95", os.path.join(td, "v2.wav")], check=True)
+        _, v2 = wavfile.read(os.path.join(td, "v2.wav"))
+        v2 = v2.astype(np.float64) / 32767
+        mixv = np.zeros(N); mixv[:min(N, len(v2))] = v2[:N]
     mus = musica(total, cuts)
     # ducking de música y efectos bajo la voz
     vol = np.convolve(np.abs(mixv), np.ones(2400) / 2400, mode="same")
-    duck = 1 - 0.45 * np.clip(vol / 0.05, 0, 1)
-    mix = mixv * 1.0 + sfx * 0.55 * (0.6 + 0.4 * duck) + mus * duck * 0.9
-    mix = np.tanh(mix * 1.1) / np.tanh(1.1)
+    duck = 1 - 0.7 * np.clip(vol / 0.04, 0, 1)
+    duck = np.convolve(duck, np.ones(4800) / 4800, mode="same")   # sin cortes bruscos
+    mix = mixv * 1.25 + sfx * 0.45 * (0.45 + 0.55 * duck) + mus * duck * 0.45
+    mix = np.tanh(mix * 0.8) / np.tanh(0.8)
     st = np.stack([mix, mix], 1)
     wavfile.write(os.path.join(out, "audio.wav"), SR, (st / max(1e-9, np.abs(st).max()) * 0.95 * 32767).astype(np.int16))
     print("audio", round(total, 2))

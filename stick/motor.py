@@ -276,7 +276,12 @@ def captions(img, words, t, y=1540):
         x = (W - tw) / 2; yy_ = y + li * size * 1.08 - (len(lines) - 1) * size * 0.54
         for i in idxs:
             active = g[i][0] <= t < g[i][1] + 0.05
+            quien = g[i][3] if len(g[i]) > 3 else "NARRADOR"
             col = (255, 214, 0) if active else (255, 255, 255)
+            if quien == "NORA": col = (225, 190, 255) if not active else (200, 130, 255)
+            elif quien == "LEO": col = (255, 200, 200) if not active else (255, 90, 90)
+            elif quien == "SONRIENTE": col = (255, 40, 50)
+            elif quien != "NARRADOR": col = (170, 230, 255) if not active else (90, 200, 255)
             d.text((x, yy_), clean[i], font=f, fill=col, anchor="lm", stroke_width=int(size * 0.11), stroke_fill=(0, 0, 0))
             x += widths[i] + gap
     return img

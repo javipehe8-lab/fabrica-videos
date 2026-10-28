@@ -13,6 +13,11 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 Los datos de la Parte 1: solo el 44 % se quedó viendo (el 56 % deslizó). El arranque era lento. Cada guion (español e inglés) debe definir
 `GANCHO = ("<escena más impactante del episodio>", <fracción 0-1 del momento más fuerte>, "LÍNEA 1\nLÍNEA 2")`: 1,2 s de impacto antes de la historia, con texto de máximo 2 líneas cortas (≤ 14 caracteres por línea) que plantee una pregunta o una amenaza. Ej.: `("gigante", 0.8, "SU HERMANA\nYA NO ERA ELLA")`. En `guionN_en.py` el texto va en inglés. Además, la primera frase narrada debe ser la más fuerte del episodio.
 
+## Diálogos (MUY puntuales)
+- Como máximo 1-2 frases de diálogo por episodio, de 2-6 palabras, solo en el pico de tensión (un grito, una amenaza, una pista). El vídeo tiene que seguir siendo frenético: nunca una conversación.
+- Se escriben dentro del texto de la escena con el nombre entre corchetes: `"Leo la buscó en el bosque. [SONRIENTE] Leo… te puedo ver."`. Personajes con voz propia (distinta del narrador): LEO, NORA, DOCTOR, CARMEN, CORONEL, SOLDADO, SONRIENTE; cualquier otro nombre usa una voz genérica. En `guionN_en.py` van los mismos marcadores.
+- Los subtítulos de cada personaje salen en su color (Nora lila, Leo rojo, Sonriente rojo intenso, resto azul).
+
 ## Hacer un episodio
 1. `bash setup.sh` (descarga Piper y Kokoro; unos 400 MB, una vez por sesión).
 2. Escribe `stick/guionN.py` y `stick/escenasN.py`, y añade los efectos en `sonido.py`.
