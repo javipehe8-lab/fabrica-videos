@@ -67,6 +67,13 @@ def main(out):
         parts = []
         for quien, s in trozos(texto):
             vname, vel, semis = REPARTO.get(quien, REPARTO["OTRO"])
+            # prosodia: exclamaciones más rápidas, suspense más lento, pequeña variación natural
+            st = s.strip()
+            if st.endswith("!"): vel *= 1.07
+            elif st.endswith("…") or st.endswith("..."): vel *= 0.9
+            elif st.endswith("?"): vel *= 1.03
+            if len(st.split()) <= 3 and quien == "NARRADOR": vel *= 0.94
+            vel *= 1 + 0.03 * np.sin(len(parts) * 2.3)
             ph = nar.phonemize(s)
             ids = [nar.VOCAB[c] for c in ph if c in nar.VOCAB][:508]
             w = sess.run(None, {"tokens": np.array([[0, *ids, 0]], np.int64), "style": bank[vname][len(ids)],

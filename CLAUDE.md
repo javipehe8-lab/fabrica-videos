@@ -18,6 +18,15 @@ Los datos de la Parte 1: solo el 44 % se quedó viendo (el 56 % deslizó). El ar
 - Se escriben dentro del texto de la escena con el nombre entre corchetes: `"Leo la buscó en el bosque. [SONRIENTE] Leo… te puedo ver."`. Personajes con voz propia (distinta del narrador): LEO, NORA, DOCTOR, CARMEN, CORONEL, SOLDADO, SONRIENTE; cualquier otro nombre usa una voz genérica. En `guionN_en.py` van los mismos marcadores.
 - Los subtítulos de cada personaje salen en su color (Nora lila, Leo rojo, Sonriente rojo intenso, resto azul).
 
+## Final con elección (desde la Parte 5)
+- Cada guion termina con una tarjeta para votar: define `ELECCION = ("PREGUNTA CORTA\nEN 2 LÍNEAS", "OPCIÓN A", "OPCIÓN B")` (opciones de 2-4 palabras; en `guionN_en.py`, en inglés). La escena "final" se sustituye sola por la tarjeta; su texto narrado debe ser: "¿<pregunta>? ¿A o B? Coméntalo. Mañana lo verás." (en inglés: "…? A or B? Tell me in the comments. Find out tomorrow.").
+- Las dos opciones tienen que ser dos caminos creíbles hacia el siguiente punto del "Arco de la temporada" (no deben romper el arco).
+- Al empezar el episodio siguiente: si el anterior tenía ELECCION, elige la opción AL AZAR con `python3 -c "import random; print(random.choice('AB'))"` (da igual lo que vote la gente), apúntala en biblia.md ("Elección Parte N: salió X") y haz que el episodio arranque siguiendo esa opción. NUNCA digas en el vídeo ni en la descripción que "ganó la mayoría".
+- Primer comentario (firstCommentText) de un episodio con elección: "¿A o B? 👇 Mañana lo descubres."
+
+## Calidad visual
+- `CALIDAD=hd` (por defecto) activa el contorno de los personajes, sombras de contacto, brillo en la cabeza, contraste y bloom. No lo desactives.
+
 ## Hacer un episodio
 1. `bash setup.sh` (descarga Piper y Kokoro; unos 400 MB, una vez por sesión).
 2. Escribe `stick/guionN.py` y `stick/escenasN.py`, y añade los efectos en `sonido.py`.

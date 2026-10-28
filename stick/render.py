@@ -8,6 +8,37 @@ EP = os.environ.get("EP", "")
 _g = importlib.import_module("guion" + EP + ("_en" if os.environ.get("IDIOMA") == "en" else "")); ESCENAS, TITULO, PARTE = _g.ESCENAS, _g.TITULO, _g.PARTE
 # GANCHO opcional en el guion: ("escena", fraccion_de_la_escena, "TEXTO GRANDE") -> 1,2 s de impacto antes de la historia
 GANCHO = getattr(_g, "GANCHO", None)
+# ELECCION opcional: ("PREGUNTA", "OPCIÓN A", "OPCIÓN B") -> la escena "final" se sustituye por una tarjeta para votar en comentarios
+ELECCION = getattr(_g, "ELECCION", None)
+
+def tarjeta_eleccion(t, fi):
+    F = Frame(gradient((22, 8, 30), (6, 4, 10)), dict(x=540, y=960, z=1.0))
+    if noise(t * 5, 3) > -0.3:
+        old = SONRIENTE.scale; SONRIENTE.scale = 3.4
+        SONRIENTE.draw(F, STAND, 540, 2950, f=1); SONRIENTE.scale = old
+    img = F.finish(); d = ImageDraw.Draw(img)
+    q, oa, ob = ELECCION
+    p = ease_back(seg(t, 0.0, 0.3))
+    d.text((540, 300), tr("TÚ DECIDES"), font=font(70 * p + 1), fill=(255, 214, 0), anchor="mm", stroke_width=7, stroke_fill=(0, 0, 0))
+    for i, ln in enumerate(q.split("\n")):
+        d.text((540, 430 + i * 110), ln, font=font(100 * p + 1), fill=(255, 255, 255), anchor="mm", stroke_width=10, stroke_fill=(0, 0, 0))
+    for k, (letra, txt, col, y) in enumerate((("A", oa, (40, 120, 235), 760), ("B", ob, (225, 40, 60), 1010))):
+        s = ease_back(seg(t, 0.35 + 0.2 * k, 0.6 + 0.2 * k))
+        if s <= 0: continue
+        pulse = 1 + 0.04 * math.sin(t * 8 + k * math.pi)
+        hw, hh = 420 * s * pulse, 95 * s * pulse
+        d.rounded_rectangle((540 - hw, y - hh, 540 + hw, y + hh), 40, fill=col, outline=(255, 255, 255), width=6)
+        d.ellipse((540 - hw + 30, y - 62 * s, 540 - hw + 30 + 124 * s, y + 62 * s), fill=(255, 255, 255))
+        d.text((540 - hw + 30 + 62 * s, y), letra, font=font(90 * s + 1), fill=col, anchor="mm")
+        fs = 74
+        while fs > 30 and d.textlength(txt, font=font(fs * s + 1)) > 2 * hw - 230 * s: fs -= 2
+        d.text((540 + 75 * s, y), txt, font=font(fs * s + 1), fill=(255, 255, 255), anchor="mm", stroke_width=5, stroke_fill=(0, 0, 0))
+    c = ease_back(seg(t, 1.0, 1.3)) * (1 + 0.05 * math.sin(t * 10))
+    if c > 0:
+        d.text((540, 1260), tr("COMENTA A O B") + " ↓", font=font(76 * c + 1), fill=(255, 214, 0), anchor="mm", stroke_width=8, stroke_fill=(0, 0, 0))
+        d.rounded_rectangle((250, 1360, 830, 1480), 30, fill=(230, 30, 50))
+        d.text((540, 1420), f"{tr('PARTE')} {PARTE + 1} · {tr('SÍGUEME →').replace(' →', '')}", font=font(56), fill=(255, 255, 255), anchor="mm")
+    return post(img, fi, glitch=0.25 if fi % 9 == 0 else 0.0, grain=6)
 G_DUR = 1.2
 _e = importlib.import_module("escenas" + EP); ESCENA_FN, PAUSA = _e.ESCENA_FN, _e.PAUSA
 
@@ -45,6 +76,8 @@ def render_frame(tl, fi):
             d.text((540, 820 + (i - (len(lines) - 1) / 2) * 150), ln, font=font(112 * s_), fill=(255, 214, 0) if i == len(lines) - 1 else (255, 255, 255),
                    anchor="mm", stroke_width=int(13 * s_), stroke_fill=(0, 0, 0))
         return img
+    if sc["name"] == "final" and ELECCION:
+        return tarjeta_eleccion(t, fi)
     img, fx = ESCENA_FN[sc["name"]](t, sc["D"], fi)
     pz = 0.07 * (1 - ease_out(seg(t, 0, 0.18)))   # "punch" de zoom en cada corte
     if pz > 0.001:

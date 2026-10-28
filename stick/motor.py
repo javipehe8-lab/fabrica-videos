@@ -1,9 +1,10 @@
 """Motor de animación stickman: cámara, figuras con esqueleto, primitivas y efectos. Lienzo vertical 1080x1920."""
 import math, random, os
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 W, H, S, FPS = 1080, 1920, 2, 30
+CALIDAD_HD = os.environ.get("CALIDAD", "hd") == "hd"   # contorno, sombras, brillo y bloom
 FONT_BLACK = "/usr/share/fonts/opentype/inter/InterDisplay-Black.otf"
 _fonts = {}
 def font(size, path=FONT_BLACK):
@@ -136,6 +137,15 @@ class Fig:
         sc = self.scale; w = 13 * sc
         enemy = self.kind == "enemy"
         out = (205, 190, 255); dark = (6, 6, 10)
+        if CALIDAD_HD:
+            feet = max(J["l1f"][1], J["l2f"][1])
+            if snap and abs(rot) < 1:   # sombra de contacto en el suelo
+                F.ellipse(((J["l1f"][0] + J["l2f"][0]) / 2, feet + 4 * sc), 46 * sc, 9 * sc, fill=(0, 0, 0))
+            if not enemy:              # contorno oscuro de toda la silueta (look de dibujo animado)
+                ow = w + 9 * sc; ink0 = (8, 8, 12)
+                for seg_ in (["sh", "a2e", "a2h"], ["hip", "l2k", "l2f"], ["hip", "neck"], ["hip", "l1k", "l1f"], ["sh", "a1e", "a1h"]):
+                    F.line([J[k] for k in seg_], ink0, ow)
+                F.circle(J["head"], L["head"] * sc + 4.5 * sc, fill=ink0)
         def limb(pts, col, back=False):
             if enemy:
                 F.line(pts, out, w + 9 * sc); F.line(pts, dark, w)
@@ -176,6 +186,8 @@ class Fig:
                 F.line([(cx, cy - 6 * sc), (cx, cy + 1 * sc)], (255, 255, 255), 2.5 * sc, round_=False)
             return J
         F.circle(hc, r, fill=self.limb)
+        if CALIDAD_HD:
+            F.circle((hc[0] - f * r * 0.35, hc[1] - r * 0.4), r * 0.28, fill=tuple(min(255, int(v * 1.12 + 20)) for v in self.limb))
         if "helmet" in self.extra:
             F.d.chord([*F.P(hc[0] - r - 5 * sc, hc[1] - r - 6 * sc), *F.P(hc[0] + r + 5 * sc, hc[1] + r - 2 * sc)], 180, 360, fill=(84, 100, 58))
         if "ponytail" in self.extra:
@@ -237,6 +249,12 @@ def post(img, fi, flash=None, glitch=0.0, dark=0.0, grain=7.0, tint=None):
     if dark: a *= (1 - dark)
     if tint is not None: a = a * (1 - tint[1]) + np.array(tint[0], np.float32) * tint[1] * (a / 255 * 0.6 + 0.4)
     a *= VIG
+    if CALIDAD_HD:
+        a = 128 + (a - 128) * 1.08                       # algo más de contraste
+        small = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).resize((W // 4, H // 4), Image.BILINEAR)
+        s = np.asarray(small, np.float32); s = np.clip(s - 170, 0, 255) * 1.6
+        bl = Image.fromarray(np.clip(s, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(10)).resize((W, H), Image.BILINEAR)
+        a += np.asarray(bl, np.float32) * 0.55           # resplandor (bloom) en luces y destellos
     g = np.kron(GRAIN[fi % len(GRAIN)], np.ones((2, 2), np.float32))[:H, :W, None]
     a += g * grain
     if flash is not None and flash[1] > 0:
@@ -291,7 +309,8 @@ def captions(img, words, t, y=1540):
 IDIOMA = os.environ.get("IDIOMA", "es")
 EN = {"PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
       "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",
-      "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID"}
+      "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID",
+      "COMENTA A O B": "COMMENT A OR B", "TÚ DECIDES": "YOU DECIDE"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
