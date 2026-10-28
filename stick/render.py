@@ -6,6 +6,9 @@ from motor import *
 import importlib
 EP = os.environ.get("EP", "")
 _g = importlib.import_module("guion" + EP + ("_en" if os.environ.get("IDIOMA") == "en" else "")); ESCENAS, TITULO, PARTE = _g.ESCENAS, _g.TITULO, _g.PARTE
+# GANCHO opcional en el guion: ("escena", fraccion_de_la_escena, "TEXTO GRANDE") -> 1,2 s de impacto antes de la historia
+GANCHO = getattr(_g, "GANCHO", None)
+G_DUR = 1.2
 _e = importlib.import_module("escenas" + EP); ESCENA_FN, PAUSA = _e.ESCENA_FN, _e.PAUSA
 
 VOZ_DELAY = 0.12
@@ -13,6 +16,8 @@ VOZ_DELAY = 0.12
 def timeline(voz):
     info = json.load(open(os.path.join(voz, "tiempos.json"), encoding="utf-8"))
     tl, t0 = [], 0.0
+    if GANCHO:
+        tl.append(dict(name="gancho", start=0.0, D=G_DUR, words=[])); t0 = G_DUR
     for (name, _), inf in zip(ESCENAS, info):
         D = inf["dur"] + VOZ_DELAY + PAUSA[name]
         words = []
@@ -21,7 +26,7 @@ def timeline(voz):
             for w in ws:
                 d = (fr["end"] - fr["start"]) * (len(w) + 2) / tot
                 words.append((t + VOZ_DELAY, t + VOZ_DELAY + d, w)); t += d
-        tl.append(dict(name=name, start=t0, D=D, words=words))
+        tl.append(dict(name=name, start=t0, D=D, words=words, voz=len([s for s in tl if s["name"] != "gancho"])))
         t0 += D
     return tl, t0
 
@@ -29,6 +34,17 @@ def render_frame(tl, fi):
     T = fi / FPS
     sc = next((s for s in tl if s["start"] <= T < s["start"] + s["D"]), tl[-1])
     t = T - sc["start"]
+    if sc["name"] == "gancho":
+        g = next(s for s in tl if s["name"] == GANCHO[0])
+        img, fx = ESCENA_FN[GANCHO[0]](g["D"] * GANCHO[1] + t * 0.15, g["D"], fi)
+        img = post(img, fi, flash=((255, 255, 255), max(0.0, 1 - t / 0.25)), glitch=0.35 if fi % 3 == 0 else 0.1,
+                   tint=((255, 0, 30), 0.25), dark=0.15)
+        d = ImageDraw.Draw(img); s_ = ease_back(seg(t, 0.0, 0.18)) * (1 + 0.03 * math.sin(t * 30))
+        lines = GANCHO[2].split("\n")
+        for i, ln in enumerate(lines):
+            d.text((540, 820 + (i - (len(lines) - 1) / 2) * 150), ln, font=font(112 * s_), fill=(255, 214, 0) if i == len(lines) - 1 else (255, 255, 255),
+                   anchor="mm", stroke_width=int(13 * s_), stroke_fill=(0, 0, 0))
+        return img
     img, fx = ESCENA_FN[sc["name"]](t, sc["D"], fi)
     pz = 0.07 * (1 - ease_out(seg(t, 0, 0.18)))   # "punch" de zoom en cada corte
     if pz > 0.001:

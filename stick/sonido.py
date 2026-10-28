@@ -99,9 +99,12 @@ def main(voz, out):
         if i >= N: return
         x = x[: N - i]; buf[i:i + len(x)] += x * g
     for k, s in enumerate(tl):
-        sr, w = wavfile.read(os.path.join(voz, f"{k:02d}.wav"))
-        put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         a, D, n = s["start"], s["D"], s["name"]
+        if n == "gancho":
+            put(sfx, boom(1.2, 60), a, 1.2); put(sfx, sting(1.0), a, 1.0); put(sfx, static(D), a, 0.5)
+            continue
+        sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
+        put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
         if n == "ventana": put(sfx, heartbeat(5, 75), a, 0.9); put(sfx, static(0.8), a + 1.3, 0.7); put(sfx, sting(1.2), a + 1.35, 0.5)
         if n == "cara": put(sfx, boom(), a, 1.0); put(sfx, sting(1.6), a, 0.9); put(sfx, static(D), a, 0.5)

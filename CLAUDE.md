@@ -9,6 +9,10 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 - `biblia.md`: personajes, reglas y resumen de cada episodio. Léela antes de escribir y actualízala después.
 - `publicaciones.json`: registro de lo publicado (título, fecha, URL del vídeo).
 
+## Gancho inicial (OBLIGATORIO desde la Parte 4)
+Los datos de la Parte 1: solo el 44 % se quedó viendo (el 56 % deslizó). El arranque era lento. Cada guion (español e inglés) debe definir
+`GANCHO = ("<escena más impactante del episodio>", <fracción 0-1 del momento más fuerte>, "LÍNEA 1\nLÍNEA 2")`: 1,2 s de impacto antes de la historia, con texto de máximo 2 líneas cortas (≤ 14 caracteres por línea) que plantee una pregunta o una amenaza. Ej.: `("gigante", 0.8, "SU HERMANA\nYA NO ERA ELLA")`. En `guionN_en.py` el texto va en inglés. Además, la primera frase narrada debe ser la más fuerte del episodio.
+
 ## Hacer un episodio
 1. `bash setup.sh` (descarga Piper y Kokoro; unos 400 MB, una vez por sesión).
 2. Escribe `stick/guionN.py` y `stick/escenasN.py`, y añade los efectos en `sonido.py`.
