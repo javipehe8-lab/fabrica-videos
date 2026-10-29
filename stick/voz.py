@@ -28,6 +28,13 @@ else:
     REPARTO = {"NARRADOR": ("em_alex", 1.15, 0), "LEO": ("em_santa", 1.18, 4), "NORA": ("ef_dora", 1.12, 1),
                "DOCTOR": ("em_santa", 1.05, 0), "CARMEN": ("ef_dora", 0.95, -3), "CORONEL": ("em_santa", 1.0, -2),
                "SOLDADO": ("em_santa", 1.12, 1), "SONRIENTE": ("em_santa", 0.95, 0), "OTRO": ("em_santa", 1.1, 2)}
+# Voz mexicana de Piper (tts/piper_mx, descargada de la release "voces" del repo) para las voces masculinas.
+# Se activa con VOZ_ES=mx. Nora y Carmen siguen con ef_dora (Piper es_MX no tiene voz de mujer).
+PIPER_MX = os.path.join(TTS, "piper_mx", "es_MX-claude-high.onnx")
+if not EN and os.environ.get("VOZ_ES") == "mx" and os.path.exists(PIPER_MX):
+    REPARTO.update({"NARRADOR": ("piper", 1.12, 0), "LEO": ("piper", 1.15, 3), "DOCTOR": ("piper", 1.0, -1),
+                    "CORONEL": ("piper", 1.0, -2), "SOLDADO": ("piper", 1.1, 1), "SONRIENTE": ("piper", 0.95, 0),
+                    "OTRO": ("piper", 1.05, 2)})
 if os.environ.get("VOZ"):
     REPARTO["NARRADOR"] = (os.environ["VOZ"], float(os.environ.get("VELOCIDAD", REPARTO["NARRADOR"][1])), 0)
 
@@ -47,6 +54,17 @@ def monstruo(w):
     env = np.convolve(np.abs(w), np.ones(400) / 400, mode="same")
     out += rng.normal(0, 1, len(w)).astype(np.float32) * env * 0.35
     return out / (np.abs(out).max() + 1e-9) * 0.9
+
+def piper(texto, vel):
+    import subprocess, tempfile
+    from scipy.io import wavfile as wf
+    with tempfile.NamedTemporaryFile(suffix=".wav") as tmp:
+        subprocess.run([os.path.join(TTS, "piper", "piper"), "-m", PIPER_MX, "--length_scale", str(round(1 / vel, 3)),
+                        "--noise_scale", "0.6", "--noise_w", "0.7", "-f", tmp.name, "-q"],
+                       input=texto.encode(), check=True, capture_output=True)
+        sr, w = wf.read(tmp.name)
+    w = w.astype(np.float32) / 32768
+    return resample_poly(w, 160, 147).astype(np.float32) * 0.9   # 22050 -> 24000
 
 def trozos(texto):
     """[(hablante, frase limpia)]"""
@@ -74,10 +92,13 @@ def main(out):
             elif st.endswith("?"): vel *= 1.03
             if len(st.split()) <= 3 and quien == "NARRADOR": vel *= 0.94
             vel *= 1 + 0.03 * np.sin(len(parts) * 2.3)
-            ph = nar.phonemize(s)
-            ids = [nar.VOCAB[c] for c in ph if c in nar.VOCAB][:508]
-            w = sess.run(None, {"tokens": np.array([[0, *ids, 0]], np.int64), "style": bank[vname][len(ids)],
-                                "speed": np.array([vel], np.float32)})[0].astype(np.float32)
+            if vname == "piper":
+                w = piper(s, vel)
+            else:
+                ph = nar.phonemize(s)
+                ids = [nar.VOCAB[c] for c in ph if c in nar.VOCAB][:508]
+                w = sess.run(None, {"tokens": np.array([[0, *ids, 0]], np.int64), "style": bank[vname][len(ids)],
+                                    "speed": np.array([vel], np.float32)})[0].astype(np.float32)
             nz = np.where(np.abs(w) > 0.01)[0]
             if len(nz): w = w[max(0, nz[0] - 600): nz[-1] + 1200]
             w = monstruo(w) if quien == "SONRIENTE" else tono(w, semis)

@@ -5,3 +5,4 @@ tts/*.tgz
 stick/voz*/
 stick/out*/
 __pycache__/
+tts/piper_mx/
