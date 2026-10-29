@@ -13,6 +13,12 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 Los datos de la Parte 1: solo el 44 % se quedó viendo (el 56 % deslizó). El arranque era lento. Cada guion (español e inglés) debe definir
 `GANCHO = ("<escena más impactante del episodio>", <fracción 0-1 del momento más fuerte>, "LÍNEA 1\nLÍNEA 2")`: 1,2 s de impacto antes de la historia, con texto de máximo 2 líneas cortas (≤ 14 caracteres por línea) que plantee una pregunta o una amenaza. Ej.: `("gigante", 0.8, "SU HERMANA\nYA NO ERA ELLA")`. En `guionN_en.py` el texto va en inglés. Además, la primera frase narrada debe ser la más fuerte del episodio.
 
+## Cada episodio debe entenderse SOLO (datos del 29/10)
+La Parte 1 tiene ~1.000 visitas; las Partes 2-4, 20-30 cada una. YouTube enseña cada Short a gente que NO ha visto las partes anteriores: si no entiende de qué va, desliza.
+- La primera frase narrada (tras el GANCHO) presenta la premisa en una línea, sin depender de lo anterior. Ej.: "Un monstruo que sonríe duerme para siempre a quien lo mira a los ojos. Leo y Nora lo han visto."
+- No empieces con "Después de lo que pasó…" ni con referencias que exijan haber visto la parte anterior.
+- Título: gancho autónomo primero; "(Parte N)" siempre al final.
+
 ## Diálogos (MUY puntuales)
 - Como máximo 1-2 frases de diálogo por episodio, de 2-6 palabras, solo en el pico de tensión (un grito, una amenaza, una pista). El vídeo tiene que seguir siendo frenético: nunca una conversación.
 - Se escriben dentro del texto de la escena con el nombre entre corchetes: `"Leo la buscó en el bosque. [SONRIENTE] Leo… te puedo ver."`. Personajes con voz propia (distinta del narrador): LEO, NORA, DOCTOR, CARMEN, CORONEL, SOLDADO, SONRIENTE; cualquier otro nombre usa una voz genérica. En `guionN_en.py` van los mismos marcadores.
