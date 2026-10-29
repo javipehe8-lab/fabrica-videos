@@ -22,7 +22,7 @@ La Parte 1 tiene ~1.000 visitas; las Partes 2-4, 20-30 cada una. YouTube enseña
 ## Diálogos (MUY puntuales)
 - Como máximo 1-2 frases de diálogo por episodio, de 2-6 palabras, solo en el pico de tensión (un grito, una amenaza, una pista). El vídeo tiene que seguir siendo frenético: nunca una conversación.
 - Se escriben dentro del texto de la escena con el nombre entre corchetes: `"Leo la buscó en el bosque. [SONRIENTE] Leo… te puedo ver."`. Personajes con voz propia (distinta del narrador): LEO, NORA, DOCTOR, CARMEN, CORONEL, SOLDADO, SONRIENTE; cualquier otro nombre usa una voz genérica. En `guionN_en.py` van los mismos marcadores.
-- Los subtítulos de cada personaje salen en su color (Nora lila, Leo rojo, Sonriente rojo intenso, resto azul).
+- Los subtítulos de cada personaje salen en su color (Nora lila, Leo rojo, Sonriente rojo intenso, resto azul) con una etiqueta encima con su nombre (automático).
 
 ## Final con elección (desde la Parte 5)
 - Cada guion termina con una tarjeta para votar: define `ELECCION = ("PREGUNTA CORTA\nEN 2 LÍNEAS", "OPCIÓN A", "OPCIÓN B")` (opciones de 2-4 palabras; en `guionN_en.py`, en inglés). La escena "final" se sustituye sola por la tarjeta; su texto narrado debe ser: "¿<pregunta>? ¿A o B? Coméntalo. Mañana lo verás." (en inglés: "…? A or B? Tell me in the comments. Find out tomorrow.").

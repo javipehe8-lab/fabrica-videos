@@ -298,6 +298,15 @@ def captions(img, words, t, y=1540):
     lines = [list(range(len(clean)))]
     if total > W - 120 and len(clean) > 1:
         lines = [list(range(len(clean) - 1)), [len(clean) - 1]]
+    quien_g = g[0][3] if len(g[0]) > 3 else "NARRADOR"
+    if quien_g != "NARRADOR":   # etiqueta con el nombre de quien habla
+        NOMBRES = {"SONRIENTE": tr("EL SONRIENTE") if IDIOMA != "en" else "THE GRINNER"}
+        nom = NOMBRES.get(quien_g, quien_g)
+        colt = {"NORA": (170, 100, 255), "LEO": (230, 50, 50), "SONRIENTE": (200, 20, 30)}.get(quien_g, (40, 140, 230))
+        fn = font(48); tw = d.textlength(nom, font=fn)
+        ty = y - size * (1.1 if len(lines) > 1 else 0.6) - 70
+        d.rounded_rectangle((W / 2 - tw / 2 - 26, ty - 34, W / 2 + tw / 2 + 26, ty + 34), 18, fill=colt, outline=(0, 0, 0), width=5)
+        d.text((W / 2, ty), nom, font=fn, fill=(255, 255, 255), anchor="mm")
     for li, idxs in enumerate(lines):
         tw = sum(widths[i] for i in idxs) + gap * (len(idxs) - 1)
         x = (W - tw) / 2; yy_ = y + li * size * 1.08 - (len(lines) - 1) * size * 0.54
