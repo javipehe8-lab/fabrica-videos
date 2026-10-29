@@ -239,6 +239,43 @@ def main(voz, out):
             for i in range(int(D * 0.75 * 2.2)): put(sfx, beep(0.025, 420), a + i / 2.2, 1.2); put(sfx, static(0.15), a + i / 2.2, 0.5)
         if n == "cable": put(sfx, sting(1.4), a + D * 0.3, 1.0); put(sfx, heartbeat(4, 130), a + D * 0.3, 0.8)
         if n == "voz": put(sfx, static(D), a, 0.6); put(sfx, boom(2.5, 40), a + D * 0.3, 1.2); put(sfx, scream(1.6) * 0.6, a + D * 0.35, 0.7)
+        # ---- episodio 5 ----
+        if n == "verja":
+            t_ = T(D); put(sfx, hp(rng.normal(0, 1, len(t_)), 2500) * 0.12, a, 1.0)
+            put(sfx, boom(2.4, 40), a + D * 0.25, 1.2)
+            for i in range(int(D * 0.85 / 0.4)): put(sfx, step() * 0.6, a + i * 0.4, 0.7)
+        if n == "linternas":
+            put(sfx, beep(0.03, 2600), a + 0.05, 0.8); put(sfx, beep(0.03, 2600), a + 0.25, 0.8)
+            for i in range(int(D / 0.45)): put(sfx, step() * 0.7, a + i * 0.45, 0.7)
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 250) * 0.2, a, 1.0)
+        if n == "camillas": put(sfx, buzz(D * 0.7), a, 0.7); put(sfx, sting(1.2) * 0.7, a + D * 0.65, 1.0)
+        if n == "silla":
+            t_ = T(D * 0.75); f_ = 900 + 300 * np.sin(2 * np.pi * 2.2 * t_)
+            put(sfx, bp(np.sin(2 * np.pi * np.cumsum(f_) / SR) * (np.sin(2 * np.pi * 2.2 * t_) > 0.3), 600, 3000) * 0.2, a + D * 0.1, 1.0)
+            put(sfx, heartbeat(4, 120), a + D * 0.4, 0.8); put(sfx, impact(), a + D * 0.85, 0.8)
+        if n == "huida":
+            for i in range(int(D / 0.19)): put(sfx, step(), a + i * 0.19, 0.9)
+            put(sfx, heartbeat(5, 150), a, 0.7); put(sfx, sting(1.2), a + D * 0.3, 0.9); put(sfx, static(0.5), a + D * 0.3, 0.5)
+        if n == "cartel":
+            for i in range(int(D * 0.8 / 0.42)): put(sfx, step() * 0.7, a + i * 0.42, 0.7)
+            put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, riser(D * 0.9), a, 0.5)
+        if n == "abierta":
+            t_ = T(D * 0.5); f_ = 140 + 90 * np.sin(2 * np.pi * 0.9 * t_)
+            put(sfx, bp(np.sign(np.sin(2 * np.pi * np.cumsum(f_) / SR)), 300, 2000) * 0.15 * np.sin(np.pi * t_ / (D * 0.5)), a + D * 0.15, 1.0)
+            put(sfx, impact() * 0.5, a + D * 0.62, 0.7)
+        if n == "dibujos": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, shimmer() * 0.6, a + 0.3, 0.8)
+        if n == "fecha": put(sfx, sting(1.4), a + D * 0.45, 1.0); put(sfx, boom(1.5, 60), a + D * 0.45, 0.9)
+        if n == "ultimo": put(sfx, heartbeat(4, 110), a, 0.8); put(sfx, boom(2.2, 45), a + D * 0.4, 1.1); put(sfx, static(0.6), a + D * 0.4, 0.6)
+        if n == "pasos":
+            for i in range(int(D / 0.7)): put(sfx, boom(0.4, 70) * (0.4 + 0.6 * i / max(1, D / 0.7)), a + 0.2 + i * 0.7, 0.8)
+        if n == "escondite":
+            for i in range(int(D * 0.5 / 0.19)): put(sfx, step(), a + i * 0.19, 0.8)
+            put(sfx, beep(0.03, 2600), a + D * 0.62, 1.0); put(sfx, beep(0.03, 2400), a + D * 0.66, 1.0)
+            put(sfx, heartbeat(3, 130), a + D * 0.65, 0.8)
+        if n == "sombra":
+            put(sfx, heartbeat(6, 140), a, 0.9); put(sfx, riser(D * 0.9), a, 0.6)
+            for i in range(3): put(sfx, boom(0.4, 70) * 0.5, a + 0.2 + i * 0.6, 0.7)
+        if n == "anciana": put(sfx, impact(), a, 1.0); put(sfx, boom(2.0, 50), a, 1.1); put(sfx, sting(1.4) * 0.7, a + D * 0.05, 0.9); put(sfx, chime() * 0.4, a + D * 0.5, 1.0)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:

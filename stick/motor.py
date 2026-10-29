@@ -173,6 +173,10 @@ class Fig:
             F.line([(mx - 14 * sc, my - 30 * sc), (mx + 10 * sc, my - 6 * sc)], (240, 248, 255), 5 * sc)
         limb([J["hip"], J["l1k"], J["l1f"]], self.limb)
         limb([J["sh"], J["a1e"], J["a1h"]], self.limb)
+        if "cane" in self.extra:   # bastón (abuela Carmen) en la mano trasera
+            hx, hy = J["a2h"]; fy = max(J["l1f"][1], J["l2f"][1])
+            F.line([(hx + f * 4 * sc, hy), (hx + f * 10 * sc, fy)], (96, 62, 34), 8 * sc)
+            F.arc((hx + f * 18 * sc, hy + 2 * sc), 14 * sc, 180, 360, (96, 62, 34), 7 * sc)
         # cabeza
         hc = J["head"]; r = L["head"] * sc
         if enemy:
@@ -188,6 +192,10 @@ class Fig:
         F.circle(hc, r, fill=self.limb)
         if CALIDAD_HD:
             F.circle((hc[0] - f * r * 0.35, hc[1] - r * 0.4), r * 0.28, fill=tuple(min(255, int(v * 1.12 + 20)) for v in self.limb))
+        if "bun" in self.extra:    # pelo gris recogido en un moño
+            gris = (196, 196, 204)
+            F.d.chord([*F.P(hc[0] - r - 2 * sc, hc[1] - r - 3 * sc), *F.P(hc[0] + r + 2 * sc, hc[1] + r - 6 * sc)], 180, 360, fill=gris)
+            F.circle((hc[0] - f * r * 0.62, hc[1] - r * 0.92), r * 0.46, fill=gris, outline=(150, 150, 160), w=2 * sc)
         if "helmet" in self.extra:
             F.d.chord([*F.P(hc[0] - r - 5 * sc, hc[1] - r - 6 * sc), *F.P(hc[0] + r + 5 * sc, hc[1] + r - 2 * sc)], 180, 360, fill=(84, 100, 58))
         if "ponytail" in self.extra:
@@ -231,6 +239,7 @@ SOLDADO = Fig(shirt=(96, 115, 66), limb=(225, 228, 220), scale=0.85, extra=("hel
 DOCTOR = Fig(shirt=(236, 240, 245), extra=("coat", "clipboard"))
 PACIENTE = Fig(shirt=(150, 190, 220), limb=(225, 225, 230), scale=0.8)
 SONRIENTE = Fig(scale=1.45, kind="enemy")
+CARMEN = Fig(shirt=(96, 112, 104), limb=(230, 224, 216), scale=0.92, extra=("bun", "cane"))
 
 def jitter(t, amt, seed=0):
     keys = ("body", "head", "a1u", "a1l", "a2u", "a2l", "l1u", "l2u")
@@ -310,7 +319,8 @@ IDIOMA = os.environ.get("IDIOMA", "es")
 EN = {"PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
       "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",
       "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID",
-      "COMENTA A O B": "COMMENT A OR B", "TÚ DECIDES": "YOU DECIDE"}
+      "COMENTA A O B": "COMMENT A OR B", "TÚ DECIDES": "YOU DECIDE",
+      "3ª PLANTA": "3RD FLOOR", "SILENCIO": "QUIET"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
