@@ -276,6 +276,27 @@ def main(voz, out):
             put(sfx, heartbeat(6, 140), a, 0.9); put(sfx, riser(D * 0.9), a, 0.6)
             for i in range(3): put(sfx, boom(0.4, 70) * 0.5, a + 0.2 + i * 0.6, 0.7)
         if n == "anciana": put(sfx, impact(), a, 1.0); put(sfx, boom(2.0, 50), a, 1.1); put(sfx, sting(1.4) * 0.7, a + D * 0.05, 0.9); put(sfx, chime() * 0.4, a + D * 0.5, 1.0)
+        # ---- episodio 6 ----
+        if n == "superviviente": put(sfx, impact(), a, 0.9); put(sfx, heartbeat(5, 90), a + 0.3, 0.7); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 250) * 0.2, a, 1.0)
+        if n == "quedan": put(sfx, beep(0.03, 2600), a + D * 0.45, 0.8); put(sfx, chime() * 0.35, a + D * 0.5, 1.0)
+        if n == "foto": put(sfx, whoosh(0.4), a + 0.05, 0.8); put(sfx, sting(1.2) * 0.6, a + D * 0.5, 0.9)
+        if n == "ninya":
+            put(sfx, static(D) * 0.25, a, 0.6); put(sfx, shimmer() * 0.5, a + 0.2, 0.8)
+            put(sfx, sting(1.2) * 0.7, a + D * 0.5, 0.9)
+        if n == "festin": put(sfx, riser(D * 0.85), a, 0.8); put(sfx, heartbeat(6, 150), a, 0.8); put(sfx, scream(1.4) * 0.6, a + D * 0.7, 0.8); put(sfx, boom(2.2, 45), a + D * 0.85, 1.1)
+        if n == "tiembla": put(sfx, heartbeat(6, 130), a, 0.9); put(sfx, buzz(D) * 0.7, a, 0.6); put(sfx, riser(D * 0.8), a + D * 0.2, 0.5)
+        if n == "calma": put(sfx, whoosh(0.8, False), a + D * 0.45, 0.8); put(sfx, chime() * 0.5, a + D * 0.6, 1.0)
+        if n == "secreto": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.2, a, 1.0); put(sfx, shimmer(), a + D * 0.55, 1.0)
+        if n == "nombre_luz": put(sfx, riser(D * 0.55), a, 0.6); put(sfx, scream(1.2) * 0.7, a + D * 0.6, 0.8); put(sfx, boom(2.0, 55), a + D * 0.7, 1.0); put(sfx, shimmer(), a + D * 0.72, 1.0)
+        if n == "olvido": put(sfx, whoosh(1.0, False), a + D * 0.25, 0.7); put(sfx, sting(1.4) * 0.5, a + D * 0.6, 0.8)
+        if n == "movil":
+            for i in range(3): put(sfx, buzz(0.35) * 2.5, a + 0.1 + i * 0.5, 1.0)
+            put(sfx, beep(0.1, 1300), a + D * 0.3, 1.0); put(sfx, impact() * 0.6, a + D * 0.32, 0.8)
+        if n == "sala_vacia":
+            for i in range(int(D * 0.6 / 0.3)): put(sfx, step(), a + i * 0.3, 0.8)
+            put(sfx, buzz(D) * 0.8, a, 0.7); put(sfx, boom(1.2, 80), a + D * 0.4, 0.9)
+        if n == "llave": put(sfx, heartbeat(4, 120), a, 0.8); put(sfx, sting(1.4), a + D * 0.62, 1.0); put(sfx, boom(2.2, 45), a + D * 0.65, 1.1)
+        if n == "huella": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, boom(2.4, 40), a + D * 0.55, 1.2); put(sfx, static(0.7), a + D * 0.55, 0.7); put(sfx, scream(1.4) * 0.5, a + D * 0.6, 0.6)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:

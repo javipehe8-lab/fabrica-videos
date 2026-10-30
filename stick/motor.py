@@ -329,7 +329,7 @@ EN = {"PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASC
       "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",
       "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID",
       "COMENTA A O B": "COMMENT A OR B", "TÚ DECIDES": "YOU DECIDE",
-      "3ª PLANTA": "3RD FLOOR", "SILENCIO": "QUIET"}
+      "3ª PLANTA": "3RD FLOOR", "SILENCIO": "QUIET", "URGENTE": "URGENT"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
