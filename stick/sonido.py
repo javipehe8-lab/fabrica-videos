@@ -297,6 +297,32 @@ def main(voz, out):
             put(sfx, buzz(D) * 0.8, a, 0.7); put(sfx, boom(1.2, 80), a + D * 0.4, 0.9)
         if n == "llave": put(sfx, heartbeat(4, 120), a, 0.8); put(sfx, sting(1.4), a + D * 0.62, 1.0); put(sfx, boom(2.2, 45), a + D * 0.65, 1.1)
         if n == "huella": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, boom(2.4, 40), a + D * 0.55, 1.2); put(sfx, static(0.7), a + D * 0.55, 0.7); put(sfx, scream(1.4) * 0.5, a + D * 0.6, 0.6)
+        # ---- episodio 7 ----
+        if n == "busqueda": put(sfx, impact(), a, 0.9); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 250) * 0.2, a, 1.0); put(sfx, sting(1.2) * 0.6, a + D * 0.4, 0.8)
+        if n == "sotano":
+            for i in range(int(D * 0.75 / 0.3)): put(sfx, step(), a + i * 0.3, 0.8)
+            put(sfx, buzz(D) * 0.5, a, 0.6); put(sfx, whoosh(0.9, False), a + D * 0.5, 0.7)
+        if n == "estanterias": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 400) * 0.25, a, 1.0); put(sfx, heartbeat(3, 80), a + 0.3, 0.6)
+        if n == "carpeta": put(sfx, whoosh(0.5), a + D * 0.35, 0.9); put(sfx, ding(), a + D * 0.6, 0.8); put(sfx, impact() * 0.5, a + D * 0.6, 0.7)
+        if n == "ficha": put(sfx, whoosh(0.4), a + 0.05, 0.8); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.2, a, 1.0)
+        if n == "tachado":
+            for i in range(10): put(sfx, bp(rng.normal(0, 1, int(SR * 0.09)), 1500, 5000) * np.exp(-T(0.09) * 20) * 0.5, a + D * 0.15 + i * 0.11, 1.0)
+            put(sfx, sting(1.2) * 0.5, a + D * 0.7, 0.8)
+        if n == "letra": put(sfx, riser(D * 0.4), a, 0.6); put(sfx, shimmer(), a + D * 0.45, 1.2); put(sfx, boom(1.4, 70), a + D * 0.45, 0.8)
+        if n == "foto_nino": put(sfx, static(D) * 0.25, a, 0.6); put(sfx, chime() * 0.4, a + 0.3, 1.0); put(sfx, chime() * 0.3, a + D * 0.6, 1.0)
+        if n == "apagon":
+            for i in range(5): put(sfx, buzz(0.12) * 2, a + D * 0.25 + i * 0.16, 1.0)
+            put(sfx, powerdown(1.2), a + D * 0.6, 0.9); put(sfx, heartbeat(4, 120), a + D * 0.65, 0.8)
+        if n == "sabe": put(sfx, boom(2.2, 45), a, 1.2); put(sfx, sting(1.6), a, 1.0); put(sfx, riser(D * 0.6), a + 0.2, 0.6); put(sfx, static(0.6), a + D * 0.75, 0.6)
+        if n == "huida" and os.environ.get("EP") == "7":
+            for i in range(8): put(sfx, whoosh(0.3, i % 2 == 0), a + 0.2 + i * D / 9, 0.5)
+        if n == "vuelta114":
+            for i in range(int(D * 0.7 / 0.19)): put(sfx, step(), a + i * 0.19, 0.8)
+            put(sfx, impact() * 0.6, a + D * 0.72, 0.8)
+        if n == "tachados":
+            for i in range(14): put(sfx, bp(rng.normal(0, 1, int(SR * 0.08)), 1500, 5000) * np.exp(-T(0.08) * 20) * 0.45, a + D * 0.1 + i * 0.12, 1.0)
+            put(sfx, sting(1.4), a + D * 0.5, 1.0); put(sfx, heartbeat(5, 140), a + D * 0.4, 0.8)
+        if n == "menos": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, boom(2.4, 40), a + D * 0.72, 1.2); put(sfx, scream(1.4) * 0.5, a + D * 0.75, 0.6); put(sfx, static(0.7), a + D * 0.72, 0.7)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
