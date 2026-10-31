@@ -19,6 +19,12 @@ La Parte 1 tiene ~1.000 visitas; las Partes 2-4, 20-30 cada una. YouTube enseña
 - No empieces con "Después de lo que pasó…" ni con referencias que exijan haber visto la parte anterior.
 - Título: gancho autónomo primero; "(Parte N)" siempre al final.
 
+## Duración: 35-45 s (OBLIGATORIO, datos del 31/10)
+Partes 3-5: la gente se queda 39-42 s de media, dure el vídeo 1:10 o 1:18; solo vieron ~55 % de cada vídeo y YouTube dejó de recomendarlos. Por eso:
+- 8-9 escenas como máximo (incluida "final"), 2-5 s cada una; vídeo total de 35-45 s (con gancho y tarjeta). Comprueba la duración del MP4 con ffprobe: si pasa de 48 s, recorta texto o escenas y vuelve a renderizar.
+- Estructura: gancho → premisa en una línea → un problema → un susto → un giro → tarjeta A/B. Una sola idea por episodio; si un punto del arco no cabe, se reparte en dos episodios.
+- Frases de narración aún más cortas (máx. ~12 palabras por escena).
+
 ## Diálogos (MUY puntuales)
 - Como máximo 1-2 frases de diálogo por episodio, de 2-6 palabras, solo en el pico de tensión (un grito, una amenaza, una pista). El vídeo tiene que seguir siendo frenético: nunca una conversación.
 - Se escriben dentro del texto de la escena con el nombre entre corchetes: `"Leo la buscó en el bosque. [SONRIENTE] Leo… te puedo ver."`. Personajes con voz propia (distinta del narrador): LEO, NORA, DOCTOR, CARMEN, CORONEL, SOLDADO, SONRIENTE; cualquier otro nombre usa una voz genérica. En `guionN_en.py` van los mismos marcadores.

@@ -1,6 +1,6 @@
 # Biblia de la serie: EL SONRIENTE
 
-Serie de terror paranormal en Shorts verticales (1080x1920), animada con stickmans. Cada episodio dura entre 60 y 80 segundos, tiene 14-16 escenas de 2-5 s, narrador masculino (voz `em_alex`) y termina en cliffhanger con "Parte N+1, muy pronto. Síguenme para no perdértela."
+Serie de terror paranormal en Shorts verticales (1080x1920), animada con stickmans. Desde la Parte 8, cada episodio dura 35-45 segundos y tiene 8-9 escenas de 2-5 s (antes eran 60-80 s; ver CLAUDE.md), narrador masculino (voz `em_alex`) y termina en cliffhanger con "Parte N+1, muy pronto. Síguenme para no perdértela."
 
 ## Personajes
 - **Leo**: protagonista, hermano mayor. Stickman con camiseta roja y gorra roja (`LEO`). Valiente pero impulsivo.
@@ -36,6 +36,7 @@ Serie de terror paranormal en Shorts verticales (1080x1920), animada con stickma
    - Elección Parte 7 (para el arranque de la Parte 8): "¿Dónde está la otra mitad?" A) EL COLUMPIO VIEJO (el columpio de la foto, en el patio/parque junto al hospital: allí está grabado el resto del nombre) · B) LA PLACA DEL HOSPITAL (la placa de la entrada de Santa Brígida con los nombres de los niños de 1986). Las dos llevan a la Parte 8 "La ciudad dormida" (la ciudad entera dormida mientras van hacia allí; Carmen no aparece en el punto de encuentro).
 
 ## Arco de la temporada 1 (Partes 4-10) — SEGUIR ESTE PLAN
+Desde la Parte 8 los episodios son de ~40 s: cada punto pendiente (8, 9, 10) puede ocupar uno o dos episodios. La temporada debe terminar como muy tarde en la Parte 13. Numera los episodios seguidos (Parte 8, 9, 10…) aunque un punto del arco ocupe dos.
 Objetivo: que la historia avance y descubra cosas nuevas. Historia SENCILLA: un único villano (el Sonriente); el coronel se ha eliminado del plan. NO repetir "el Sonriente se mete en otro personaje". La posesión ya se usó (Nora y doctor): no vuelve a usarse en lo que queda de temporada.
 4. **La grabación**: el doctor, antes de perder el control, se graba un mensaje para Leo y Nora y se encierra a sí mismo en la sala de rayos X. En la grabación revela de dónde salió el Sonriente: un antiguo hospital abandonado, Santa Brígida, habitación 114. Giro: la grabación termina con una voz que no es la del doctor diciendo "os estoy esperando".
 5. **Santa Brígida**: Leo y Nora entran en el hospital abandonado (pasillos, camillas, linterna). En la habitación 114 encuentran dibujos infantiles del Sonriente de 1986. Giro: alguien ya estaba allí, una anciana con linterna.
