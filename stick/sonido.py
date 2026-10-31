@@ -106,6 +106,26 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Si oyes esto a las 3AM · 1 ----
+        if os.environ.get("EP") == "3am1":
+            if n == "llama": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, beep(0.1, 880), a + 0.05, 1.0); put(sfx, beep(0.1, 880), a + 0.3, 1.0)
+            if n == "bajas":
+                for i in range(int(D / 0.42)): put(sfx, step(), a + 0.1 + i * 0.42, 0.9)
+                put(sfx, buzz(D) * 0.6, a, 0.7)
+            if n == "movil":
+                for i in range(3): put(sfx, bp(rng.normal(0, 1, int(SR * 0.25)), 120, 300) * 0.8, a + 0.05 + i * 0.3, 1.0)
+                put(sfx, ding() * 0.7, a + D * 0.25, 1.0); put(sfx, heartbeat(4, 100), a + D * 0.5, 0.7)
+            if n == "espalda": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, riser(D * 0.9), a, 0.5)
+            if n == "cabeza":
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.4)), 300, 1500) * np.exp(-T(0.4) * 4) * 0.8, a + D * 0.3, 1.0)   # crujido
+                put(sfx, boom(2.0, 55), a + D * 0.42, 1.3); put(sfx, sting(1.6), a + D * 0.42, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.45, 0.7)
+            if n == "subes":
+                for i in range(int(D / 0.17)): put(sfx, step(), a + i * 0.17, 0.9)
+                put(sfx, heartbeat(4, 160), a, 0.8)
+            if n == "abrazo": put(sfx, impact() * 0.7, a, 0.8); put(sfx, heartbeat(3, 120), a + 0.3, 0.6)
+            if n == "tuvoz": put(sfx, static(D) * 0.3, a, 0.5); put(sfx, riser(D), a, 0.4)
+            if n == "final": put(sfx, step(), a + 0.5, 1.0); put(sfx, step(), a + 1.1, 1.0); put(sfx, boom(2.2, 45), a + D * 0.62, 1.3); put(sfx, sting(1.4), a + D * 0.62, 1.0)
+            continue
         if n == "ventana": put(sfx, heartbeat(5, 75), a, 0.9); put(sfx, static(0.8), a + 1.3, 0.7); put(sfx, sting(1.2), a + 1.35, 0.5)
         if n == "cara": put(sfx, boom(), a, 1.0); put(sfx, sting(1.6), a, 0.9); put(sfx, static(D), a, 0.5)
         if n == "nora":

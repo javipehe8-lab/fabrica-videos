@@ -8,6 +8,7 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 - `stick/sonido.py`: música y efectos sincronizados por nombre de escena. Añade aquí los efectos de las escenas nuevas (bloque por episodio, con `os.environ.get("EP")` si un nombre se repite).
 - `biblia.md`: personajes, reglas y resumen de cada episodio. Léela antes de escribir y actualízala después.
 - `publicaciones.json`: registro de lo publicado (título, fecha, URL del vídeo).
+- `tres_am.md`: SEGUNDA SERIE "Si oyes esto a las 3AM" (historias autoconclusivas, 19:00). Tiene sus propias reglas y su banco de historias; las reglas de GANCHO, ELECCION y biblia de este archivo son solo para El Sonriente.
 
 ## Gancho inicial (OBLIGATORIO desde la Parte 4)
 Los datos de la Parte 1: solo el 44 % se quedó viendo (el 56 % deslizó). El arranque era lento. Cada guion (español e inglés) debe definir

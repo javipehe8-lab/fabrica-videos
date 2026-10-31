@@ -15,7 +15,7 @@ spec = importlib.util.spec_from_file_location("narrar", os.path.join(TTS, "narra
 nar = importlib.util.module_from_spec(spec); spec.loader.exec_module(nar)
 sys.path.insert(0, HERE)
 EN = os.environ.get('IDIOMA') == 'en'
-ESCENAS = __import__('guion' + os.environ.get('EP', '') + ('_en' if EN else '')).ESCENAS
+_G = __import__('guion' + os.environ.get('EP', '') + ('_en' if EN else '')); ESCENAS = _G.ESCENAS
 if EN: os.environ.setdefault('TTS_LANG', 'en-us')
 
 # (voz kokoro, velocidad, tono en semitonos). Cada personaje con voz DISTINTA del narrador.
@@ -35,6 +35,9 @@ if not EN and os.environ.get("VOZ_ES") == "mx" and os.path.exists(PIPER_MX):
     REPARTO.update({"NARRADOR": ("piper", 1.12, 0), "LEO": ("piper", 1.15, 3), "DOCTOR": ("piper", 1.0, -1),
                     "CORONEL": ("piper", 1.0, -2), "SOLDADO": ("piper", 1.1, 1), "SONRIENTE": ("piper", 0.95, 0),
                     "OTRO": ("piper", 1.05, 2)})
+# El guion puede añadir personajes propios: VOCES = {"MAMA": ("ef_dora", 1.05, 0)}; MONSTRUOS = {"FALSA"} -> voz con efecto de monstruo
+REPARTO.update(getattr(_G, "VOCES", {}))
+MONSTRUOS = {"SONRIENTE"} | set(getattr(_G, "MONSTRUOS", ()))
 if os.environ.get("VOZ"):
     REPARTO["NARRADOR"] = (os.environ["VOZ"], float(os.environ.get("VELOCIDAD", REPARTO["NARRADOR"][1])), 0)
 
@@ -101,7 +104,7 @@ def main(out):
                                     "speed": np.array([vel], np.float32)})[0].astype(np.float32)
             nz = np.where(np.abs(w) > 0.01)[0]
             if len(nz): w = w[max(0, nz[0] - 600): nz[-1] + 1200]
-            w = monstruo(w) if quien == "SONRIENTE" else tono(w, semis)
+            w = monstruo(tono(w, semis + 5)) if quien in MONSTRUOS and quien != "SONRIENTE" else (monstruo(w) if quien == "SONRIENTE" else tono(w, semis))
             parts.append({"text": s, "wav": w, "quien": quien})
         sub, t, chunks = [], 0.0, []
         for k, p in enumerate(parts):

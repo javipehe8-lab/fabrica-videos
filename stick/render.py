@@ -5,7 +5,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from motor import *
 import importlib
 EP = os.environ.get("EP", "")
-_g = importlib.import_module("guion" + EP + ("_en" if os.environ.get("IDIOMA") == "en" else "")); ESCENAS, TITULO, PARTE = _g.ESCENAS, _g.TITULO, _g.PARTE
+_g = importlib.import_module("guion" + EP + ("_en" if os.environ.get("IDIOMA") == "en" else "")); ESCENAS, TITULO, PARTE = _g.ESCENAS, _g.TITULO, getattr(_g, "PARTE", None)
+ETIQUETAS.update(getattr(_g, "ETIQUETAS", {})); MONSTRUOS_TXT.update(getattr(_g, "MONSTRUOS", ()))
 # GANCHO opcional en el guion: ("escena", fraccion_de_la_escena, "TEXTO GRANDE") -> 1,2 s de impacto antes de la historia
 GANCHO = getattr(_g, "GANCHO", None)
 # ELECCION opcional: ("PREGUNTA", "OPCIÓN A", "OPCIÓN B") -> la escena "final" se sustituye por una tarjeta para votar en comentarios
@@ -88,7 +89,7 @@ def render_frame(tl, fi):
     if sc["name"] != "final":
         img = captions(img, sc["words"], t)
         d = ImageDraw.Draw(img)
-        d.text((60, 190), f"{TITULO} · {tr('PARTE')} {PARTE}", font=font(34), fill=(255, 255, 255), anchor="lm", stroke_width=4, stroke_fill=(0, 0, 0))
+        d.text((60, 190), f"{TITULO} · {tr('PARTE')} {PARTE}" if PARTE else TITULO, font=font(34), fill=(255, 255, 255), anchor="lm", stroke_width=4, stroke_fill=(0, 0, 0))
     return img
 
 def worker(args):

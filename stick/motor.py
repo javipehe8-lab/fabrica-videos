@@ -278,6 +278,9 @@ def post(img, fi, flash=None, glitch=0.0, dark=0.0, grain=7.0, tint=None):
     return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 
 # ---------- subtítulos estilo "dopamina" ----------
+ETIQUETAS = {}          # nombre visible de cada hablante (lo rellena render.py con ETIQUETAS del guion)
+MONSTRUOS_TXT = set()   # hablantes que se pintan en rojo como el Sonriente
+
 def captions(img, words, t, y=1540):
     """words: lista de (inicio, fin, palabra). Muestra grupos de hasta 3 palabras con la activa resaltada."""
     groups, cur = [], []
@@ -301,8 +304,10 @@ def captions(img, words, t, y=1540):
     quien_g = g[0][3] if len(g[0]) > 3 else "NARRADOR"
     if quien_g != "NARRADOR":   # etiqueta con el nombre de quien habla
         NOMBRES = {"SONRIENTE": tr("EL SONRIENTE") if IDIOMA != "en" else "THE GRINNER"}
+        NOMBRES.update(ETIQUETAS)
         nom = NOMBRES.get(quien_g, quien_g)
         colt = {"NORA": (170, 100, 255), "LEO": (230, 50, 50), "SONRIENTE": (200, 20, 30)}.get(quien_g, (40, 140, 230))
+        if quien_g in MONSTRUOS_TXT: colt = (200, 20, 30)
         fn = font(48); tw = d.textlength(nom, font=fn)
         ty = y - size * (1.1 if len(lines) > 1 else 0.6) - 70
         d.rounded_rectangle((W / 2 - tw / 2 - 26, ty - 34, W / 2 + tw / 2 + 26, ty + 34), 18, fill=colt, outline=(0, 0, 0), width=5)
@@ -316,7 +321,7 @@ def captions(img, words, t, y=1540):
             col = (255, 214, 0) if active else (255, 255, 255)
             if quien == "NORA": col = (225, 190, 255) if not active else (200, 130, 255)
             elif quien == "LEO": col = (255, 200, 200) if not active else (255, 90, 90)
-            elif quien == "SONRIENTE": col = (255, 40, 50)
+            elif quien == "SONRIENTE" or quien in MONSTRUOS_TXT: col = (255, 40, 50)
             elif quien != "NARRADOR": col = (170, 230, 255) if not active else (90, 200, 255)
             d.text((x, yy_), clean[i], font=f, fill=col, anchor="lm", stroke_width=int(size * 0.11), stroke_fill=(0, 0, 0))
             x += widths[i] + gap
@@ -325,7 +330,8 @@ def captions(img, words, t, y=1540):
 
 # ---------- idioma ----------
 IDIOMA = os.environ.get("IDIOMA", "es")
-EN = {"PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
+EN = {"MAMÁ": "MOM", "NO BAJES.": "DON'T COME DOWN.", "ESTOY EN MI CUARTO.": "I'M IN MY ROOM.", "YO TAMBIÉN LA HE OÍDO.": "I HEARD IT TOO.",
+      "NO BAJES": "DON'T GO DOWN", "SÍGUEME PARA MÁS": "FOLLOW FOR MORE", "PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
       "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",
       "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID",
       "COMENTA A O B": "COMMENT A OR B", "TÚ DECIDES": "YOU DECIDE",
