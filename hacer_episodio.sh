@@ -14,7 +14,8 @@ fi
 # Serie "Si oyes esto a las 3AM": N = 3amK (guion3amK.py / escenas3amK.py) -> videos/3am/Si_Oyes_Esto_K.mp4
 case "$N" in 3am*) K="${N#3am}"
   if [ "$L" = "en" ]; then OUTDIR="$ROOT/videos/3am/en"; OUT="$OUTDIR/If_You_Hear_This_$K.mp4"
-  else OUTDIR="$ROOT/videos/3am"; OUT="$OUTDIR/Si_Oyes_Esto_$K.mp4"; fi;; esac
+  else OUTDIR="$ROOT/videos/3am"; OUT="$OUTDIR/Si_Oyes_Esto_$K.mp4"; fi;;
+  cur*) K="${N#cur}"; OUTDIR="$ROOT/videos/curiosidades"; OUT="$OUTDIR/Curiosidad_$K.mp4";; esac
 python3.13 voz.py "voz$N$SUF"
 python3.13 render.py "voz$N$SUF" "out$N$SUF" --preview   # out$N$SUF/preview.png: REVISAR antes de publicar
 python3.13 render.py "voz$N$SUF" "out$N$SUF"

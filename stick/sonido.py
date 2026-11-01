@@ -106,6 +106,20 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Curiosidades · 1 ----
+        if os.environ.get("EP") == "cur1":
+            if n == "agujero": put(sfx, riser(D * 0.45), a, 0.7); put(sfx, impact(), a + D * 0.48, 1.2); put(sfx, boom(1.2, 90), a + D * 0.48, 0.9)
+            if n == "picor": put(sfx, riser(D * 0.6), a + D * 0.3, 0.4)
+            if n == "tapa": put(sfx, whoosh(0.3), a + D * 0.15, 0.8); put(sfx, whoosh(0.3), a + D * 0.45, 0.8); put(sfx, lp(rng.normal(0, 1, int(SR * D * 0.3)), 200) * 0.6, a + D * 0.7, 1.0)
+            if n == "presion": put(sfx, riser(D), a, 0.9); put(sfx, heartbeat(4, 130), a + 0.3, 0.6)
+            if n == "pop": put(sfx, impact(), a + D * 0.1, 1.3); put(sfx, sting(1.2) * 0.7, a + D * 0.1, 0.8)
+            if n == "hinchado": put(sfx, heartbeat(4, 110), a, 0.7)
+            if n == "hospital":
+                for i in range(int(D / 0.6)): put(sfx, beep(0.1, 1200), a + 0.2 + i * 0.6, 0.8)
+            if n == "sonda":
+                for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
+            if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
+            continue
         # ---- Si oyes esto a las 3AM · 1 ----
         if os.environ.get("EP") == "3am2":
             motor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 140) * (0.7 + 0.3 * np.sin(2 * np.pi * 9 * T(d))) * 0.5

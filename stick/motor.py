@@ -330,7 +330,8 @@ def captions(img, words, t, y=1540):
 
 # ---------- idioma ----------
 IDIOMA = os.environ.get("IDIOMA", "es")
-EN = {"MAMÁ": "MOM", "NO BAJES.": "DON'T COME DOWN.", "ESTOY EN MI CUARTO.": "I'M IN MY ROOM.", "YO TAMBIÉN LA HE OÍDO.": "I HEARD IT TOO.",
+EN = {"PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO AGUANTES": "DON'T HOLD IN", "UN ESTORNUDO": "A SNEEZE",
+      "Caso real · BMJ Case Reports, 2018": "Real case · BMJ Case Reports, 2018", "MAMÁ": "MOM", "NO BAJES.": "DON'T COME DOWN.", "ESTOY EN MI CUARTO.": "I'M IN MY ROOM.", "YO TAMBIÉN LA HE OÍDO.": "I HEARD IT TOO.",
       "NO BAJES": "DON'T GO DOWN", "SÍGUEME PARA MÁS": "FOLLOW FOR MORE", "PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
       "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",
       "REC": "REC", "RAYOS X": "X-RAY", "PARA LEO Y NORA": "FOR LEO & NORA", "SANTA BRÍGIDA": "SAINT BRIGID",
