@@ -89,6 +89,87 @@ def musica(total, cuts):
         s = hat[: len(out) - j]; out[j:j + len(s)] += s * (1 if i % 2 else 0.5)
     return out
 
+# ---------- estilos de música (varían por episodio) ----------
+def _nota(f, d, kind="pluck", vel=1.0):
+    t = T(d)
+    if kind == "pluck":    # cuerda pulsada / pizzicato
+        return (np.sin(2 * np.pi * f * t) + 0.4 * np.sin(4 * np.pi * f * t)) * np.exp(-t * 7) * vel
+    if kind == "piano":    # piano oscuro
+        s = sum(np.sin(2 * np.pi * f * k * t) / k ** 1.6 for k in (1, 2, 3, 4))
+        return s * np.exp(-t * 2.2) * np.minimum(1, t * 300) * vel
+    if kind == "caja":     # caja de música
+        s = np.sin(2 * np.pi * f * 2 * t) + 0.3 * np.sin(2 * np.pi * f * 5.4 * t)
+        return s * np.exp(-t * 4) * vel
+    if kind == "saw":      # sintetizador
+        s = 2 * ((f * t) % 1) - 1
+        return lp(s, 1800) * np.exp(-t * 5) * vel
+    return np.zeros_like(t)
+
+def _reverb(x, dec=0.45):
+    out = np.copy(x)
+    for d, g in ((0.031, 0.5), (0.053, 0.4), (0.089, 0.32), (0.137, 0.25), (0.21, 0.18)):
+        n = int(SR * d); out[n:] += x[:-n] * g * dec * 2
+    return out
+
+def musica_estilo(total, cuts, estilo, seed=0):
+    t = T(total); out = np.zeros_like(t); r = np.random.default_rng(seed)
+    fin = cuts.get("final", (total, total))[0]
+    def put_(x, at, g=1.0):
+        i = int(at * SR)
+        if 0 <= i < len(out): x = x[: len(out) - i]; out[i:i + len(x)] += x * g
+    root = 110 * 2 ** (r.integers(-3, 3) / 12)
+    menor = [0, 3, 7, 10, 12, 15]; mayor = [0, 4, 7, 11, 12, 14]
+    if estilo == "piano":          # piano lento y disonante + dron grave
+        out += lp(np.sin(2 * np.pi * root / 2 * t) + 0.6 * np.sin(2 * np.pi * root / 2 * 1.006 * t), 300) * 0.05
+        tt = 0.3
+        while tt < total - 1:
+            f = root * 2 * 2 ** (r.choice([0, 1, 3, 6, 7, 10, 12]) / 12)
+            put_(_nota(f, 3.0, "piano"), tt, 0.09); tt += r.choice([0.8, 1.2, 1.6])
+        return _reverb(out)
+    if estilo == "caja":           # caja de música desafinada + respiración de ruido
+        mel = [r.choice(menor) for _ in range(8)]
+        tt, k = 0.2, 0
+        while tt < total - 0.5:
+            f = root * 4 * 2 ** (mel[k % 8] / 12) * (1 + 0.012 * np.sin(tt))
+            put_(_nota(f, 1.2, "caja"), tt, 0.05); tt += 0.42; k += 1
+        out += lp(r.normal(0, 1, len(t)), 400) * (0.5 + 0.5 * np.sin(2 * np.pi * 0.2 * t)) * 0.02
+        return _reverb(out, 0.6)
+    if estilo == "persecucion":    # arpegio rápido de sintetizador + bombo a 140
+        beat = 60 / 140; arp = [0, 3, 7, 12, 7, 3]
+        k = 0; tt = 0.0
+        while tt < min(total, fin):
+            put_(_nota(root * 2 * 2 ** (arp[k % 6] / 12), 0.2, "saw"), tt, 0.05); k += 1; tt += beat / 2
+        for i in range(int(min(total, fin) / beat)):
+            put_(boom(0.3, 80) * 0.5, i * beat, 1.0)
+            if i % 2: put_(hp(r.normal(0, 1, int(SR * 0.08)), 2000) * np.exp(-T(0.08) * 40) * 0.25, i * beat, 1.0)
+        out += lp(np.sin(2 * np.pi * root / 2 * t), 200) * 0.04
+        return out
+    if estilo == "curioso":        # ligero: pizzicato en mayor + golpes suaves (para curiosidades)
+        beat = 60 / 112; prog = [0, 5, 9, 7]
+        for i in range(int(total / (beat / 2))):
+            tt = i * beat / 2
+            ac = prog[(i // 8) % 4]
+            f = root * 2 * 2 ** ((ac + mayor[(i * 3) % 4]) / 12)
+            put_(_nota(f, 0.4, "pluck"), tt, 0.07 if i % 2 == 0 else 0.045)
+            if i % 4 == 0: put_(boom(0.25, 110) * 0.35, tt, 1.0)
+            if i % 4 == 2: put_(hp(r.normal(0, 1, int(SR * 0.05)), 3000) * np.exp(-T(0.05) * 60) * 0.18, tt, 1.0)
+        return out
+    return musica(total, cuts)      # "tension": la de siempre
+
+ESTILOS_TERROR = ["tension", "piano", "caja", "persecucion"]
+def elegir_estilo():
+    """MUSICA en el guion manda; si no, se elige uno distinto según el episodio (siempre el mismo para ese episodio)"""
+    ep = os.environ.get("EP", "")
+    if os.environ.get("MUSICA"): return os.environ["MUSICA"]
+    try:
+        import importlib; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        g = importlib.import_module("guion" + ep + ("_en" if os.environ.get("IDIOMA") == "en" else ""))
+        if getattr(g, "MUSICA", None): return g.MUSICA
+    except Exception: pass
+    if ep.startswith("cur"): return "curioso"
+    import zlib
+    return ESTILOS_TERROR[zlib.crc32(ep.encode()) % len(ESTILOS_TERROR)]
+
 def main(voz, out):
     tl = json.load(open(os.path.join(out, "timeline.json")))
     total = tl[-1]["start"] + tl[-1]["D"] + 0.3
@@ -419,7 +500,9 @@ def main(voz, out):
         _, v2 = wavfile.read(os.path.join(td, "v2.wav"))
         v2 = v2.astype(np.float64) / 32767
         mixv = np.zeros(N); mixv[:min(N, len(v2))] = v2[:N]
-    mus = musica(total, cuts)
+    estilo = elegir_estilo(); import zlib
+    mus = musica_estilo(total, cuts, estilo, seed=zlib.crc32(os.environ.get('EP', '').encode()) % 1000)
+    print('música:', estilo)
     # ducking de música y efectos bajo la voz
     vol = np.convolve(np.abs(mixv), np.ones(2400) / 2400, mode="same")
     duck = 1 - 0.7 * np.clip(vol / 0.04, 0, 1)

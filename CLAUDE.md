@@ -37,6 +37,9 @@ Partes 3-5: la gente se queda 39-42 s de media, dure el vídeo 1:10 o 1:18; solo
 - Al empezar el episodio siguiente: si el anterior tenía ELECCION, elige la opción AL AZAR con `python3 -c "import random; print(random.choice('AB'))"` (da igual lo que vote la gente), apúntala en biblia.md ("Elección Parte N: salió X") y haz que el episodio arranque siguiendo esa opción. NUNCA digas en el vídeo ni en la descripción que "ganó la mayoría".
 - Primer comentario (firstCommentText) de un episodio con elección: "¿A o B? 👇 Mañana lo descubres."
 
+## Música
+- `sonido.py` tiene varios estilos: "tension", "piano", "caja" (caja de música), "persecucion" y "curioso" (para curiosidades). Si el guion no define `MUSICA = "<estilo>"`, se elige uno según el episodio, así que cambia de un vídeo a otro. Elige a mano el que pegue con el episodio (persecución → "persecucion", misterio → "piano" o "caja") y no repitas el del episodio anterior.
+
 ## Calidad visual
 - `CALIDAD=hd` (por defecto) activa el contorno de los personajes, sombras de contacto, brillo en la cabeza, contraste y bloom. No lo desactives.
 
