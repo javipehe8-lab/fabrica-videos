@@ -337,7 +337,8 @@ EN = {"MAMÁ": "MOM", "NO BAJES.": "DON'T COME DOWN.", "ESTOY EN MI CUARTO.": "I
       "COMENTA A O B": "COMMENT A OR B", "TÚ DECIDES": "YOU DECIDE",
       "3ª PLANTA": "3RD FLOOR", "SILENCIO": "QUIET", "URGENTE": "URGENT",
       "ARCHIVO": "RECORDS", "PACIENTE": "PATIENT", "HAB.": "ROOM", "NOMBRE:": "NAME:",
-      "TOMÁS": "THOMAS"}
+      "TOMÁS": "THOMAS",
+      "SI TE DAN LAS LARGAS…": "IF A CAR FLASHES YOU…", "MIRA ATRÁS": "LOOK BEHIND YOU"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s

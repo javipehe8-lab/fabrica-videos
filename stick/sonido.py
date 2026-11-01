@@ -107,6 +107,36 @@ def main(voz, out):
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
         # ---- Si oyes esto a las 3AM · 1 ----
+        if os.environ.get("EP") == "3am2":
+            motor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 140) * (0.7 + 0.3 * np.sin(2 * np.pi * 9 * T(d))) * 0.5
+            largas_ = lambda: np.pad(hp(rng.normal(0, 1, int(SR * 0.05)), 2500) * np.exp(-T(0.05) * 80) * 0.9, (0, int(SR * 0.45))) + boom(0.5, 110) * 0.35
+            cruj_ = lambda: bp(rng.normal(0, 1, int(SR * 0.35)), 300, 1400) * np.exp(-T(0.35) * 5) * (rng.random(int(SR * 0.35)) > 0.7) * 1.6
+            if n == "carretera":
+                put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, motor_(D), a, 0.8)
+                for f_ in (0.55, 0.72, 0.86): put(sfx, largas_(), a + D * f_, 1.0)
+            if n == "largas":
+                put(sfx, motor_(D), a, 0.8); put(sfx, heartbeat(5, 110), a + 0.3, 0.6)
+                for f_ in (0.04, 0.3, 0.53, 0.76): put(sfx, largas_(), a + D * f_, 1.1)
+            if n == "cruje":
+                put(sfx, motor_(D), a, 0.8)
+                for f_ in (0.12, 0.42, 0.7): put(sfx, largas_(), a + D * f_, 1.0); put(sfx, cruj_(), a + D * f_ + 0.08, 1.0)
+            if n == "paras":
+                put(sfx, motor_(D * 0.5) * np.linspace(1, 0, int(SR * D * 0.5)), a, 0.8)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.9)), 1500, 5000) * np.linspace(0.6, 0, int(SR * 0.9)), a + 0.3, 0.5)   # frenazo
+                put(sfx, impact() * 0.5, a + D * 0.8, 0.6); put(sfx, heartbeat(4, 120), a + D * 0.5, 0.7)
+            if n == "conductor":
+                put(sfx, impact() * 0.6, a + 0.1, 0.7)   # portazo
+                for i in range(int(D * 0.38 / 0.17)): put(sfx, step(), a + 0.3 + i * 0.17, 0.9)
+                put(sfx, sting(1.2), a + D * 0.42, 0.7)
+                for i in range(3): put(sfx, impact() * 0.5, a + D * (0.5 + i * 0.12), 0.6)   # golpes en el cristal
+            if n == "entiendes":
+                put(sfx, riser(D * 0.7), a, 0.4); put(sfx, powerdown(0.8) * 0.5, a + D * 0.62, 0.7)
+                put(sfx, cruj_(), a + D * 0.75, 1.1); put(sfx, heartbeat(3, 70), a + D * 0.7, 0.8)
+            if n == "retrovisor":
+                put(sfx, cruj_(), a + D * 0.25, 1.0)
+                put(sfx, boom(2.0, 55), a + D * 0.38, 1.3); put(sfx, sting(1.6), a + D * 0.38, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.4, 0.7)
+            if n == "final": put(sfx, static(D * 0.5) * 0.4, a, 0.4); put(sfx, boom(2.2, 45), a + D * 0.55, 1.3); put(sfx, sting(1.4), a + D * 0.55, 1.0)
+            continue
         if os.environ.get("EP") == "3am1":
             if n == "llama": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, beep(0.1, 880), a + 0.05, 1.0); put(sfx, beep(0.1, 880), a + 0.3, 1.0)
             if n == "bajas":
