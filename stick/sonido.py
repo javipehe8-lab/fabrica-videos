@@ -343,6 +343,27 @@ def main(voz, out):
             for i in range(14): put(sfx, bp(rng.normal(0, 1, int(SR * 0.08)), 1500, 5000) * np.exp(-T(0.08) * 20) * 0.45, a + D * 0.1 + i * 0.12, 1.0)
             put(sfx, sting(1.4), a + D * 0.5, 1.0); put(sfx, heartbeat(5, 140), a + D * 0.4, 0.8)
         if n == "menos": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, boom(2.4, 40), a + D * 0.72, 1.2); put(sfx, scream(1.4) * 0.5, a + D * 0.75, 0.6); put(sfx, static(0.7), a + D * 0.72, 0.7)
+        # ---- episodio 8 ----
+        if n == "dormidos": put(sfx, impact(), a, 0.9); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 250) * 0.25, a, 1.0); put(sfx, chime() * 0.3, a + D * 0.4, 1.0)
+        if n == "corren":
+            for i in range(int(D / 0.16)): put(sfx, step(), a + i * 0.16, 0.9)
+            put(sfx, heartbeat(4, 130), a, 0.6)
+        if n == "cabezas":
+            for i in range(6): put(sfx, bp(rng.normal(0, 1, int(SR * 0.12)), 300, 1500) * np.exp(-T(0.12) * 25) * 0.6, a + D * 0.2 + i * D * 0.11, 1.0)
+            put(sfx, sting(1.2) * 0.5, a + D * 0.7, 0.8)
+        if n == "persigue":
+            put(sfx, boom(2.2, 45), a, 1.2); put(sfx, sting(1.6), a + 0.1, 1.0); put(sfx, riser(D * 0.7), a + 0.2, 0.6)
+            for i in range(int(D / 0.3)): put(sfx, boom(0.3, 55) * 0.6, a + i * 0.3, 0.9)
+        if n == "placa":
+            for i in range(int(D * 0.6 / 0.2)): put(sfx, step(), a + i * 0.2, 0.8)
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.2, a, 1.0)
+        if n == "tomas":
+            for i in range(6): put(sfx, bp(rng.normal(0, 1, int(SR * 0.15)), 800, 3000) * np.sin(np.pi * T(0.15) / 0.15) * 0.3, a + D * 0.05 + i * 0.13, 1.0)
+            put(sfx, riser(D * 0.4), a + D * 0.2, 0.6); put(sfx, shimmer(), a + D * 0.6, 1.2); put(sfx, boom(1.4, 70), a + D * 0.6, 0.8)
+        if n == "coche":
+            for i in range(int(D * 0.8 / 0.17)): put(sfx, step(), a + i * 0.17, 0.8)
+            put(sfx, impact() * 0.5, a + D * 0.8, 0.8)
+        if n == "vacio": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, boom(2.4, 40), a + D * 0.6, 1.2); put(sfx, scream(1.2) * 0.4, a + D * 0.62, 0.6); put(sfx, static(0.6), a + D * 0.6, 0.7)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
