@@ -232,6 +232,39 @@ def main(voz, out):
                 put(sfx, boom(2.0, 55), a + D * 0.38, 1.3); put(sfx, sting(1.6), a + D * 0.38, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.4, 0.7)
             if n == "final": put(sfx, static(D * 0.5) * 0.4, a, 0.4); put(sfx, boom(2.2, 45), a + D * 0.55, 1.3); put(sfx, sting(1.4), a + D * 0.55, 1.0)
             continue
+        # ---- Si oyes esto a las 3AM · 3 ----
+        if os.environ.get("EP") == "3am3":
+            def jingle_():
+                o = np.zeros(int(SR * 0.5)); m_ = int(SR * 0.04)
+                for i in range(8):
+                    j = int(SR * i * 0.05); o[j:j + m_] += hp(rng.normal(0, 1, m_), 5000) * np.exp(-T(0.04)[:m_] * 90)
+                return o * 0.9
+            click_ = lambda: np.pad(hp(rng.normal(0, 1, int(SR * 0.03)), 1800) * np.exp(-T(0.03) * 120), (0, int(SR * 0.1))) * 1.2
+            if n == "timbre":
+                put(sfx, sting(1.2) * 0.6, a, 1.0)
+                for f_ in (0.3, 0.5, 0.75): put(sfx, ding() * 0.9, a + D * f_, 1.0); put(sfx, ding() * 0.7, a + D * f_ + 0.35, 0.8)
+            if n == "recibidor":
+                for i in range(int(D * 0.45 / 0.42)): put(sfx, step(), a + 0.1 + i * 0.42, 0.8)
+                put(sfx, riser(D * 0.5), a + D * 0.45, 0.4)
+            if n == "movil":
+                for i in range(3): put(sfx, bp(rng.normal(0, 1, int(SR * 0.25)), 120, 300) * 0.8, a + 0.05 + i * 0.3, 1.0)
+                for f_ in (0.2, 0.38, 0.56, 0.74): put(sfx, ding() * 0.5, a + D * f_, 0.8)
+                put(sfx, heartbeat(4, 100), a + D * 0.5, 0.7)
+            if n == "cuarto":
+                for i in range(int(D / 0.13)): put(sfx, click_() * 0.35, a + 0.1 + i * 0.13 + rng.uniform(0, 0.05), 0.6)   # teclea
+            if n == "silencio": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 120) * 0.2, a, 1.0); put(sfx, heartbeat(5, 70), a + D * 0.4, 0.8)
+            if n == "llavero":
+                put(sfx, jingle_(), a + D * 0.32, 1.0); put(sfx, jingle_(), a + D * 0.45, 0.8)
+                put(sfx, click_(), a + D * 0.66, 1.0); put(sfx, riser(D * 0.4), a + D * 0.6, 0.5)
+            if n == "cerradura":
+                for f_ in (0.15, 0.25, 0.38): put(sfx, click_(), a + D * f_, 1.1)
+                put(sfx, impact() * 0.5, a + D * 0.4, 0.7); put(sfx, heartbeat(4, 140), a + D * 0.45, 0.8)
+            if n == "asoma":
+                cr = bp(rng.normal(0, 1, int(SR * D * 0.4)), 400, 1200) * (0.5 + 0.5 * np.sin(2 * np.pi * 18 * T(D * 0.4))) * 0.5
+                put(sfx, cr, a, 0.8)   # chirrido de la puerta
+                put(sfx, boom(2.0, 55), a + D * 0.4, 1.3); put(sfx, sting(1.6), a + D * 0.4, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.42, 0.7)
+            if n == "final": put(sfx, static(D * 0.5) * 0.3, a, 0.4); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         if os.environ.get("EP") == "3am1":
             if n == "llama": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, beep(0.1, 880), a + 0.05, 1.0); put(sfx, beep(0.1, 880), a + 0.3, 1.0)
             if n == "bajas":

@@ -339,7 +339,9 @@ EN = {"PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO
       "3ª PLANTA": "3RD FLOOR", "SILENCIO": "QUIET", "URGENTE": "URGENT",
       "ARCHIVO": "RECORDS", "PACIENTE": "PATIENT", "HAB.": "ROOM", "NOMBRE:": "NAME:",
       "TOMÁS": "THOMAS",
-      "SI TE DAN LAS LARGAS…": "IF A CAR FLASHES YOU…", "MIRA ATRÁS": "LOOK BEHIND YOU"}
+      "SI TE DAN LAS LARGAS…": "IF A CAR FLASHES YOU…", "MIRA ATRÁS": "LOOK BEHIND YOU",
+      "TÚ": "YOU", "ÉL": "HIM", "COMPI": "ROOMMATE", "ESTOY EN MI CAMA.": "I'M IN BED.", "NO ABRAS.": "DON'T OPEN IT.",
+      "LLEVA UNA SEMANA": "IT'S BEEN COPYING", "IMITÁNDOME.": "ME ALL WEEK.", "SI OLVIDÓ SUS LLAVES…": "IF THEY FORGOT THEIR KEYS…", "NO ABRAS": "DON'T OPEN"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
