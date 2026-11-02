@@ -489,6 +489,23 @@ def main(voz, out):
             for i in range(int(D * 0.8 / 0.17)): put(sfx, step(), a + i * 0.17, 0.8)
             put(sfx, impact() * 0.5, a + D * 0.8, 0.8)
         if n == "vacio": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, boom(2.4, 40), a + D * 0.6, 1.2); put(sfx, scream(1.2) * 0.4, a + D * 0.62, 0.6); put(sfx, static(0.6), a + D * 0.6, 0.7)
+        # ---- episodio 9 ----
+        if n == "faro_lejos": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, powerdown(1.0)[::-1].copy(), a + D * 0.4 - 1.0, 0.6); put(sfx, boom(1.6, 60), a + D * 0.4, 1.1); put(sfx, shimmer(), a + D * 0.42, 0.8)
+        if n == "puerta_faro":
+            for i in range(int(D * 0.6 / 0.3)): put(sfx, step(), a + i * 0.3, 0.8)
+            for i in range(5): put(sfx, bp(rng.normal(0, 1, int(SR * 0.1)), 1500, 5000) * np.exp(-T(0.1) * 20) * 0.4, a + D * 0.05 + i * 0.13, 1.0)
+            put(sfx, lp(rng.normal(0, 1, int(SR * 1.2)), 500) * np.linspace(0, 0.5, int(SR * 1.2)), a + D * 0.55, 0.8); put(sfx, sting(1.2) * 0.5, a + D * 0.6, 0.8)
+        if n == "escalones":
+            for i in range(int(D * 0.95 / 0.17)): put(sfx, step(), a + i * 0.17, 0.85)
+            put(sfx, heartbeat(5, 130), a, 0.6)
+        if n == "voz_arriba": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, riser(D * 0.6), a + 0.2, 0.5)
+        if n == "sala_faro":
+            for i in range(int(D * 0.75 / 0.4)): put(sfx, step(), a + i * 0.4, 0.7)
+            put(sfx, buzz(D) * 0.4, a, 0.6); put(sfx, heartbeat(4, 90), a + D * 0.4, 0.6)
+        if n == "hombro": put(sfx, heartbeat(5, 120), a, 0.8); put(sfx, sting(1.2) * 0.6, a + D * 0.72, 0.9); put(sfx, static(0.4), a + D * 0.72, 0.5)
+        if n == "giro" and os.environ.get("EP") == "9":
+            put(sfx, boom(2.4, 40), a + D * 0.25, 1.2); put(sfx, sting(1.6), a + D * 0.25, 1.0); put(sfx, scream(1.4) * 0.5, a + D * 0.3, 0.6)
+            put(sfx, riser(D * 0.5), a + D * 0.35, 0.6); put(sfx, static(0.7), a + D * 0.8, 0.7)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
