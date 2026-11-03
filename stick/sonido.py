@@ -201,6 +201,29 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 4 ----
+        if os.environ.get("EP") == "3am4":
+            if n == "pasos":
+                put(sfx, sting(1.2) * 0.6, a, 1.0)
+                for i in range(6): put(sfx, step(), a + D * 0.3 + i * 0.32, 0.6 + 0.08 * i)
+                put(sfx, heartbeat(3, 80), a + D * 0.75, 0.6)
+            if n == "mirilla":
+                for i in range(int(D * 0.4 / 0.45)): put(sfx, step() * 0.6, a + 0.1 + i * 0.45, 0.6)
+                put(sfx, boom(1.6, 60), a + D * 0.5, 1.1); put(sfx, sting(1.4), a + D * 0.5, 0.9)
+            if n == "punto": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 160) * 0.25, a, 1.0); put(sfx, heartbeat(5, 90), a + 0.3, 0.8)
+            if n == "llamas":
+                for i in range(2): put(sfx, beep(0.4, 440) * 0.8, a + 0.6 + i * 0.9, 0.8)
+            if n == "recepcion": put(sfx, static(D) * 0.2, a, 0.4); put(sfx, riser(D * 0.6), a + D * 0.4, 0.5)
+            if n == "entiendes": put(sfx, powerdown(0.8) * 0.5, a + 0.1, 0.6); put(sfx, heartbeat(5, 120), a + D * 0.3, 0.8)
+            if n == "parpadea":
+                put(sfx, riser(D * 0.45), a, 0.5)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.15)), 200, 900) * np.exp(-T(0.15) * 20), a + D * 0.42, 1.0)   # chasquido húmedo
+                put(sfx, boom(2.0, 55), a + D * 0.5, 1.3); put(sfx, sting(1.6), a + D * 0.5, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.52, 0.7)
+            if n == "rendija":
+                put(sfx, lp(rng.normal(0, 1, int(SR * D * 0.42)), 120) * 0.2, a, 1.0)
+                put(sfx, boom(1.6, 60), a + D * 0.42 + 0.7, 1.2); put(sfx, sting(1.2), a + D * 0.42 + 0.7, 0.9)
+            if n == "final": put(sfx, static(D * 0.5) * 0.3, a, 0.4); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 1 ----
         if os.environ.get("EP") == "3am2":
             motor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 140) * (0.7 + 0.3 * np.sin(2 * np.pi * 9 * T(d))) * 0.5
