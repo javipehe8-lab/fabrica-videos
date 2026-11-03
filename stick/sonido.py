@@ -539,6 +539,21 @@ def main(voz, out):
         if n == "giro" and os.environ.get("EP") == "9":
             put(sfx, boom(2.4, 40), a + D * 0.25, 1.2); put(sfx, sting(1.6), a + D * 0.25, 1.0); put(sfx, scream(1.4) * 0.5, a + D * 0.3, 0.6)
             put(sfx, riser(D * 0.5), a + D * 0.35, 0.6); put(sfx, static(0.7), a + D * 0.8, 0.7)
+        # ---- episodio 10 ----
+        if n == "acorralados":
+            put(sfx, heartbeat(5, 120), a, 0.7); put(sfx, sting(1.2) * 0.6, a + 0.1, 0.8)
+            for i in range(int(D * 0.5 / 0.17)): put(sfx, step(), a + D * 0.45 + i * 0.17, 0.85)
+        if n == "atascada":
+            for i in range(6): put(sfx, impact() * 0.35, a + 0.15 + i * D * 0.14, 0.8)
+            put(sfx, riser(D * 0.9), a, 0.6); put(sfx, heartbeat(4, 140), a, 0.6)
+        if n == "luz_faro":
+            put(sfx, impact(), a + D * 0.4, 1.0); put(sfx, boom(2.2, 55), a + D * 0.42, 1.2); put(sfx, shimmer(), a + D * 0.42, 1.2)
+            put(sfx, scream(1.4) * 0.6, a + D * 0.45, 0.7)
+        if n == "tomas_grito": put(sfx, buzz(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.6), a, 0.6); put(sfx, boom(1.6, 70), a + D * 0.65, 1.1); put(sfx, shimmer(), a + D * 0.65, 1.2)
+        if n == "encoge": put(sfx, scream(D * 0.8) * 0.6, a, 0.7); put(sfx, whoosh(D * 0.8, up=False), a + 0.1, 0.8); put(sfx, chime(), a + D * 0.85, 1.0)
+        if n == "nino": put(sfx, shimmer() * 0.7, a, 0.8); put(sfx, chime() * 0.6, a + D * 0.5, 0.7)
+        if n == "giro" and os.environ.get("EP") == "10":
+            put(sfx, heartbeat(4, 80), a, 0.6); put(sfx, static(0.5) * 0.6, a + D * 0.6, 0.6); put(sfx, sting(1.4) * 0.7, a + D * 0.75, 0.9)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
