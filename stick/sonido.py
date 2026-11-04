@@ -577,6 +577,22 @@ def main(voz, out):
         if n == "nino": put(sfx, shimmer() * 0.7, a, 0.8); put(sfx, chime() * 0.6, a + D * 0.5, 0.7)
         if n == "giro" and os.environ.get("EP") == "10":
             put(sfx, heartbeat(4, 80), a, 0.6); put(sfx, static(0.5) * 0.6, a + D * 0.6, 0.6); put(sfx, sting(1.4) * 0.7, a + D * 0.75, 0.9)
+        # ---- episodio 11 (final de temporada 1) ----
+        if n == "descansa": put(sfx, buzz(D) * 0.25, a, 0.5); put(sfx, chime() * 0.5, a + D * 0.55, 0.7)
+        if n == "hacia_luz":
+            for i in range(int(D * 0.5 / 0.35)): put(sfx, step() * 0.5, a + D * 0.15 + i * 0.35, 0.6)
+            put(sfx, riser(D * 0.5), a + D * 0.2, 0.5); put(sfx, shimmer(), a + D * 0.66, 1.2); put(sfx, chime(), a + D * 0.7, 1.0)
+        if n == "despiertan":
+            put(sfx, shimmer() * 0.6, a, 0.8)
+            for i in range(8): put(sfx, bp(rng.normal(0, 1, int(SR * 0.12)), 300, 1500) * np.exp(-T(0.12) * 25) * 0.4, a + D * (0.22 + 0.07 * i), 0.8)
+        if n == "galeria":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 400) * 0.25, a, 1.0)    # mar
+            for i in range(int(D * 0.5 / 0.17)): put(sfx, step(), a + D * 0.25 + i * 0.17, 0.8)
+        if n == "carmen_vive": put(sfx, chime() * 0.7, a + D * 0.3, 0.8); put(sfx, shimmer() * 0.5, a + D * 0.35, 0.6)
+        if n == "otra_ciudad": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 250) * 0.25, a, 1.0); put(sfx, heartbeat(4, 70), a + D * 0.4, 0.5)
+        if n == "giro" and os.environ.get("EP") == "11":
+            put(sfx, heartbeat(5, 110), a, 0.6); put(sfx, riser(D * 0.5), a + D * 0.1, 0.6)
+            put(sfx, boom(2.4, 40), a + D * 0.58, 1.2); put(sfx, sting(1.6), a + D * 0.58, 1.0); put(sfx, static(0.7), a + D * 0.75, 0.7)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
