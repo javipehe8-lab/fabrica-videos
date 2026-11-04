@@ -201,6 +201,37 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 5 ----
+        if os.environ.get("EP") == "3am5":
+            lame_ = lambda: bp(rng.normal(0, 1, int(SR * 0.35)), 250, 1200) * np.sin(np.pi * T(0.35) / 0.35) * 0.7   # lametón húmedo
+            gota_ = lambda: np.sin(2 * np.pi * (1400 - 900 * T(0.09) / 0.09) * T(0.09)) * np.exp(-T(0.09) * 40) * 0.5
+            if n == "cama":
+                put(sfx, sting(1.2) * 0.6, a, 1.0)
+                for f_ in (0.52, 0.68, 0.84): put(sfx, lame_(), a + D * f_, 1.0)
+            if n == "siempre":
+                for f_ in (0.1, 0.35, 0.6): put(sfx, lame_(), a + D * f_, 0.8)
+                put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.15, a, 1.0)
+            if n == "gotea":
+                for i in range(int(D / 0.55)): put(sfx, gota_(), a + 0.2 + i * 0.55, 1.0)
+                put(sfx, heartbeat(3, 80), a + D * 0.4, 0.6)
+            if n == "pasillo":
+                for i in range(int(D / 0.42)): put(sfx, step() * 0.7, a + 0.1 + i * 0.42, 0.7); put(sfx, gota_(), a + 0.3 + i * 0.42, 0.8)
+                put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "ducha":
+                for i in range(int(D / 0.6)): put(sfx, gota_(), a + 0.1 + i * 0.6, 0.9)
+                put(sfx, boom(1.4, 70), a + D * 0.25, 0.9); put(sfx, heartbeat(5, 110), a + D * 0.35, 0.8)
+            if n == "espejo":
+                put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.45)), 2000, 6000) * 0.12, a + D * 0.2, 0.8)   # dedo en el cristal
+                put(sfx, riser(D * 0.4), a + D * 0.5, 0.5)
+            if n == "entiendes":
+                put(sfx, impact() * 0.7, a, 0.9); put(sfx, lame_(), a + D * 0.3, 1.1); put(sfx, lame_(), a + D * 0.55, 1.1)
+                put(sfx, heartbeat(4, 130), a + D * 0.2, 0.8)
+            if n == "sale":
+                put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.4)), 200, 800) * 0.4, a + D * 0.08, 0.8)   # arrastre
+                put(sfx, boom(2.0, 55), a + D * 0.45, 1.3); put(sfx, sting(1.6), a + D * 0.45, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.47, 0.7)
+                for i in range(6): put(sfx, step(), a + D * 0.5 + i * 0.14, 0.9)
+            if n == "final": put(sfx, lame_(), a + D * 0.2, 0.8); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 4 ----
         if os.environ.get("EP") == "3am4":
             if n == "pasos":
