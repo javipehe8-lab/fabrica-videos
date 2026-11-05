@@ -9,6 +9,10 @@ _g = importlib.import_module("guion" + EP + ("_en" if os.environ.get("IDIOMA") =
 ETIQUETAS.update(getattr(_g, "ETIQUETAS", {})); MONSTRUOS_TXT.update(getattr(_g, "MONSTRUOS", ()))
 # GANCHO opcional en el guion: ("escena", fraccion_de_la_escena, "TEXTO GRANDE") -> 1,2 s de impacto antes de la historia
 GANCHO = getattr(_g, "GANCHO", None)
+# ESTILO opcional: "ps2" -> filtro de terror de PlayStation 2 (los subtítulos se pintan encima, nítidos)
+ESTILO = os.environ.get("ESTILO") or getattr(_g, "ESTILO", None)
+if ESTILO == "ps2":
+    import motor; motor.LOWPOLY = True
 # ELECCION opcional: ("PREGUNTA", "OPCIÓN A", "OPCIÓN B") -> la escena "final" se sustituye por una tarjeta para votar en comentarios
 ELECCION = getattr(_g, "ELECCION", None)
 
@@ -85,6 +89,7 @@ def render_frame(tl, fi):
         cw, ch = int(W / (1 + pz)), int(H / (1 + pz))
         img = img.crop(((W - cw) // 2, (H - ch) // 2, (W - cw) // 2 + cw, (H - ch) // 2 + ch)).resize((W, H))
     img = post(img, fi, flash=fx.get("flash"), glitch=fx.get("glitch", 0), dark=fx.get("dark", 0), grain=fx.get("grain", 7), tint=fx.get("tint"))
+    if ESTILO == "ps2": img = ps2(img, fi)
     # corte con "punch": pequeño destello en cada cambio de escena
     if sc["name"] != "final":
         img = captions(img, sc["words"], t)

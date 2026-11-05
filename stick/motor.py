@@ -27,6 +27,8 @@ def noise(t, seed=0):
     return lerp(h(i), h(i + 1), f * f * (3 - 2 * f))
 
 # ---------- cámara y lienzo ----------
+LOWPOLY = os.environ.get("ESTILO") == "ps2"   # render.py lo activa también si el guion define ESTILO = "ps2"
+
 class Frame:
     def __init__(self, base, cam):
         self.img = base.copy()
@@ -42,9 +44,19 @@ class Frame:
         self.d.line(P, fill=col, width=int(ww), joint="curve")
         if round_:
             for p in (P[0], P[-1]):
-                r = ww / 2; self.d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=col)
+                r = ww / 2
+                if LOWPOLY: self.d.regular_polygon((p[0], p[1], max(1, r)), 5, fill=col)
+                else: self.d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=col)
     def circle(self, c, r, fill=None, outline=None, w=0):
         x, y = self.P(*c); rr = r * self.z * S
+        if LOWPOLY:     # estilo PS2: círculos como polígonos de pocas caras, con una cara más clara
+            n = 7 if rr > 12 else 5
+            pts = [(x + rr * math.cos(2 * math.pi * k / n + 0.3), y + rr * math.sin(2 * math.pi * k / n + 0.3)) for k in range(n)]
+            self.d.polygon(pts, fill=fill, outline=outline, width=int(self.k(w)) if w else 0)
+            if fill is not None and isinstance(fill, tuple) and rr > 20:
+                lit = tuple(min(255, int(v * 1.18 + 12)) for v in fill)
+                self.d.polygon([(x, y), pts[3], pts[4], pts[5]], fill=lit)
+            return
         self.d.ellipse([x - rr, y - rr, x + rr, y + rr], fill=fill, outline=outline, width=int(self.k(w)) if w else 0)
     def ellipse(self, c, rx, ry, fill=None, outline=None, w=0):
         x, y = self.P(*c); a, b = rx * self.z * S, ry * self.z * S
@@ -327,6 +339,34 @@ def captions(img, words, t, y=1540):
             x += widths[i] + gap
     return img
 
+
+# ---------- estilo PS2 (terror de PlayStation 2: baja resolución, tramado, niebla, color lavado) ----------
+_BAYER = np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]], np.float32) / 16 - 0.5
+def ps2(img, fi=0, res=6, niveles=16):
+    """img 1080x1920 -> look PS2: se reduce a 270x480, color lavado y verdoso, niebla, tramado de 4x4,
+    temblor de píxel, aberración de color y líneas de barrido; se vuelve a ampliar sin suavizar."""
+    from PIL import Image as _I
+    w, h = W // res, H // res
+    a = np.asarray(img.resize((w, h), _I.BILINEAR), np.float32)
+    g = a.mean(-1, keepdims=True)
+    a = g + (a - g) * 0.72                                            # menos saturación
+    a = a * np.array([0.92, 1.0, 0.94], np.float32) + np.array([6, 10, 8], np.float32)   # tinte verdoso de Silent Hill
+    yy = np.linspace(-1, 1, h)[:, None]; xx = np.linspace(-1, 1, w)[None, :]
+    niebla = np.clip(0.18 + 0.25 * (yy ** 2 + 0.6 * xx ** 2), 0, 0.5)[..., None]
+    a = a * (1 - niebla) + np.array([70, 74, 72], np.float32) * niebla  # niebla gris
+    a = a * (1 - 0.35 * np.clip(xx ** 2 + yy ** 2 - 0.3, 0, 1))[..., None]    # viñeta
+    paso = 255 / (niveles - 1)
+    dith = np.tile(_BAYER, (h // 4 + 1, w // 4 + 1))[:h, :w][..., None]
+    a = np.round(a / paso + dith) * paso                                # tramado ordenado
+    r = np.random.default_rng(fi)
+    a += r.normal(0, 4, (h, w, 1))                                      # ruido de vídeo
+    a = np.clip(a, 0, 255).astype(np.uint8)
+    out = _I.fromarray(a).resize((W, H), _I.NEAREST)
+    o = np.asarray(out).copy()
+    if fi % 11 < 2: o = np.roll(o, res * (1 if fi % 2 else -1), axis=1)   # temblor de "vértices"
+    o[..., 0] = np.roll(o[..., 0], 3, axis=1); o[..., 2] = np.roll(o[..., 2], -3, axis=1)
+    o[::4] = (o[::4] * 0.88).astype(np.uint8)                           # líneas de barrido
+    return _I.fromarray(o)
 
 # ---------- idioma ----------
 IDIOMA = os.environ.get("IDIOMA", "es")

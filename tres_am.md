@@ -18,6 +18,7 @@ Historias de terror **autoconclusivas** (cada vídeo empieza y acaba), en el mis
 - Reutiliza piezas de `escenas3am1.py` (TU, MAMA, cuarto_casa, escalera_casa, puerta_cocina, movil_msg, reloj_3am, imitadora…) y de los episodios del Sonriente (iluminar, pasillo_h, lluvia, carretera…). Todo texto en pantalla con `tr()`.
 - `bash hacer_episodio.sh 3amK` → `videos/3am/Si_Oyes_Esto_K.mp4`. URL: `https://raw.githubusercontent.com/javipehe8-lab/fabrica-videos/main/videos/3am/Si_Oyes_Esto_K.mp4`
 - Música: define `MUSICA` en el guion según el tono de la historia ("caja" para niños/bebés/cosas que imitan, "piano" para misterio lento, "persecucion" si hay huida o coche, "tension" para el resto). No repitas la de la historia anterior.
+- Estilo visual: `ESTILO = "ps2"` en el guion activa el look de terror de PlayStation 2 (baja resolución, tramado, niebla verdosa, cabezas poligonales; los subtítulos siguen nítidos). **La historia 6 se hace con ESTILO = "ps2" (prueba pedida por Javi).** A partir de la 7, vuelve al estilo normal salvo que en este archivo ponga otra cosa.
 - Registro: `publicaciones_3am.json`.
 
 ## Banco de historias (usa la primera que no esté hecha; marca [HECHA] al usarla)
