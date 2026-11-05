@@ -201,6 +201,35 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 6 ----
+        if os.environ.get("EP") == "3am6":
+            def nana_(d, g=1.0, f0=440):                     # nana tarareada por el altavoz del vigilabebés (Brahms, dominio público)
+                mel = [(4, .5), (4, .5), (7, 1.5), (4, .5), (4, .5), (7, 1.5), (4, .5), (7, .5), (12, 1), (11, 1), (9, 1), (9, 1), (7, 1)]
+                out_ = np.zeros(int(SR * d)); tt, k = 0.0, 0
+                while tt < d - 0.3:
+                    st, du = mel[k % len(mel)]; du *= 0.42
+                    tn = T(min(du * 1.3, d - tt)); f = f0 * 2 ** (st / 12) * (1 + 0.01 * np.sin(tt * 3))
+                    x = (np.sin(2 * np.pi * f * tn) + 0.25 * np.sin(4 * np.pi * f * tn)) * np.minimum(1, tn * 30) * np.exp(-tn * 1.5)
+                    i0 = int(tt * SR); out_[i0:i0 + len(x)] += x[: len(out_) - i0]; tt += du; k += 1
+                return (bp(out_, 400, 3000) * 0.35 + static(d)[: len(out_)] * 0.25) * g
+            if n == "vigila": put(sfx, sting(1.2) * 0.5, a, 1.0); put(sfx, nana_(D), a, 0.9)
+            if n == "solos": put(sfx, nana_(D, f0=415), a, 0.8); put(sfx, heartbeat(3, 80), a + D * 0.3, 0.5)
+            if n == "contestas":
+                put(sfx, nana_(D * 0.62, f0=440), a, 0.8); put(sfx, beep(0.08, 1500), a + D * 0.27, 1.0)
+                put(sfx, static(0.5), a + D * 0.3, 0.6); put(sfx, beep(0.08, 900), a + D * 0.62, 0.8)
+            if n == "pasillo":
+                for i in range(int(D / 0.3)): put(sfx, step(), a + 0.05 + i * 0.3, 0.8)
+                put(sfx, whoosh(0.6, False), a + D * 0.5, 1.2); put(sfx, sting(0.8) * 0.6, a + D * 0.55, 0.8)
+            if n == "cuna":
+                put(sfx, heartbeat(4, 90), a, 0.6)
+                for i in range(int(D / 0.9)): put(sfx, _nota(880 * 2 ** ((0, 4, 7, 4)[i % 4] / 12), 1.0, "caja"), a + 0.2 + i * 0.9, 0.05)   # el móvil de la cuna
+            if n == "suena": put(sfx, static(0.6), a + D * 0.45, 0.8); put(sfx, boom(1.4, 70), a + D * 0.5, 0.9); put(sfx, riser(D * 0.5), a + D * 0.5, 0.4)
+            if n == "entiendes": put(sfx, impact() * 0.7, a, 0.9); put(sfx, nana_(D, f0=330), a + 0.2, 0.7); put(sfx, heartbeat(4, 130), a + D * 0.2, 0.8)
+            if n == "tucama":
+                put(sfx, nana_(D * 0.55, f0=300), a, 0.6); put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.3)), 200, 800) * 0.3, a + D * 0.3, 0.6)
+                put(sfx, boom(2.0, 55), a + D * 0.55, 1.3); put(sfx, sting(1.6), a + D * 0.55, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.57, 0.7)
+            if n == "final": put(sfx, nana_(D * 0.5, f0=300), a, 0.6); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 5 ----
         if os.environ.get("EP") == "3am5":
             lame_ = lambda: bp(rng.normal(0, 1, int(SR * 0.35)), 250, 1200) * np.sin(np.pi * T(0.35) / 0.35) * 0.7   # lametón húmedo
