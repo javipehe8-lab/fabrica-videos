@@ -624,6 +624,23 @@ def main(voz, out):
         if n == "giro" and os.environ.get("EP") == "11":
             put(sfx, heartbeat(5, 110), a, 0.6); put(sfx, riser(D * 0.5), a + D * 0.1, 0.6)
             put(sfx, boom(2.4, 40), a + D * 0.58, 1.2); put(sfx, sting(1.6), a + D * 0.58, 1.0); put(sfx, static(0.7), a + D * 0.75, 0.7)
+        # ---- episodio 12 (temporada 2: el Asomado) ----
+        def tap_(): return bp(rng.normal(0, 1, int(SR * 0.05)), 1800, 6000) * np.exp(-T(0.05) * 90) * 0.9   # uña contra el cristal
+        if n == "asomado": put(sfx, sting(1.2) * 0.8, a, 1.0); put(sfx, heartbeat(3, 90), a + 0.3, 0.6)
+        if n == "llegada":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0)   # viento
+            for i in range(int(D * 0.85 / 0.4)): put(sfx, step() * 0.6, a + i * 0.4, 0.7)
+        if n == "lucia": put(sfx, buzz(D) * 0.2, a, 0.5); put(sfx, heartbeat(3, 70), a + D * 0.3, 0.5)
+        if n == "dedos":
+            for i in range(9): put(sfx, tap_(), a + D * 0.2 + i * 0.13 + (i % 3) * 0.05, 0.9)
+            put(sfx, riser(D * 0.7), a + D * 0.2, 0.5)
+        if n == "muecas":
+            put(sfx, static(D) * 0.5, a, 0.6); put(sfx, heartbeat(6, 140), a, 0.7); put(sfx, sting(1.2), a + D * 0.45, 1.0)
+            put(sfx, impact() * 0.6, a + D * 0.48, 0.9)
+        if n == "aguanta": put(sfx, whoosh(D * 0.6, up=False) * 0.5, a + D * 0.2, 0.6); put(sfx, heartbeat(3, 60), a + D * 0.5, 0.4)
+        if n == "giro" and os.environ.get("EP") == "12":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.3, a, 1.0)    # viento por la ventana abierta
+            put(sfx, riser(D * 0.5), a + D * 0.15, 0.6); put(sfx, boom(2.2, 45), a + D * 0.62, 1.2); put(sfx, sting(1.4), a + D * 0.62, 1.0)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
