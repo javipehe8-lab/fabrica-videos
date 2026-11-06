@@ -201,6 +201,33 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 7 ----
+        if os.environ.get("EP") == "3am7":
+            cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.5)), 180, 900) * np.sin(np.pi * T(0.5) / 0.5) * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * T(0.5)))
+            tono_ = lambda: (np.sin(2 * np.pi * 425 * T(0.4)) * 0.25) * np.minimum(1, (0.4 - T(0.4)) * 40)       # tono de llamada
+            def risa_(n=5, f0=520):                                                                              # risita de payaso, apagada
+                out_ = np.zeros(int(SR * (0.16 * n + 0.3)))
+                for i in range(n):
+                    d = 0.12; x = np.sin(2 * np.pi * (f0 - i * 25) * T(d) * (1 + 0.08 * np.sin(T(d) * 60))) * np.sin(np.pi * T(d) / d)
+                    i0 = int(i * 0.16 * SR); out_[i0:i0 + len(x)] += x
+                return bp(out_, 300, 2500) * 0.4
+            if n == "salon": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, boom(1.6, 50), a, 0.6)
+            if n == "cocina":
+                for i in range(int(D * 0.4 / 0.4)): put(sfx, step() * 0.7, a + 0.1 + i * 0.4, 0.7)
+                put(sfx, sting(1.0) * 0.6, a + D * 0.45, 0.9); put(sfx, heartbeat(4, 100), a + D * 0.5, 0.6)
+            if n == "llamas":
+                for i in range(2): put(sfx, tono_(), a + D * 0.35 + i * 0.9, 0.8)
+                put(sfx, cruje_(), a + D * 0.6, 0.5)
+            if n == "padre": put(sfx, static(D) * 0.4, a, 0.5); put(sfx, boom(1.2, 70), a + D * 0.5, 0.8); put(sfx, heartbeat(4, 120), a + D * 0.5, 0.7)
+            if n == "vacia": put(sfx, whoosh(0.4), a, 0.8); put(sfx, boom(1.6, 60), a + D * 0.45, 1.1); put(sfx, sting(1.2), a + D * 0.45, 0.9)
+            if n == "escalera":
+                for i in range(int(D / 0.2)): put(sfx, step(), a + 0.05 + i * 0.2, 0.8)
+                for fr in (0.35, 0.55, 0.75, 0.9): put(sfx, cruje_(), a + D * fr, 0.9)
+            if n == "detras":
+                put(sfx, risa_(), a + D * 0.15, 0.5); put(sfx, heartbeat(3, 130), a, 0.6)
+                put(sfx, boom(2.0, 55), a + D * 0.5, 1.3); put(sfx, sting(1.6), a + D * 0.5, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.52, 0.7)
+            if n == "final": put(sfx, risa_(4, 440), a + D * 0.2, 0.4); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 6 ----
         if os.environ.get("EP") == "3am6":
             def nana_(d, g=1.0, f0=440):                     # nana tarareada por el altavoz del vigilabebés (Brahms, dominio público)
