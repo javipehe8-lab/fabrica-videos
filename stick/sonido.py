@@ -670,6 +670,25 @@ def main(voz, out):
         if n == "giro" and os.environ.get("EP") == "12":
             put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.3, a, 1.0)    # viento por la ventana abierta
             put(sfx, riser(D * 0.5), a + D * 0.15, 0.6); put(sfx, boom(2.2, 45), a + D * 0.62, 1.2); put(sfx, sting(1.4), a + D * 0.62, 1.0)
+        # ---- episodio 13 (la fábrica de cristal) ----
+        if n == "vaho": put(sfx, sting(1.2) * 0.8, a, 1.0); put(sfx, heartbeat(3, 100), a + 0.3, 0.6)
+        if n == "rastro":
+            for i in range(int(D * 0.9 / 0.17)): put(sfx, step(), a + i * 0.17, 0.8)
+            for i in range(5): put(sfx, tap_(), a + D * (0.1 + i * 0.13), 0.7)
+        if n == "fabrica": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0); put(sfx, buzz(D * 0.6) * 0.3, a + D * 0.35, 0.5); put(sfx, boom(1.4, 60), a + D * 0.4, 0.8)
+        if n == "reflejos":
+            for i in range(3): put(sfx, impact() * 0.5, a + i * D / 3.2, 0.9); put(sfx, shimmer() * 0.5, a + i * D / 3.2, 0.7)
+            put(sfx, heartbeat(5, 130), a, 0.6)
+        if n == "huyen_cristal":
+            for i in range(int(D * 0.95 / 0.17)): put(sfx, step(), a + i * 0.17, 0.85)
+            put(sfx, riser(D * 0.6), a, 0.5); put(sfx, sting(1.0) * 0.6, a + D * 0.45, 0.8)
+        if n == "sala_paneles":
+            for i in range(int(D * 0.6 / 0.35)): put(sfx, step() * 0.6, a + i * 0.35, 0.7)
+            put(sfx, buzz(D) * 0.25, a, 0.5)
+        if n == "giro" and os.environ.get("EP") == "13":
+            for i in range(4): put(sfx, beep(0.06, 120) * 2, a + D * (0.1 + 0.05 * i), 0.7)   # fluorescentes
+            put(sfx, buzz(D * 0.7) * 0.4, a + D * 0.3, 0.6); put(sfx, riser(D * 0.4), a + D * 0.35, 0.6)
+            put(sfx, boom(2.2, 45), a + D * 0.72, 1.2); put(sfx, sting(1.4), a + D * 0.72, 1.0)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
