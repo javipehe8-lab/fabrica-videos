@@ -716,6 +716,23 @@ def main(voz, out):
             for i in range(4): put(sfx, beep(0.06, 120) * 2, a + D * (0.1 + 0.05 * i), 0.7)   # fluorescentes
             put(sfx, buzz(D * 0.7) * 0.4, a + D * 0.3, 0.6); put(sfx, riser(D * 0.4), a + D * 0.35, 0.6)
             put(sfx, boom(2.2, 45), a + D * 0.72, 1.2); put(sfx, sting(1.4), a + D * 0.72, 1.0)
+        # ---- episodio 14 (sin cristal) ----
+        def cristal_(): return hp(rng.normal(0, 1, int(SR * 0.9)), 2500) * np.exp(-T(0.9) * 6) * 0.9  # cristal que estalla
+        if n == "rompe":
+            put(sfx, heartbeat(3, 120), a, 0.6); put(sfx, whoosh(0.4), a + D * 0.42 - 0.4, 0.7)
+            put(sfx, cristal_(), a + D * 0.42, 1.1); put(sfx, shimmer() * 0.4, a + D * 0.42, 1.0); put(sfx, impact(), a + D * 0.42, 1.0)
+        if n == "libre": put(sfx, heartbeat(3, 80), a, 0.5); put(sfx, chime() * 0.4, a + D * 0.65, 0.5)
+        if n == "sale":
+            for i in range(6): put(sfx, tap_() * 0.6, a + D * (0.1 + i * 0.1), 0.7)
+            put(sfx, riser(D * 0.7), a, 0.6); put(sfx, sting(1.2), a + D * 0.75, 1.0)
+        if n == "ciego": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 400) * 0.3, a, 0.8); put(sfx, heartbeat(4, 70), a + 0.2, 0.5)
+        if n == "aliento":
+            for i in range(4): put(sfx, lp(rng.normal(0, 1, int(SR * 0.5)), 700) * np.sin(np.pi * T(0.5) / 0.5) * 0.3, a + i * 0.6, 0.6)  # respiraciones
+            put(sfx, sting(1.0) * 0.7, a + D * 0.55, 0.9)
+        if n == "aguantan": put(sfx, heartbeat(6, 120), a, 0.8); put(sfx, riser(D * 0.8) * 0.6, a + D * 0.1, 0.5)
+        if n == "giro" and os.environ.get("EP") == "14":
+            put(sfx, buzz(D * 0.5) * 0.3, a, 0.5); put(sfx, riser(D * 0.5), a + D * 0.1, 0.6)
+            put(sfx, boom(2.2, 45), a + D * 0.58, 1.2); put(sfx, sting(1.4), a + D * 0.58, 1.0); put(sfx, static(0.6), a + D * 0.62, 0.6)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
