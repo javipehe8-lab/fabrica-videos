@@ -201,6 +201,37 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 8 ----
+        if os.environ.get("EP") == "3am8":
+            def vibra_(d):                                                                       # móvil vibrando sobre madera
+                x = np.sin(2 * np.pi * 160 * T(d)) * (0.6 + 0.4 * np.sin(2 * np.pi * 31 * T(d)))
+                return lp(x, 400) * ((T(d) % 0.9) < 0.55) * 0.5
+            def tono_(d, f=440):                                                                 # tono de llamada (tuuu… tuuu…)
+                return np.sin(2 * np.pi * f * T(d)) * ((T(d) % 1.6) < 0.8) * 0.18
+            def timbre_(d):                                                                      # politono de móvil
+                x = np.zeros(int(SR * d)); notas = (988, 1319, 988, 1319, 1175, 0)
+                for i in range(int(d / 0.16)):
+                    f = notas[i % len(notas)]
+                    if f: tn = T(0.13); y = np.sign(np.sin(2 * np.pi * f * tn)) * np.exp(-tn * 8) * 0.12; i0 = int(i * 0.16 * SR); x[i0:i0 + len(y)] += y[: len(x) - i0]
+                return lp(x, 3500)
+            if n == "entrante": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, vibra_(D), a, 0.9)
+            if n == "contestas": put(sfx, static(D) * 0.3, a, 0.5); put(sfx, heartbeat(4, 90), a + D * 0.5, 0.6)
+            if n == "broma": put(sfx, beep(0.1, 600), a + D * 0.5, 0.9); put(sfx, beep(0.1, 450), a + D * 0.56, 0.9)
+            if n == "devuelves": put(sfx, tono_(D * 0.9), a + 0.2, 0.9)
+            if n == "suena":
+                put(sfx, tono_(D * 0.3), a, 0.8)
+                put(sfx, lp(timbre_(D * 0.7), 1800), a + D * 0.3, 1.0); put(sfx, vibra_(D * 0.7), a + D * 0.3, 0.7)
+                put(sfx, boom(1.4, 60), a + D * 0.3, 1.0); put(sfx, sting(1.2), a + D * 0.3, 0.8)
+            if n == "coge":
+                put(sfx, lp(timbre_(D * 0.45), 1800), a, 0.9)
+                put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.3)), 200, 800) * 0.35, a + D * 0.1, 0.7); put(sfx, beep(0.08, 900), a + D * 0.47, 0.8)
+                put(sfx, heartbeat(4, 120), a + D * 0.5, 0.8)
+            if n == "abajo":
+                put(sfx, boom(2.0, 55), a + D * 0.12, 1.3); put(sfx, sting(1.6), a + D * 0.12, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.14, 0.6)
+                put(sfx, static(D * 0.8) * 0.4, a, 0.5)
+            if n == "espera": put(sfx, heartbeat(5, 110), a, 0.8); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 160) * 0.2, a, 1.0)
+            if n == "final": put(sfx, lp(timbre_(D * 0.4), 1500), a + D * 0.4, 0.6); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 7 ----
         if os.environ.get("EP") == "3am7":
             cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.5)), 180, 900) * np.sin(np.pi * T(0.5) / 0.5) * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * T(0.5)))
