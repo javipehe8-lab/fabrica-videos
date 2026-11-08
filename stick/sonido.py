@@ -201,6 +201,34 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 9 ----
+        if os.environ.get("EP") == "3am9":
+            viento_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 200, 700) * (0.5 + 0.5 * np.sin(2 * np.pi * 0.3 * T(d))) * 0.25
+            cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.22)), 900, 3500) * np.exp(-T(0.22) * 14) * 0.7      # pisada en la nieve
+            gota_ = lambda: np.sin(2 * np.pi * (1400 - 900 * T(0.08)) * T(0.08)) * np.exp(-T(0.08) * 50) * 0.5   # plic
+            clank_ = lambda: bp(rng.normal(0, 1, int(SR * 0.3)), 1500, 5000) * np.exp(-T(0.3) * 18) + np.sin(2 * np.pi * 2200 * T(0.3)) * np.exp(-T(0.3) * 12) * 0.4
+            if n == "ventana": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, viento_(D), a, 0.9)
+            if n == "ninguna":
+                put(sfx, viento_(D), a, 0.7)
+                for i in range(int(D / 0.5)): put(sfx, cruje_(), a + 0.2 + i * 0.5, 0.6)
+                put(sfx, heartbeat(3, 90), a + D * 0.65, 0.6)
+            if n == "bajas":
+                for i in range(int(D * 0.5 / 0.42)): put(sfx, step(), a + 0.1 + i * 0.42, 0.8)
+                for i in range(4): put(sfx, gota_(), a + D * (0.45 + i * 0.13), 0.8)
+            if n == "cerrojo": put(sfx, clank_(), a + D * 0.32, 1.0); put(sfx, boom(1.4, 60), a + D * 0.33, 0.9); put(sfx, heartbeat(4, 110), a + D * 0.5, 0.7)
+            if n == "charcos":
+                for i in range(6): put(sfx, gota_(), a + 0.3 + i * D * 0.14, 0.8)
+                put(sfx, riser(D), a, 0.5); put(sfx, heartbeat(4, 130), a + D * 0.4, 0.7)
+            if n == "cuarto":
+                put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.25, a, 1.0)
+                for i in range(int(D / 0.6)): put(sfx, gota_(), a + 0.2 + i * 0.6, 0.7)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.4)), 300, 1500) * np.exp(-T(0.4) * 4) * 0.8, a + D * 0.62, 1.0)   # crujido del cuello
+                put(sfx, sting(1.2) * 0.7, a + D * 0.7, 0.8)
+            if n == "voz":
+                put(sfx, boom(2.0, 55), a + D * 0.08, 1.3); put(sfx, sting(1.6), a + D * 0.08, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.1, 0.6)
+                put(sfx, viento_(D) * 0.6, a, 0.6)
+            if n == "final": put(sfx, gota_(), a + 0.4, 0.8); put(sfx, gota_(), a + 1.0, 0.8); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 8 ----
         if os.environ.get("EP") == "3am8":
             def vibra_(d):                                                                       # móvil vibrando sobre madera
