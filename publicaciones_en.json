@@ -1,72 +1,78 @@
 {
-  "canal": "The Grinner Files",
-  "metodo": "subida manual programada en YouTube a las 00:30 Europe/Madrid",
-  "publicaciones": [
-    {
-      "parte": 4,
-      "titulo": "The tape they should never have watched 📼 The Grinner (Part 4) #shorts",
-      "video": "videos/en/The_Grinner_Part4.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 5,
-      "titulo": "Someone was waiting in room 114 🏚️ The Grinner (Part 5) #shorts",
-      "video": "videos/en/The_Grinner_Part5.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 6,
-      "titulo": "She survived his eyes 👁️ The Grinner (Part 6) #shorts",
-      "video": "videos/en/The_Grinner_Part6.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 7,
-      "titulo": "His name was scribbled out ✍️ The Grinner (Part 7) #shorts",
-      "video": "videos/en/The_Grinner_Part7.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 8,
-      "titulo": "The whole city is asleep… except them 😴 The Grinner (Part 8) #shorts",
-      "video": "videos/en/The_Grinner_Part8.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 9,
-      "titulo": "That wasn't Carmen 😱 The Grinner (Part 9) #shorts",
-      "video": "videos/en/The_Grinner_Part9.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 10,
-      "titulo": "The monster was a kid 😢 The Grinner (Part 10) #shorts",
-      "video": "videos/en/The_Grinner_Part10.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 11,
-      "titulo": "The city woke up… but something is smiling 😨 The Grinner (Part 11) #shorts",
-      "video": "videos/en/The_Grinner_Part11.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 12,
-      "titulo": "Don't smile back 😱 The Grinner (Part 12) #shorts",
-      "video": "videos/en/The_Grinner_Part12.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 13,
-      "titulo": "It follows you through the glass 🪟 The Grinner (Part 13) #shorts",
-      "video": "videos/en/The_Grinner_Part13.mp4",
-      "estado": "pendiente de subir a mano"
-    },
-    {
-      "parte": 14,
-      "titulo": "Don't breathe 😶 The Grinner (Part 14) #shorts",
-      "video": "videos/en/The_Grinner_Part14.mp4",
-      "estado": "pendiente de subir a mano"
-    }
-  ]
+ "canal": "The Grinner Files",
+ "metodo": "subida manual programada en YouTube a las 00:30 Europe/Madrid",
+ "publicaciones": [
+  {
+   "parte": 4,
+   "titulo": "The tape they should never have watched 📼 The Grinner (Part 4) #shorts",
+   "video": "videos/en/The_Grinner_Part4.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 5,
+   "titulo": "Someone was waiting in room 114 🏚️ The Grinner (Part 5) #shorts",
+   "video": "videos/en/The_Grinner_Part5.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 6,
+   "titulo": "She survived his eyes 👁️ The Grinner (Part 6) #shorts",
+   "video": "videos/en/The_Grinner_Part6.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 7,
+   "titulo": "His name was scribbled out ✍️ The Grinner (Part 7) #shorts",
+   "video": "videos/en/The_Grinner_Part7.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 8,
+   "titulo": "The whole city is asleep… except them 😴 The Grinner (Part 8) #shorts",
+   "video": "videos/en/The_Grinner_Part8.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 9,
+   "titulo": "That wasn't Carmen 😱 The Grinner (Part 9) #shorts",
+   "video": "videos/en/The_Grinner_Part9.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 10,
+   "titulo": "The monster was a kid 😢 The Grinner (Part 10) #shorts",
+   "video": "videos/en/The_Grinner_Part10.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 11,
+   "titulo": "The city woke up… but something is smiling 😨 The Grinner (Part 11) #shorts",
+   "video": "videos/en/The_Grinner_Part11.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 12,
+   "titulo": "Don't smile back 😱 The Grinner (Part 12) #shorts",
+   "video": "videos/en/The_Grinner_Part12.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 13,
+   "titulo": "It follows you through the glass 🪟 The Grinner (Part 13) #shorts",
+   "video": "videos/en/The_Grinner_Part13.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 14,
+   "titulo": "Don't breathe 😶 The Grinner (Part 14) #shorts",
+   "video": "videos/en/The_Grinner_Part14.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 15,
+   "titulo": "He sold them to the monster 🪟 The Grinner (Part 15) #shorts",
+   "video": "videos/en/The_Grinner_Part15.mp4",
+   "estado": "pendiente de subir a mano"
+  }
+ ]
 }
