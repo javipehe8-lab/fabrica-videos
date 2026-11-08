@@ -764,6 +764,27 @@ def main(voz, out):
         if n == "giro" and os.environ.get("EP") == "14":
             put(sfx, buzz(D * 0.5) * 0.3, a, 0.5); put(sfx, riser(D * 0.5), a + D * 0.1, 0.6)
             put(sfx, boom(2.2, 45), a + D * 0.58, 1.2); put(sfx, sting(1.4), a + D * 0.58, 1.0); put(sfx, static(0.6), a + D * 0.62, 0.6)
+        # ---- episodio 15 (el cristalero) ----
+        if n == "escapan":
+            for i in range(int(D * 0.95 / 0.17)): put(sfx, step(), a + i * 0.17, 0.85)
+            put(sfx, sting(1.2) * 0.8, a, 1.0); put(sfx, heartbeat(4, 130), a + 0.3, 0.6)
+        if n == "portal":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.25, a, 1.0)
+            put(sfx, bp(rng.normal(0, 1, int(SR * 0.6)), 200, 900) * np.exp(-T(0.6) * 5) * 0.5, a + D * 0.12, 0.7)   # puerta que cruje
+            put(sfx, chime() * 0.5, a + D * 0.15, 0.6)
+        if n == "ventanas":
+            for i in range(4): put(sfx, shimmer() * 0.35, a + D * (0.1 + 0.2 * i), 0.5)
+        if n == "marcas":
+            for i in range(6): put(sfx, tap_(), a + D * (0.12 + 0.13 * i), 0.8)
+            put(sfx, riser(D * 0.7) * 0.6, a + D * 0.2, 0.5); put(sfx, sting(1.0) * 0.6, a + D * 0.7, 0.8)
+        if n == "pacto": put(sfx, buzz(D) * 0.25, a, 0.5); put(sfx, heartbeat(5, 90), a + 0.2, 0.6); put(sfx, sting(1.2) * 0.7, a + D * 0.5, 0.8)
+        if n == "encerrados":
+            put(sfx, impact(), a + D * 0.25, 1.1); put(sfx, beep(0.05, 300) * 2, a + D * 0.25 + 0.15, 0.8)   # portazo y llave
+            for i in range(5): put(sfx, impact() * 0.4, a + D * 0.3 + i * 0.32, 0.6); put(sfx, shimmer() * 0.4, a + D * (0.35 + 0.08 * i), 0.6)
+            put(sfx, riser(D * 0.5), a + D * 0.3, 0.6); put(sfx, sting(1.4), a + D * 0.8, 1.0)
+        if n == "giro" and os.environ.get("EP") == "15":
+            put(sfx, whoosh(0.5, up=False), a + D * 0.15, 0.7); put(sfx, heartbeat(4, 60), a + D * 0.2, 0.5)
+            put(sfx, boom(2.2, 45), a + D * 0.45, 1.2); put(sfx, sting(1.4), a + D * 0.45, 1.0); put(sfx, tap_(), a + D * 0.65, 0.9)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:

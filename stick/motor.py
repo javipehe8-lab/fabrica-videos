@@ -390,7 +390,7 @@ EN = {"PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO
       "NO LE DES": "DON'T TURN", "LA ESPALDA": "YOUR BACK",
       "LLAMADA ENTRANTE": "INCOMING CALL", "LLAMADA FINALIZADA": "CALL ENDED", "LLAMANDO…": "CALLING…", "(MI NÚMERO)": "(MY NUMBER)",
       "SI A LAS 3": "IF AT 3AM", "TE LLAMAS TÚ…": "YOU CALL YOURSELF…", "HAZ CASO": "LISTEN",
-      "CRISTALERÍA": "GLASSWORKS"}
+      "CRISTALERÍA": "GLASSWORKS", "CRISTALERO": "GLASSMAKER"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
