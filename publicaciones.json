@@ -1,118 +1,126 @@
 [
- {
-  "parte": 1,
-  "titulo": "No lo mires a los ojos 😨 El Sonriente (Parte 1) #shorts",
-  "publicado": "2026-10-27",
-  "via": "subida manual"
- },
- {
-  "parte": 2,
-  "titulo": "La luz no fue suficiente… 😱 El Sonriente (Parte 2) #shorts",
-  "publicado": "2026-10-27 16:00",
-  "via": "subida manual"
- },
- {
-  "parte": 3,
-  "titulo": "Tuvo que mirarla a los ojos… 😨 El Sonriente (Parte 3) #shorts",
-  "programado": "2026-10-27 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 407684235,
-  "video": "videos/El_Sonriente_Parte3.mp4"
- },
- {
-  "parte": 4,
-  "titulo": "La cinta que no debían ver 📼 El Sonriente (Parte 4) #shorts",
-  "programado": "2026-10-28 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 408695705,
-  "video": "videos/El_Sonriente_Parte4.mp4"
- },
- {
-  "parte": 5,
-  "titulo": "Alguien los esperaba en la habitación 114 🏚️ El Sonriente (Parte 5) #shorts",
-  "programado": "2026-10-29 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 409813740,
-  "video": "videos/El_Sonriente_Parte5.mp4"
- },
- {
-  "parte": 6,
-  "titulo": "Ella sobrevivió a sus ojos 👁️ El Sonriente (Parte 6) #shorts",
-  "programado": "2026-10-30 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 410946963,
-  "video": "videos/El_Sonriente_Parte6.mp4"
- },
- {
-  "parte": 7,
-  "titulo": "Su nombre estaba tachado ✍️ El Sonriente (Parte 7) #shorts",
-  "programado": "2026-10-31 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 412005370,
-  "video": "videos/El_Sonriente_Parte7.mp4"
- },
- {
-  "parte": 8,
-  "titulo": "Toda la ciudad duerme… menos ellos 😴 El Sonriente (Parte 8) #shorts",
-  "programado": "2026-11-01 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 412754934,
-  "video": "videos/El_Sonriente_Parte8.mp4"
- },
- {
-  "parte": 9,
-  "titulo": "No era Carmen 😱 El Sonriente (Parte 9) #shorts",
-  "programado": "2026-11-02 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 413696524,
-  "video": "videos/El_Sonriente_Parte9.mp4"
- },
- {
-  "parte": 10,
-  "titulo": "El monstruo era un niño 😢 El Sonriente (Parte 10) #shorts",
-  "programado": "2026-11-03 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 414978994,
-  "video": "videos/El_Sonriente_Parte10.mp4"
- },
- {
-  "parte": 11,
-  "titulo": "La ciudad despertó… pero algo sonríe 😨 El Sonriente (Parte 11) #shorts",
-  "programado": "2026-11-04 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 416220855,
-  "video": "videos/El_Sonriente_Parte11.mp4"
- },
- {
-  "parte": 12,
-  "titulo": "Si le sonríes, entra 😱 El Sonriente (Parte 12) #shorts",
-  "programado": "2026-11-05 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 417463505,
-  "video": "videos/El_Sonriente_Parte12.mp4"
- },
- {
-  "parte": 13,
-  "titulo": "Te sigue por el cristal 🪟 El Sonriente (Parte 13) #shorts",
-  "programado": "2026-11-06 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 418667401,
-  "video": "videos/El_Sonriente_Parte13.mp4"
- },
- {
-  "parte": 14,
-  "titulo": "No respires 😶 El Sonriente (Parte 14) #shorts",
-  "programado": "2026-11-07 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 419777336,
-  "video": "videos/El_Sonriente_Parte14.mp4"
- },
- {
-  "parte": 15,
-  "titulo": "Los vendió al monstruo 🪟 El Sonriente (Parte 15) #shorts",
-  "programado": "2026-11-08 23:00 Europe/Madrid",
-  "via": "Metricool",
-  "metricool_id": 420568125,
-  "video": "videos/El_Sonriente_Parte15.mp4"
- }
+  {
+    "parte": 1,
+    "titulo": "No lo mires a los ojos 😨 El Sonriente (Parte 1) #shorts",
+    "publicado": "2026-10-27",
+    "via": "subida manual"
+  },
+  {
+    "parte": 2,
+    "titulo": "La luz no fue suficiente… 😱 El Sonriente (Parte 2) #shorts",
+    "publicado": "2026-10-27 16:00",
+    "via": "subida manual"
+  },
+  {
+    "parte": 3,
+    "titulo": "Tuvo que mirarla a los ojos… 😨 El Sonriente (Parte 3) #shorts",
+    "programado": "2026-10-27 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 407684235,
+    "video": "videos/El_Sonriente_Parte3.mp4"
+  },
+  {
+    "parte": 4,
+    "titulo": "La cinta que no debían ver 📼 El Sonriente (Parte 4) #shorts",
+    "programado": "2026-10-28 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 408695705,
+    "video": "videos/El_Sonriente_Parte4.mp4"
+  },
+  {
+    "parte": 5,
+    "titulo": "Alguien los esperaba en la habitación 114 🏚️ El Sonriente (Parte 5) #shorts",
+    "programado": "2026-10-29 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 409813740,
+    "video": "videos/El_Sonriente_Parte5.mp4"
+  },
+  {
+    "parte": 6,
+    "titulo": "Ella sobrevivió a sus ojos 👁️ El Sonriente (Parte 6) #shorts",
+    "programado": "2026-10-30 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 410946963,
+    "video": "videos/El_Sonriente_Parte6.mp4"
+  },
+  {
+    "parte": 7,
+    "titulo": "Su nombre estaba tachado ✍️ El Sonriente (Parte 7) #shorts",
+    "programado": "2026-10-31 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 412005370,
+    "video": "videos/El_Sonriente_Parte7.mp4"
+  },
+  {
+    "parte": 8,
+    "titulo": "Toda la ciudad duerme… menos ellos 😴 El Sonriente (Parte 8) #shorts",
+    "programado": "2026-11-01 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 412754934,
+    "video": "videos/El_Sonriente_Parte8.mp4"
+  },
+  {
+    "parte": 9,
+    "titulo": "No era Carmen 😱 El Sonriente (Parte 9) #shorts",
+    "programado": "2026-11-02 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 413696524,
+    "video": "videos/El_Sonriente_Parte9.mp4"
+  },
+  {
+    "parte": 10,
+    "titulo": "El monstruo era un niño 😢 El Sonriente (Parte 10) #shorts",
+    "programado": "2026-11-03 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 414978994,
+    "video": "videos/El_Sonriente_Parte10.mp4"
+  },
+  {
+    "parte": 11,
+    "titulo": "La ciudad despertó… pero algo sonríe 😨 El Sonriente (Parte 11) #shorts",
+    "programado": "2026-11-04 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 416220855,
+    "video": "videos/El_Sonriente_Parte11.mp4"
+  },
+  {
+    "parte": 12,
+    "titulo": "Si le sonríes, entra 😱 El Sonriente (Parte 12) #shorts",
+    "programado": "2026-11-05 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 417463505,
+    "video": "videos/El_Sonriente_Parte12.mp4"
+  },
+  {
+    "parte": 13,
+    "titulo": "Te sigue por el cristal 🪟 El Sonriente (Parte 13) #shorts",
+    "programado": "2026-11-06 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 418667401,
+    "video": "videos/El_Sonriente_Parte13.mp4"
+  },
+  {
+    "parte": 14,
+    "titulo": "No respires 😶 El Sonriente (Parte 14) #shorts",
+    "programado": "2026-11-07 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 419777336,
+    "video": "videos/El_Sonriente_Parte14.mp4"
+  },
+  {
+    "parte": 15,
+    "titulo": "Los vendió al monstruo 🪟 El Sonriente (Parte 15) #shorts",
+    "programado": "2026-11-08 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 420568125,
+    "video": "videos/El_Sonriente_Parte15.mp4"
+  },
+  {
+    "parte": 16,
+    "titulo": "Su cara estaba en el espejo 🪞 El Sonriente (Parte 16) #shorts",
+    "programado": "2026-11-09 23:00 Europe/Madrid",
+    "via": "Metricool",
+    "metricool_id": 421513323,
+    "video": "videos/El_Sonriente_Parte16.mp4"
+  }
 ]
