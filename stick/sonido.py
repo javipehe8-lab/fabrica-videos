@@ -201,6 +201,29 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 10 ----
+        if os.environ.get("EP") == "3am10":
+            zumbido_ = lambda d: (np.sin(2 * np.pi * 100 * T(d)) * 0.5 + np.sin(2 * np.pi * 200 * T(d)) * 0.25) * 0.08     # fluorescente
+            puertas_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 300, 1200) * np.minimum(1, T(d) * 8) * np.minimum(1, (d - T(d)) * 8) * 0.35
+            golpe_ = lambda: lp(rng.normal(0, 1, int(SR * 0.25)), 500) * np.exp(-T(0.25) * 20) * 1.0 + np.sin(2 * np.pi * 180 * T(0.25)) * np.exp(-T(0.25) * 15) * 0.4
+            llave_ = lambda: bp(rng.normal(0, 1, int(SR * 0.12)), 2500, 7000) * np.exp(-T(0.12) * 30) * 0.6
+            if n == "panel": put(sfx, ding(), a + 0.05, 1.0); put(sfx, sting(1.2) * 0.6, a, 0.9); put(sfx, zumbido_(D), a, 0.8)
+            if n == "abre": put(sfx, puertas_(D * 0.6), a + D * 0.05, 1.0); put(sfx, zumbido_(D), a, 1.0)
+            if n == "puerta": put(sfx, zumbido_(D), a, 1.0); put(sfx, heartbeat(3, 90), a + D * 0.5, 0.6)
+            if n == "llaves":
+                for i in range(5): put(sfx, llave_(), a + D * (0.5 + i * 0.09), 0.8)
+            if n == "sales":
+                for i in range(int(D * 0.6 / 0.5)): put(sfx, step(), a + 0.1 + i * 0.5, 0.8)
+                put(sfx, riser(D * 0.4), a + D * 0.6, 0.6)
+            if n == "cara": put(sfx, boom(2.0, 55), a + D * 0.05, 1.3); put(sfx, sting(1.6), a + D * 0.05, 1.1); put(sfx, scream(1.0) * 0.5, a + D * 0.08, 0.6)
+            if n == "voz":
+                for i in range(int(D * 0.4 / 0.25)): put(sfx, step(), a + i * 0.25, 0.9)
+                put(sfx, heartbeat(4, 120), a + D * 0.3, 0.7)
+            if n == "cierra":
+                put(sfx, puertas_(D * 0.4), a, 1.0); put(sfx, ding(), a + D * 0.55, 0.8)
+                for i in range(5): put(sfx, golpe_(), a + D * 0.42 + i * 0.35, 1.0)
+            if n == "final": put(sfx, zumbido_(D), a, 0.8); put(sfx, boom(2.2, 45), a + D * 0.5, 1.3); put(sfx, sting(1.4), a + D * 0.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 9 ----
         if os.environ.get("EP") == "3am9":
             viento_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 200, 700) * (0.5 + 0.5 * np.sin(2 * np.pi * 0.3 * T(d))) * 0.25
