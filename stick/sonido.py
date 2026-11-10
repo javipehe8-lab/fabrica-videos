@@ -860,6 +860,25 @@ def main(voz, out):
             for i in range(6): put(sfx, bp(rng.normal(0, 1, int(SR * 0.25)), 2000, 6000) * np.exp(-T(0.25) * 6) * 0.25, a + D * 0.08 * i, 0.5)   # dedo en el cristal
             put(sfx, riser(D * 0.5), a + D * 0.05, 0.6)
             put(sfx, boom(2.2, 45), a + D * 0.55, 1.2); put(sfx, sting(1.4), a + D * 0.55, 1.0); put(sfx, static(0.5), a + D * 0.6, 0.6)
+        # ---- episodio 17 (la trampa) ----
+        if n == "cebo":
+            put(sfx, sting(1.2) * 0.8, a, 1.0); put(sfx, buzz(D) * 0.2, a, 0.5)
+            for i in range(3): put(sfx, static(0.2), a + D * (0.35 + 0.2 * i), 0.5)
+        if n == "tapan":
+            for i in range(6): put(sfx, whoosh(0.4, up=False), a + D * (0.05 + 0.13 * i), 0.5)
+            for i in range(int(D * 0.95 / 0.3)): put(sfx, step(), a + i * 0.3, 0.5)
+        if n == "espera":
+            put(sfx, heartbeat(5, 70), a + 0.2, 0.7); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.2, a, 1.0)
+        if n == "llega":
+            put(sfx, riser(D * 0.5) * 0.7, a, 0.5); put(sfx, sting(1.2), a + D * 0.5, 1.0); put(sfx, impact() * 0.7, a + D * 0.5, 0.9)
+        if n == "aporrea":
+            for i in range(int(D / 0.35)): put(sfx, impact() * 0.5, a + i * 0.35, 0.6)            # golpes en el cristal
+            put(sfx, heartbeat(6, 140), a, 0.5)
+        if n == "feliz":
+            put(sfx, chime() * 0.6, a + D * 0.3, 0.7); put(sfx, shimmer() * 0.5, a + D * 0.35, 0.5)
+        if n == "giro" and os.environ.get("EP") == "17":
+            put(sfx, chime() * 0.4, a, 0.5); put(sfx, whoosh(0.6), a + D * 0.28, 0.8)
+            put(sfx, boom(2.2, 45), a + D * 0.3, 1.2); put(sfx, sting(1.4), a + D * 0.3, 1.0); put(sfx, scream(0.8) * 0.5, a + D * 0.7, 0.7)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
