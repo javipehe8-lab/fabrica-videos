@@ -393,7 +393,10 @@ EN = {"PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO
       "CRISTALERÍA": "GLASSWORKS", "CRISTALERO": "GLASSMAKER", "FERIA": "FUNFAIR", "CERRADO": "CLOSED", "CASA DE LA RISA": "FUNHOUSE",
       "SI A LAS 3 HAY HUELLAS": "IF AT 3AM THERE ARE FOOTPRINTS", "QUE SOLO VIENEN…": "THAT ONLY COME IN…", "NO BUSQUES": "DON'T LOOK", "QUIÉN": "FOR WHO",
       "PLANTAS 1-12": "FLOORS 1-12", "PLANTA 13": "FLOOR 13", "HOLA": "WELCOME", "SI A LAS 3 EL ASCENSOR": "IF AT 3AM THE ELEVATOR",
-      "PARA EN LA 13…": "STOPS ON 13…", "NO": "DON'T", "SALGAS": "STEP OUT"}
+      "PARA EN LA 13…": "STOPS ON 13…", "NO": "DON'T", "SALGAS": "STEP OUT",
+      "ABRE.\nTENGO FRÍO.": "OPEN UP.\nI'M COLD.", "YA ME HAS LEÍDO.\nBAJA.": "YOU READ IT.\nCOME DOWN.", "YA BAJO": "COMING DOWN",
+      "LEÍDO 3:00": "READ 3:00", "en línea": "online", "escribiendo…": "typing…", "últ. vez: ayer": "last seen yesterday", "Mensaje": "Message",
+      "D.E.P.": "R.I.P.", "SI A LAS 3 TE ESCRIBE": "IF AT 3AM YOU GET A TEXT", "QUIEN NO PUEDE…": "FROM SOMEONE WHO CAN'T…", "NO LEAS": "DON'T READ IT"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
