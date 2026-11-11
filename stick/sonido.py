@@ -201,6 +201,26 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 12 ----
+        if os.environ.get("EP") == "3am12":
+            obtu_ = lambda: np.concatenate([hp(rng.normal(0, 1, int(SR * 0.03)), 2500) * np.exp(-T(0.03) * 90) * 0.9, np.zeros(int(SR * 0.06)),
+                                            bp(rng.normal(0, 1, int(SR * 0.05)), 1500, 6000) * np.exp(-T(0.05) * 60) * 0.7])     # clic de la cámara
+            carga_ = lambda d: np.sin(2 * np.pi * np.cumsum(2500 + 5000 * T(d) / d) / SR) * np.minimum(1, T(d) * 10) * 0.05          # pitido del flash cargando
+            roce_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 600) * np.exp(-T(d) * 3) * 0.6                                      # manta
+            if n == "corte": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, powerdown(1.2), a + D * 0.22, 1.0); put(sfx, beep(0.08, 1200) * 0.6, a + D * 0.42, 0.8)
+            if n == "foto1": put(sfx, carga_(0.3), a - 0.3, 0.8); put(sfx, obtu_(), a, 1.2); put(sfx, heartbeat(3, 80), a + D * 0.5, 0.6)
+            if n == "oscuro": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.15, a, 1.0); put(sfx, step() * 1.4, a + D * 0.7, 1.2); put(sfx, heartbeat(4, 110), a + D * 0.3, 0.7)
+            if n == "foto2": put(sfx, carga_(0.3), a - 0.3, 0.8); put(sfx, obtu_(), a, 1.2); put(sfx, sting(1.4) * 0.8, a + 0.05, 0.9); put(sfx, step(), a + D * 0.8, 0.9)
+            if n == "foto3":
+                put(sfx, carga_(0.3), a - 0.3, 0.8); put(sfx, obtu_(), a, 1.2)
+                put(sfx, boom(2.0, 55), a + 0.05, 1.3); put(sfx, sting(1.6), a + 0.05, 1.1); put(sfx, scream(1.0) * 0.5, a + 0.1, 0.6)
+            if n == "tapas": put(sfx, roce_(0.6), a + 0.05, 1.0); put(sfx, heartbeat(5, 130), a + D * 0.3, 0.8)
+            if n == "clic": put(sfx, riser(D * 0.6), a + D * 0.3, 0.5); put(sfx, roce_(0.3) * 0.6, a + D * 0.62, 0.8)
+            if n == "galeria":
+                put(sfx, carga_(0.35), a - 0.35, 1.0); put(sfx, obtu_(), a, 1.4)
+                put(sfx, boom(2.0, 50), a + 0.05, 1.3); put(sfx, sting(1.6), a + 0.05, 1.1); put(sfx, heartbeat(4, 140), a + D * 0.5, 0.7)
+            if n == "final": put(sfx, obtu_(), a + 0.02, 1.0); put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 11 ----
         if os.environ.get("EP") == "3am11":
             def vibra_(d):                                                                       # móvil vibrando
