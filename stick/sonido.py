@@ -904,6 +904,27 @@ def main(voz, out):
         if n == "giro" and os.environ.get("EP") == "17":
             put(sfx, chime() * 0.4, a, 0.5); put(sfx, whoosh(0.6), a + D * 0.28, 0.8)
             put(sfx, boom(2.2, 45), a + D * 0.3, 1.2); put(sfx, sting(1.4), a + D * 0.3, 1.0); put(sfx, scream(0.8) * 0.5, a + D * 0.7, 0.7)
+        # ---- episodio 18 (el último cristal, final de temporada 2) ----
+        if n == "agarrada":
+            put(sfx, sting(1.2) * 0.8, a, 1.0); put(sfx, heartbeat(6, 130), a, 0.6)
+            for i in range(3): put(sfx, static(0.2), a + D * (0.2 + 0.25 * i), 0.5)
+        if n == "alba":
+            put(sfx, riser(D * 0.6) * 0.7, a, 0.6); put(sfx, shimmer() * 0.6, a + D * 0.2, 0.6)
+            put(sfx, whoosh(0.5), a + D * 0.5, 0.8)
+        if n == "raja":
+            put(sfx, impact(), a, 1.1); put(sfx, hp(rng.normal(0, 1, int(SR * 0.8)), 3000) * np.exp(-T(0.8) * 5) * 0.4, a + 0.05, 0.8)
+            put(sfx, scream(0.7) * 0.5, a + D * 0.2, 0.6); put(sfx, whoosh(0.4, up=False), a + D * 0.4, 0.6)
+        if n == "estalla":
+            put(sfx, whoosh(0.4), a, 0.7); put(sfx, boom(2.2, 45), a + D * 0.2, 1.3); put(sfx, impact(), a + D * 0.2, 1.1)
+            for i in range(10): put(sfx, bp(rng.normal(0, 1, int(SR * 0.15)), 3000, 8000) * np.exp(-T(0.15) * 20) * 0.4, a + D * (0.25 + 0.05 * i), 0.6)
+        if n == "despiertos":
+            put(sfx, impact() * 0.6, a + D * 0.3, 0.8); put(sfx, chime() * 0.6, a + D * 0.45, 0.7); put(sfx, shimmer() * 0.5, a + D * 0.5, 0.5)
+        if n == "casa_lucia":
+            put(sfx, chime() * 0.5, a + D * 0.2, 0.6)
+            for i in range(int(D * 0.6 / 0.17)): put(sfx, step(), a + i * 0.17, 0.6)
+        if n == "su_sombra":
+            put(sfx, beep(0.05, 600), a + D * 0.24, 0.6); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.2, a + D * 0.25, 1.0)
+            put(sfx, sting(1.4), a + D * 0.55, 1.0); put(sfx, boom(2.0, 45), a + D * 0.55, 1.1); put(sfx, static(0.5), a + D * 0.6, 0.6)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
