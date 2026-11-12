@@ -342,17 +342,17 @@ def captions(img, words, t, y=1540):
 
 # ---------- estilo PS2 (terror de PlayStation 2: baja resolución, tramado, niebla, color lavado) ----------
 _BAYER = np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]], np.float32) / 16 - 0.5
-def ps2(img, fi=0, res=6, niveles=16):
+def ps2(img, fi=0, res=6, niveles=16, bruma=1.0):
     """img 1080x1920 -> look PS2: se reduce a 270x480, color lavado y verdoso, niebla, tramado de 4x4,
     temblor de píxel, aberración de color y líneas de barrido; se vuelve a ampliar sin suavizar."""
     from PIL import Image as _I
     w, h = W // res, H // res
     a = np.asarray(img.resize((w, h), _I.BILINEAR), np.float32)
     g = a.mean(-1, keepdims=True)
-    a = g + (a - g) * 0.72                                            # menos saturación
+    a = g + (a - g) * (0.72 if bruma >= 1 else 0.9)                   # menos saturación
     a = a * np.array([0.92, 1.0, 0.94], np.float32) + np.array([6, 10, 8], np.float32)   # tinte verdoso de Silent Hill
     yy = np.linspace(-1, 1, h)[:, None]; xx = np.linspace(-1, 1, w)[None, :]
-    niebla = np.clip(0.18 + 0.25 * (yy ** 2 + 0.6 * xx ** 2), 0, 0.5)[..., None]
+    niebla = np.clip(0.18 + 0.25 * (yy ** 2 + 0.6 * xx ** 2), 0, 0.5)[..., None] * bruma
     a = a * (1 - niebla) + np.array([70, 74, 72], np.float32) * niebla  # niebla gris
     a = a * (1 - 0.35 * np.clip(xx ** 2 + yy ** 2 - 0.3, 0, 1))[..., None]    # viñeta
     paso = 255 / (niveles - 1)
@@ -370,7 +370,9 @@ def ps2(img, fi=0, res=6, niveles=16):
 
 # ---------- idioma ----------
 IDIOMA = os.environ.get("IDIOMA", "es")
-EN = {"PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO AGUANTES": "DON'T HOLD IN", "UN ESTORNUDO": "A SNEEZE",
+EN = {"REGLAS DEL TURNO DE NOCHE": "NIGHT SHIFT RULES", "Yo le dije que sí. — Raúl": "I told him yes. — Raúl", "REGLA": "RULE",
+      "NO EXISTE EL SURTIDOR 4": "THERE IS NO PUMP 4", "MAÑANA: REGLA 2": "TOMORROW: RULE 2", "KILÓMETRO 9 · 24H": "MILE 9 · 24H", "TURNO DE NOCHE": "NIGHT SHIFT",
+      "PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO AGUANTES": "DON'T HOLD IN", "UN ESTORNUDO": "A SNEEZE",
       "Caso real · BMJ Case Reports, 2018": "Real case · BMJ Case Reports, 2018", "MAMÁ": "MOM", "NO BAJES.": "DON'T COME DOWN.", "ESTOY EN MI CUARTO.": "I'M IN MY ROOM.", "YO TAMBIÉN LA HE OÍDO.": "I HEARD IT TOO.",
       "NO BAJES": "DON'T GO DOWN", "SÍGUEME PARA MÁS": "FOLLOW FOR MORE", "PARTE": "PART", "SÍGUEME →": "FOLLOW →", "¡BUM!": "BOOM!", "¡ATASCADA!": "STUCK!", "¡UNO!": "ONE!", "¡DOS!": "TWO!",
       "¡TRES!": "THREE!", "ZONA": "KEEP", "CERRADA": "OUT",

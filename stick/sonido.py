@@ -187,6 +187,23 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 1 ----
+        if os.environ.get("EP") == "noche1":
+            if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "lista": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6)
+            if n == "entra":
+                put(sfx, ding() * 0.9, a + 0.1, 1.0); put(sfx, chime(), a + 0.35, 0.6)
+                for i in range(int(D * 0.55 / 0.5)): put(sfx, step(), a + 0.3 + i * 0.5, 0.8)
+                put(sfx, lp(rng.normal(0, 1, int(SR * D)), 2500) * 0.08, a, 1.0)          # goteo/lluvia
+            if n == "ventana": put(sfx, riser(D * 0.6), a + D * 0.35, 0.6); put(sfx, sting(1.5) * 0.7, a + D * 0.8, 0.9)
+            if n == "niego":
+                put(sfx, heartbeat(3, 70), a, 0.6)
+                for i in range(3): put(sfx, step(), a + D * 0.78 + i * 0.4, 0.8)
+                put(sfx, ding() * 0.6, a + D * 0.98, 0.8)
+            if n == "camara": put(sfx, static(D) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.2, 0.5); put(sfx, riser(D), a, 0.4)
+            if n == "nota": put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.5)), 2000, 6000) * 0.15, a + D * 0.25, 1.0); put(sfx, sting(1.6), a + D * 0.8, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + D * 0.3, 1.3); put(sfx, impact(), a + D * 0.3, 1.0); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Curiosidades · 1 ----
         if os.environ.get("EP") == "cur1":
             if n == "agujero": put(sfx, riser(D * 0.45), a, 0.7); put(sfx, impact(), a + D * 0.48, 1.2); put(sfx, boom(1.2, 90), a + D * 0.48, 0.9)

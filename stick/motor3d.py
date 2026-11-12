@@ -36,13 +36,37 @@ def cadena(*Ms):
 
 # ---------- primitivas (caras en sentido antihorario visto desde fuera) ----------
 def caja(w, h, d, col, base=False):
-    """caja centrada (o apoyada en y=0 si base=True)"""
+    """caja centrada (o apoyada en y=0 si base=True). Las cajas grandes se trocean (mejor orden de dibujo)."""
+    if max(w, h, d) > 1.3:
+        return _caja_troceada(w, h, d, col, base)
     x, y, z = w / 2, h / 2, d / 2
     oy = y if base else 0
     V = np.array([[-x, -y, -z], [x, -y, -z], [x, y, -z], [-x, y, -z], [-x, -y, z], [x, -y, z], [x, y, z], [-x, y, z]], float)
     V[:, 1] += oy
     F = [(4, 5, 6), (4, 6, 7), (1, 0, 3), (1, 3, 2), (0, 4, 7), (0, 7, 3), (5, 1, 2), (5, 2, 6), (3, 7, 6), (3, 6, 2), (0, 1, 5), (0, 5, 4)]
     return V, F, col
+
+def _caja_troceada(w, h, d, col, base=False, paso=0.9):
+    V, F = [], []
+    def cara(o, ua, va, nu, nv):
+        i0 = len(V)
+        for i in range(nu + 1):
+            for j in range(nv + 1):
+                V.append(np.array(o) + np.array(ua) * i / nu + np.array(va) * j / nv)
+        for i in range(nu):
+            for j in range(nv):
+                p = i0 + i * (nv + 1) + j; q = i0 + (i + 1) * (nv + 1) + j
+                F.extend([(p, q, q + 1), (p, q + 1, p + 1)])
+    n = lambda s: max(1, math.ceil(s / paso))
+    x, y, z = w / 2, h / 2, d / 2
+    oy = y if base else 0
+    cara((-x, -y + oy, z), (w, 0, 0), (0, h, 0), n(w), n(h))        # +z
+    cara((x, -y + oy, -z), (-w, 0, 0), (0, h, 0), n(w), n(h))       # -z
+    cara((x, -y + oy, z), (0, 0, -d), (0, h, 0), n(d), n(h))        # +x
+    cara((-x, -y + oy, -z), (0, 0, d), (0, h, 0), n(d), n(h))       # -x
+    cara((-x, y + oy, z), (w, 0, 0), (0, 0, -d), n(w), n(d))        # +y
+    cara((-x, -y + oy, -z), (w, 0, 0), (0, 0, d), n(w), n(d))       # -y
+    return np.array(V, float), F, col
 
 def prisma(r0, r1, h, col, n=6):
     """tronco de cono de n caras desde y=0 hasta y=-h (cuelga hacia abajo: para brazos y piernas)"""
@@ -127,11 +151,25 @@ class Luz:
         self.dir = None if dir is None else np.array(dir, float) / np.linalg.norm(dir)
         self.cono = cono
 
+NEAR = 0.12
+def _recorta(poly):
+    """Sutherland-Hodgman contra el plano z = -NEAR (espacio de cámara)"""
+    out = []
+    for i in range(len(poly)):
+        P, Q = poly[i], poly[(i + 1) % len(poly)]
+        pin, qin = P[2] <= -NEAR, Q[2] <= -NEAR
+        if pin: out.append(P)
+        if pin != qin:
+            k = (-NEAR - P[2]) / (Q[2] - P[2]); out.append(P + (Q - P) * k)
+    return out
+
 class Escena:
     def __init__(self, niebla=((58, 62, 60), 2.5, 11.0), amb=0.22, cielo=None):
         self.objs = []; self.niebla = niebla; self.amb = amb; self.cielo = cielo
-    def add(self, malla, M=None, emite=False):
-        self.objs.append((malla, np.eye(4) if M is None else M, emite)); return self
+    def add(self, malla, M=None, emite=False, fondo=False, sesgo=0.0):
+        """fondo=True: superficie grande de "caja" (suelo, techo, paredes de la habitación): se dibuja siempre antes que los objetos"""
+        # sesgo > 0: se dibuja como si estuviera más cerca (para piezas encima de otras, p. ej. la encimera)
+        self.objs.append((malla, np.eye(4) if M is None else M, emite, fondo, sesgo)); return self
 
     def render(self, cam, luces=(), temblor=True):
         img = Image.new("RGB", (RW, RH), self.niebla[0] if self.cielo is None else self.cielo)
@@ -139,7 +177,7 @@ class Escena:
         Vm = cam.vista(); f = 1 / math.tan(math.radians(cam.fov) / 2); asp = RW / RH
         tris = []
         fog_c = np.array(self.niebla[0], float); f0, f1 = self.niebla[1], self.niebla[2]
-        for (V, F, col), M, emite in self.objs:
+        for (V, F, col), M, emite, fondo, sesgo in self.objs:
             Vw = (M @ np.c_[V, np.ones(len(V))].T).T[:, :3]
             Vc = (Vm @ np.c_[Vw, np.ones(len(Vw))].T).T[:, :3]
             Fa = np.array(F)
@@ -151,7 +189,8 @@ class Escena:
             else: cen_luz = cen
             zc = Vc[:, 2]
             for i, (a, b, c) in enumerate(F):
-                if zc[a] > -0.08 or zc[b] > -0.08 or zc[c] > -0.08: continue       # detrás o pegado a la cámara
+                za, zb, zcc = zc[a], zc[b], zc[c]
+                if za > -NEAR and zb > -NEAR and zcc > -NEAR: continue              # todo detrás de la cámara
                 vcam = cam.ojo - cen[i]
                 if np.dot(N[i], vcam) <= 0: continue                                 # cara trasera
                 col_ = np.array(col, float)
@@ -167,16 +206,18 @@ class Escena:
                             k *= max(0.0, (ca - lim) / (1 - lim)) ** 0.6
                         li += lz.col * k * 1.6 * lz.fuerza
                     sh = col_ * li
-                depth = -(zc[a] + zc[b] + zc[c]) / 3
+                poly = [Vc[a], Vc[b], Vc[c]]
+                if za > -NEAR or zb > -NEAR or zcc > -NEAR: poly = _recorta(poly)      # recorte contra el plano cercano
+                if len(poly) < 3: continue
+                depth = -sum(p[2] for p in poly) / len(poly)
                 fz = min(1.0, max(0.0, (depth - f0) / (f1 - f0)))
-                sh = sh * (1 - fz) + fog_c * fz
+                sh2 = sh * (1 - fz) + fog_c * fz
                 pts = []
-                for v in (a, b, c):
-                    x, y, z = Vc[v]
+                for x, y, z in poly:
                     px = (x * f / asp / -z * 0.5 + 0.5) * RW; py = (-y * f / -z * 0.5 + 0.5) * RH
                     if temblor: px, py = round(px), round(py)                         # vértices pegados a la rejilla
                     pts.append((px, py))
-                tris.append((depth, pts, tuple(int(min(255, max(0, v))) for v in sh)))
+                tris.append((depth + (1e6 if fondo else 0) - sesgo, pts, tuple(int(min(255, max(0, v))) for v in sh2)))
         tris.sort(key=lambda t: -t[0])
         for _, pts, c in tris: d.polygon(pts, fill=c)
         return img.resize((W, H), Image.NEAREST)

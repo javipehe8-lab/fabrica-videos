@@ -13,6 +13,7 @@ GANCHO = getattr(_g, "GANCHO", None)
 ESTILO = os.environ.get("ESTILO") or getattr(_g, "ESTILO", None)
 if ESTILO == "ps2":
     import motor; motor.LOWPOLY = True
+# "ps2_3d": escenas hechas con motor3d (ya son 3D de pocos polígonos): solo el filtro, a la resolución interna del 3D
 # ELECCION opcional: ("PREGUNTA", "OPCIÓN A", "OPCIÓN B") -> la escena "final" se sustituye por una tarjeta para votar en comentarios
 ELECCION = getattr(_g, "ELECCION", None)
 
@@ -90,6 +91,7 @@ def render_frame(tl, fi):
         img = img.crop(((W - cw) // 2, (H - ch) // 2, (W - cw) // 2 + cw, (H - ch) // 2 + ch)).resize((W, H))
     img = post(img, fi, flash=fx.get("flash"), glitch=fx.get("glitch", 0), dark=fx.get("dark", 0), grain=fx.get("grain", 7), tint=fx.get("tint"))
     if ESTILO == "ps2": img = ps2(img, fi)
+    elif ESTILO == "ps2_3d": img = ps2(img, fi, res=3, bruma=0.3)   # la niebla ya la pone el 3D
     if fx.get("overlay"): img = fx["overlay"](img)     # textos nítidos encima del filtro (p. ej. la regla final en ps2)
     # corte con "punch": pequeño destello en cada cambio de escena
     if sc["name"] != "final":
