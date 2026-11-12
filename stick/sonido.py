@@ -945,6 +945,27 @@ def main(voz, out):
         if n == "su_sombra":
             put(sfx, beep(0.05, 600), a + D * 0.24, 0.6); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.2, a + D * 0.25, 1.0)
             put(sfx, sting(1.4), a + D * 0.55, 1.0); put(sfx, boom(2.0, 45), a + D * 0.55, 1.1); put(sfx, static(0.5), a + D * 0.6, 0.6)
+        # ---- episodio 19 (Lucía no tiene sombra, inicio de la temporada 3) ----
+        if n == "sombra_viva":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.25, a, 1.0); put(sfx, whoosh(0.6, up=False), a + D * 0.15, 0.6)
+            put(sfx, sting(1.2), a + D * 0.55, 1.0); put(sfx, static(0.4), a + D * 0.6, 0.5)
+        if n == "llamada":
+            for i in range(3): put(sfx, beep(0.4, 440), a + 0.1 + i * 0.7, 0.5)
+            put(sfx, heartbeat(5, 120), a, 0.5)
+        if n == "viaje":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 140) * 0.5, a, 0.8)
+            for i in range(4): put(sfx, buzz(0.25) * 0.6, a + D * (0.2 + 0.2 * i), 0.5); put(sfx, beep(0.04, 300), a + D * (0.22 + 0.2 * i), 0.5)
+        if n == "sombras_calle":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 180) * 0.3, a, 0.9)
+            for i in range(int(D / 0.5)): put(sfx, step() * 0.7, a + i * 0.5, 0.5)
+            for i in range(3): put(sfx, whoosh(0.3, up=False) * 0.6, a + D * (0.25 + 0.15 * i), 0.5)
+        if n == "cuarto19":
+            put(sfx, chime() * 0.4, a + D * 0.2, 0.5)
+        if n == "sin_sombra":
+            put(sfx, riser(D * 0.55) * 0.6, a, 0.6); put(sfx, impact() * 0.7, a + D * 0.58, 0.9); put(sfx, heartbeat(4, 110), a + D * 0.6, 0.6)
+        if n == "nora_sombra":
+            put(sfx, sting(1.4), a + D * 0.28, 1.0); put(sfx, boom(2.2, 45), a + D * 0.3, 1.2)
+            put(sfx, whoosh(0.6), a + D * 0.55, 0.8); put(sfx, static(0.5), a + D * 0.6, 0.6)
     # voz con más pegada: compresión, presencia y algo de cuerpo (ffmpeg)
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as td:
