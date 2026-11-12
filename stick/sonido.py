@@ -201,6 +201,27 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 13 ----
+        if os.environ.get("EP") == "3am13":
+            obtu_ = lambda: np.concatenate([hp(rng.normal(0, 1, int(SR * 0.03)), 2500) * np.exp(-T(0.03) * 90) * 0.9, np.zeros(int(SR * 0.06)),
+                                            bp(rng.normal(0, 1, int(SR * 0.05)), 1500, 6000) * np.exp(-T(0.05) * 60) * 0.7])     # clic de la cámara
+            def vibra_(d):                                                                       # móvil vibrando
+                x = np.sin(2 * np.pi * 160 * T(d)) * (0.6 + 0.4 * np.sin(2 * np.pi * 31 * T(d)))
+                return lp(x, 400) * ((T(d) % 0.33) < 0.2) * 0.5
+            calle_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 150, 600) * 0.12                    # rumor de la calle de noche
+            if n == "ventana": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, calle_(D), a, 1.0); put(sfx, heartbeat(3, 70), a + D * 0.5, 0.6)
+            if n == "devuelves": put(sfx, calle_(D), a, 0.8)
+            if n == "cerca":
+                for i in range(3): put(sfx, impact() * 0.5, a + i * D / 3, 0.7); put(sfx, sting(0.8) * (0.3 + 0.25 * i), a + i * D / 3, 0.8)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.4)), 300, 1200) * np.exp(-T(0.4) * 5) * 0.5, a + D * 0.7, 0.9)   # manos en el cristal
+            if n == "vacia": put(sfx, buzz(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.8), a + D * 0.2, 0.4)
+            if n == "movil": put(sfx, vibra_(D * 0.42), a, 1.0); put(sfx, beep(0.06, 1500), a + D * 0.42, 0.8); put(sfx, heartbeat(4, 110), a + D * 0.5, 0.7)
+            if n == "clic":
+                put(sfx, obtu_(), a, 1.3); put(sfx, boom(2.0, 50), a + 0.05, 1.3); put(sfx, sting(1.6), a + 0.05, 1.1); put(sfx, heartbeat(4, 140), a + D * 0.5, 0.7)
+            if n == "detras": put(sfx, boom(2.0, 55), a + D * 0.05, 1.3); put(sfx, scream(1.0) * 0.5, a + D * 0.07, 0.7); put(sfx, static(D * 0.4) * 0.3, a, 0.5)
+            if n == "voz": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.2, a, 0.8); put(sfx, riser(D * 0.5), a + D * 0.5, 0.5)
+            if n == "final": put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 12 ----
         if os.environ.get("EP") == "3am12":
             obtu_ = lambda: np.concatenate([hp(rng.normal(0, 1, int(SR * 0.03)), 2500) * np.exp(-T(0.03) * 90) * 0.9, np.zeros(int(SR * 0.06)),

@@ -397,7 +397,9 @@ EN = {"PRESIÓN": "PRESSURE", "AIRE ATRAPADO": "TRAPPED AIR", "DÍA": "DAY", "NO
       "ABRE.\nTENGO FRÍO.": "OPEN UP.\nI'M COLD.", "YA ME HAS LEÍDO.\nBAJA.": "YOU READ IT.\nCOME DOWN.", "YA BAJO": "COMING DOWN",
       "LEÍDO 3:00": "READ 3:00", "en línea": "online", "escribiendo…": "typing…", "últ. vez: ayer": "last seen yesterday", "Mensaje": "Message",
       "D.E.P.": "R.I.P.", "SI A LAS 3 TE ESCRIBE": "IF AT 3AM YOU GET A TEXT", "QUIEN NO PUEDE…": "FROM SOMEONE WHO CAN'T…", "NO LEAS": "DON'T READ IT",
-      "FOTO": "PHOTO", "FOTOS": "PHOTOS", "AHORA": "NOW", "SE VA LA LUZ…": "THE POWER GOES OUT…", "NO HAGAS FOTOS": "DON'T TAKE PHOTOS"}
+      "FOTO": "PHOTO", "FOTOS": "PHOTOS", "AHORA": "NOW", "SE VA LA LUZ…": "THE POWER GOES OUT…", "NO HAGAS FOTOS": "DON'T TAKE PHOTOS",
+      "LUNES": "MONDAY", "MARTES": "TUESDAY", "MIÉRCOLES": "WEDNESDAY", "HOY": "TONIGHT", "CÁMARA FRONTAL": "FRONT CAMERA",
+      "ALGUIEN TE SALUDA…": "SOMEONE WAVES AT YOU…", "NO LE DEVUELVAS": "DON'T WAVE", "EL SALUDO": "BACK"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
