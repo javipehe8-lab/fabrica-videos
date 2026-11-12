@@ -1,6 +1,6 @@
 # Fábrica de vídeos – instrucciones de trabajo
 
-Repositorio público con el motor de animación stickman, la serie "El Sonriente" y los vídeos terminados (`videos/`), que Metricool descarga por URL pública.
+Repositorio público con el motor de animación stickman, el motor 3D estilo PS2, las series y los vídeos terminados (`videos/`), que Metricool descarga por URL pública.
 
 ## Estructura
 - `stick/motor.py`: lienzo, cámara, figuras (LEO, NORA, SOLDADO, DOCTOR, PACIENTE, SONRIENTE), poses, efectos y subtítulos.
@@ -8,6 +8,7 @@ Repositorio público con el motor de animación stickman, la serie "El Sonriente
 - `stick/sonido.py`: música y efectos sincronizados por nombre de escena. Añade aquí los efectos de las escenas nuevas (bloque por episodio, con `os.environ.get("EP")` si un nombre se repite).
 - `biblia.md`: personajes, reglas y resumen de cada episodio. Léela antes de escribir y actualízala después.
 - `publicaciones.json`: registro de lo publicado (título, fecha, URL del vídeo).
+- **SERIE PRINCIPAL desde el 13/11/2026: "TURNO DE NOCHE" (3D estilo PS2), en `turno.md`.** Sustituye a El Sonriente (que terminó en la Parte 19 y ya NO se continúa). Las secciones de GANCHO y ELECCION de este archivo eran de El Sonriente y NO se aplican a Turno de noche; Duración, Diálogos, Música, Publicar y Subir a GitHub sí.
 - `tres_am.md`: SEGUNDA SERIE "Si oyes esto a las 3AM" (historias autoconclusivas, 19:00). Tiene sus propias reglas y su banco de historias; las reglas de GANCHO, ELECCION y biblia de este archivo son solo para El Sonriente.
 
 ## Gancho inicial (OBLIGATORIO desde la Parte 4)

@@ -1,0 +1,21 @@
+{
+ "es": [
+  {
+   "parte": 1,
+   "regla": "No existe el surtidor 4",
+   "titulo": "Regla 1: no existe el surtidor 4 ⛽ Turno de noche (Parte 1) #shorts",
+   "programado": "2026-11-13 23:00 Europe/Madrid",
+   "via": "Metricool",
+   "metricool_id": 425850607,
+   "video": "videos/turno/Turno_de_Noche_1.mp4"
+  }
+ ],
+ "en": [
+  {
+   "parte": 1,
+   "titulo": "Rule 1: there is no pump 4 ⛽ Night Shift (Part 1) #shorts",
+   "video": "videos/turno/en/Night_Shift_1.mp4",
+   "estado": "pendiente de subir a mano (14/11 00:30)"
+  }
+ ]
+}
