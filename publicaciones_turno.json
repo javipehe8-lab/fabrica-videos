@@ -8,6 +8,15 @@
    "via": "Metricool",
    "metricool_id": 425855469,
    "video": "videos/turno/Turno_de_Noche_1.mp4"
+  },
+  {
+   "parte": 2,
+   "regla": "Si suena el teléfono de la cabina a las 3:00, no lo cojas",
+   "titulo": "Regla 2: no cojas la cabina a las 3:00 ☎️ Turno de noche (Parte 2) #shorts",
+   "programado": "2026-11-13 23:00 Europe/Madrid",
+   "via": "Metricool",
+   "metricool_id": 426684695,
+   "video": "videos/turno/Turno_de_Noche_2.mp4"
   }
  ],
  "en": [
@@ -16,6 +25,12 @@
    "titulo": "Rule 1: there is no pump 4 ⛽ Night Shift (Part 1) #shorts",
    "video": "videos/turno/en/Night_Shift_1.mp4",
    "estado": "pendiente de subir a mano (13/11 00:30)"
+  },
+  {
+   "parte": 2,
+   "titulo": "Rule 2: don't answer the pay phone at 3:00 ☎️ Night Shift (Part 2) #shorts",
+   "video": "videos/turno/en/Night_Shift_2.mp4",
+   "estado": "pendiente de subir a mano (14/11 00:30)"
   }
  ]
 }
