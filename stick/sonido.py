@@ -232,6 +232,31 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 14 ----
+        if os.environ.get("EP") == "3am14":
+            gota_ = lambda: np.sin(2 * np.pi * 1800 * T(0.05) * (1 - T(0.05) * 8)) * np.exp(-T(0.05) * 70) * 0.35       # gota en la pila
+            agua_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 800, 5000) * np.exp(-T(d) * 4) * 0.45                    # agua en la cara
+            golpe_ = lambda: lp(rng.normal(0, 1, int(SR * 0.12)), 700) * np.exp(-T(0.12) * 40) * 1.0                       # palma en el cristal
+            clic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.025)), 2500) * np.exp(-T(0.025) * 120) * 0.9                   # interruptor
+            if n == "reloj":
+                put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, buzz(D) * 0.35, a, 0.6)
+                for i in range(3): put(sfx, gota_(), a + 0.6 + i * 1.1, 0.8)
+            if n == "agua": put(sfx, buzz(D) * 0.3, a, 0.5); put(sfx, agua_(0.7), a + 0.3, 1.0); put(sfx, heartbeat(3, 80), a + 1.6, 0.6)
+            if n == "mano": put(sfx, buzz(D) * 0.3, a, 0.5); put(sfx, beep(0.08, 900) * 0.5, a + 1.0, 0.6); put(sfx, sting(1.2) * 0.8, a + 1.85, 0.9)
+            if n == "acercas":
+                put(sfx, buzz(D) * 0.3, a, 0.5); put(sfx, heartbeat(5, 95), a + 0.3, 0.7)
+                for i in range(4): put(sfx, step() * 0.8, a + 0.5 + i * 0.6, 0.8)
+            if n == "sonrisa": put(sfx, riser(2.2), a + 0.2, 0.6); put(sfx, boom(2.0, 50), a + 2.4, 1.3); put(sfx, sting(1.6), a + 2.4, 1.1)
+            if n == "voz": put(sfx, golpe_(), a + 0.35, 1.1); put(sfx, golpe_(), a + 0.42, 1.0); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.2, a, 0.8)
+            if n == "luz":
+                put(sfx, buzz(0.9) * 0.8, a, 0.9); put(sfx, powerdown(0.8), a + 0.5, 0.9)
+                put(sfx, boom(2.0, 55), a + 1.3, 1.3); put(sfx, scream(1.0) * 0.4, a + 1.35, 0.6)
+                for i in range(int((D - 1.6) / 0.35)): put(sfx, golpe_(), a + 1.6 + i * 0.35, 1.0)
+            if n == "fuera": put(sfx, heartbeat(4, 120), a, 0.6); put(sfx, clic_(), a + D * 0.78, 1.3); put(sfx, boom(1.8, 45), a + D * 0.79, 1.0)
+            if n == "final":
+                for i in range(3): put(sfx, golpe_() * 0.5, a + 0.3 + i * 0.5, 0.6)
+                put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 13 ----
         if os.environ.get("EP") == "3am13":
             obtu_ = lambda: np.concatenate([hp(rng.normal(0, 1, int(SR * 0.03)), 2500) * np.exp(-T(0.03) * 90) * 0.9, np.zeros(int(SR * 0.06)),
