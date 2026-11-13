@@ -187,6 +187,20 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 2 ----
+        if os.environ.get("EP") == "noche2":
+            def ring_(d):                                                                      # timbre de teléfono antiguo: 1,2 s de ciclo
+                x = (np.sin(2 * np.pi * 440 * T(d)) + np.sin(2 * np.pi * 480 * T(d))) * 0.18 * (np.sin(2 * np.pi * 20 * T(d)) > 0)
+                return x * ((T(d) % 1.2) < 0.7)
+            if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "lista": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6)
+            if n == "suena": put(sfx, lp(ring_(D * 0.8), 2500), a, 0.7); put(sfx, heartbeat(4, 64), a + D * 0.5, 0.6)
+            if n == "tienda": put(sfx, ring_(D), a, 1.0); put(sfx, sting(1.3) * 0.6, a + D * 0.5, 0.9)
+            if n == "voz": put(sfx, beep(0.05, 600), a + 0.1, 0.6); put(sfx, static(D) * 0.15, a, 0.8); put(sfx, riser(D * 0.6), a + D * 0.4, 0.6)
+            if n == "camara": put(sfx, static(D) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.2, 0.5)
+            if n == "giro": put(sfx, static(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.6), a, 0.5); put(sfx, sting(1.6), a + D * 0.6, 1.1)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 1 ----
         if os.environ.get("EP") == "noche1":
             if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)

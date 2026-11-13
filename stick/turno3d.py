@@ -52,11 +52,34 @@ def farola(esc, x, z, on=1.0):
     _caja_en(esc, x - 0.08, 5.9, z - 0.08, x + 1.4, 6.05, z + 0.08, (70, 70, 72))
     _caja_en(esc, x + 0.9, 5.75, z - 0.2, x + 1.5, 5.9, z + 0.2, tuple(int(v * on) for v in SODIO), emite=True)
 
-def cabina(esc, x, z):
+CABINA = (-8.0, 12.0)                       # la cabina de teléfono, junto a la carretera
+
+def cabina(esc, x, z, luz=0.0, vibra=0.0, colgado=True):
+    """cabina roja. luz: lámpara del techo (0-1). vibra: el auricular tiembla (suena). colgado=False: auricular descolgado, colgando del cable; None: sin auricular (lo tiene alguien en la mano)"""
     _caja_en(esc, x - 0.5, 0, z - 0.5, x + 0.5, 0.15, z + 0.5, (90, 90, 90))
     for sx, sz in ((-0.45, -0.45), (0.45, -0.45), (-0.45, 0.45), (0.45, 0.45)): _caja_en(esc, x + sx - 0.04, 0.15, z + sz - 0.04, x + sx + 0.04, 2.3, z + sz + 0.04, (150, 40, 36))
     _caja_en(esc, x - 0.5, 2.3, z - 0.5, x + 0.5, 2.5, z + 0.5, (150, 40, 36))
-    _caja_en(esc, x - 0.15, 1.2, z - 0.45, x + 0.15, 1.6, z - 0.38, (30, 30, 30))       # teléfono
+    _caja_en(esc, x - 0.15, 1.2, z - 0.45, x + 0.15, 1.6, z - 0.38, (60, 60, 62))       # teléfono
+    if colgado is None: pass                                                             # alguien lo tiene en la mano
+    elif colgado:
+        _caja_en(esc, x - 0.2 + vibra, 1.62, z - 0.42, x + 0.2 + vibra, 1.7, z - 0.32, (20, 20, 20))   # auricular
+    else:
+        _caja_en(esc, x + 0.1, 0.55, z - 0.4, x + 0.16, 1.2, z - 0.34, (20, 20, 20))       # colgando del cable
+    if luz > 0: _caja_en(esc, x - 0.3, 2.26, z - 0.3, x + 0.3, 2.3, z + 0.3, tuple(int(v * luz) for v in FLUOR), emite=True)
+
+def luz_cabina(f=1.0):
+    return Luz((CABINA[0], 2.1, CABINA[1]), (220, 235, 225), 5.0, fuerza=1.4 * f)
+
+def telefono(esc, x=0.2, z=-1.9, pantalla=None, vibra=0.0):
+    """teléfono de la tienda sobre el mostrador; pantalla: color de la pantallita (se ilumina al sonar)"""
+    _caja_en(esc, x - 0.16, 1.12, z - 0.12, x + 0.16, 1.2, z + 0.12, (40, 40, 44), sesgo=0.7)
+    _caja_en(esc, x - 0.17 + vibra, 1.2, z - 0.02, x + 0.17 + vibra, 1.27, z + 0.08, (26, 26, 28), sesgo=0.8)   # auricular
+    if pantalla: _caja_en(esc, x - 0.09, 1.201, z - 0.11, x + 0.09, 1.21, z - 0.04, pantalla, emite=True, sesgo=0.9)
+
+def cam_cabina(t=0.0, fov=40, cctv=False):
+    """la cabina vista desde la tienda (a través del cristal) o desde la CAM 3"""
+    if cctv: return Camara(ojo=(-5.0, 4.3, 10.3), mira=(CABINA[0], 1.1, CABINA[1]), fov=fov)
+    return Camara(ojo=(0.6, 1.62, -1.2), mira=(CABINA[0], 1.2, CABINA[1]), fov=fov)
 
 def tienda(esc, luz=1.0):
     # suelo, techo y paredes (fachada con huecos de cristal)
@@ -99,7 +122,7 @@ def tienda(esc, luz=1.0):
     for fx in (-3, 0, 3):
         for fz in (-4.5, -1.5): _caja_en(esc, fx - 0.8, 2.95, fz - 0.1, fx + 0.8, 2.99, fz + 0.1, tuple(int(v * luz) for v in FLUOR), emite=luz > 0.1)
 
-def exterior(esc, luz=1.0, surtidor4=0.0, coche4=0.0):
+def exterior(esc, luz=1.0, surtidor4=0.0, coche4=0.0, cabina_kw=None):
     esc.add(subdividir(plano(60, 30, ASFALTO), 12), mover(0, 0, 10), fondo=True)
     esc.add(subdividir(plano(60, 6, (40, 42, 44)), 10), mover(0, 0.005, 18), fondo=True)  # carretera
     for k in range(-6, 7): _caja_en(esc, k * 4 - 1, 0.01, 17.92, k * 4 + 1, 0.02, 18.08, (200, 200, 190))
@@ -111,17 +134,18 @@ def exterior(esc, luz=1.0, surtidor4=0.0, coche4=0.0):
     for cx in (-5.4, 5.4):
         for cz in (5.0, 9.0): _caja_en(esc, cx - 0.18, 0, cz - 0.18, cx + 0.18, 4.4, cz + 0.18, (180, 180, 176))
     for i, x in enumerate((-3, 0, 3)): surtidor(esc, x, 7, i + 1, luz)
-    farola(esc, 8, 14, luz); cabina(esc, -8, 12)
+    farola(esc, 8, 14, luz); cabina(esc, *CABINA, **(cabina_kw or {}))
     # el surtidor 4: no debería existir (aparece en la niebla, al borde de la luz)
     # al final de la fila, fuera de la marquesina, donde ya no llega la luz
     if surtidor4 > 0:
         surtidor(esc, S4[0], S4[1], 4, 0.6 * surtidor4, col=tuple(int(v * (0.4 + 0.6 * surtidor4)) for v in (150, 128, 104)))
     if coche4 > 0: coche(esc, S4[0] + 2.2, S4[1] + 1.4, yaw=-math.pi / 2 - 0.25, col=(26, 28, 32), faros=coche4 if coche4 > 1 else 0)
 
-def mundo(t=0.0, luz=1.0, surtidor4=0.0, coche4=0.0):
+def mundo(t=0.0, luz=1.0, surtidor4=0.0, coche4=0.0, cabina_kw=None):
+    """cabina_kw: opciones de la cabina, p. ej. dict(luz=1, vibra=0.02) cuando suena"""
     esc = Escena(niebla=NIEBLA, amb=0.16)
     esc.etiquetas = []
-    tienda(esc, luz); exterior(esc, luz, surtidor4, coche4)
+    tienda(esc, luz); exterior(esc, luz, surtidor4, coche4, cabina_kw)
     return esc
 
 def luces_base(luz=1.0, extra=()):
