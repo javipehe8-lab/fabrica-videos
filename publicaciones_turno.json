@@ -17,6 +17,15 @@
    "via": "Metricool",
    "metricool_id": 426684695,
    "video": "videos/turno/Turno_de_Noche_2.mp4"
+  },
+  {
+   "parte": 3,
+   "regla": "El baño está siempre roto",
+   "titulo": "Regla 3: el baño está siempre roto 🚽 Turno de noche (Parte 3) #shorts",
+   "programado": "2026-11-14 23:00 Europe/Madrid",
+   "via": "Metricool",
+   "metricool_id": 427836407,
+   "video": "videos/turno/Turno_de_Noche_3.mp4"
   }
  ],
  "en": [
@@ -31,6 +40,12 @@
    "titulo": "Rule 2: don't answer the pay phone at 3:00 ☎️ Night Shift (Part 2) #shorts",
    "video": "videos/turno/en/Night_Shift_2.mp4",
    "estado": "pendiente de subir a mano (14/11 00:30)"
+  },
+  {
+   "parte": 3,
+   "titulo": "Rule 3: the restroom is always broken 🚽 Night Shift (Part 3) #shorts",
+   "video": "videos/turno/en/Night_Shift_3.mp4",
+   "estado": "pendiente de subir a mano (15/11 00:30)"
   }
  ]
 }
