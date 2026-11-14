@@ -1,26 +1,57 @@
 {
  "_info": "Cola de vídeos para subir a YouTube Studio desde el Chrome de Javi (ver subir_youtube.md). Las tareas diarias añaden aquí cada vídeo nuevo con estado 'pendiente'. La tarea de subida le asigna fecha y hora y lo pasa a 'programado'.",
- "horas": {"3am": "19:00", "turno": "23:00"},
+ "horas": {
+  "3am": "19:00",
+  "turno": "23:00"
+ },
  "videos": [
-  {"serie": "turno", "parte": 1, "video": "videos/turno/Turno_de_Noche_1.mp4",
+  {
+   "serie": "turno",
+   "parte": 1,
+   "video": "videos/turno/Turno_de_Noche_1.mp4",
    "titulo": "Regla 1: no existe el surtidor 4 ⛽ Turno de noche (Parte 1) #shorts",
    "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla. Hay una lista de reglas. La primera: no existe el surtidor 4.\n\n¿Tú le habrías dicho que sí? 👇 Mañana, la regla 2.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado", "fecha": "2026-11-14 21:00", "url": "https://youtube.com/shorts/o0vq95ctKMw"},
-  {"serie": "3am", "parte": 13, "video": "videos/3am/Si_Oyes_Esto_13.mp4",
+   "estado": "programado",
+   "fecha": "2026-11-14 21:00",
+   "url": "https://youtube.com/shorts/o0vq95ctKMw"
+  },
+  {
+   "serie": "3am",
+   "parte": 13,
+   "video": "videos/3am/Si_Oyes_Esto_13.mp4",
    "titulo": "Si a las 3AM tu vecino te saluda… no le devuelvas el saludo 😨 #shorts",
    "descripcion": "Cada noche, a las tres, el vecino de enfrente te saluda desde su ventana. Y tú, por educación, siempre le devuelves el saludo.\n\n¿Tú se lo devolverías? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado", "fecha": "2026-11-14 19:00", "url": "https://youtube.com/shorts/eQ9SEPFcD-o"},
-  {"serie": "turno", "parte": 2, "video": "videos/turno/Turno_de_Noche_2.mp4",
+   "estado": "programado",
+   "fecha": "2026-11-14 19:00",
+   "url": "https://youtube.com/shorts/eQ9SEPFcD-o"
+  },
+  {
+   "serie": "turno",
+   "parte": 2,
+   "video": "videos/turno/Turno_de_Noche_2.mp4",
    "titulo": "Regla 2: no cojas la cabina a las 3:00 ☎️ Turno de noche (Parte 2) #shorts",
    "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y hay una lista de reglas. La regla 2 dice: si suena el teléfono de la cabina a las 3:00, no lo cojas. ¿Qué harías tú si te llamara tu propia voz? Mañana, la regla 3.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "pendiente"},
-  {"serie": "3am", "parte": 14, "video": "videos/3am/Si_Oyes_Esto_14.mp4",
+   "estado": "programado",
+   "fecha": "2026-11-14 23:00"
+  },
+  {
+   "serie": "3am",
+   "parte": 14,
+   "video": "videos/3am/Si_Oyes_Esto_14.mp4",
    "titulo": "Si a las 3AM tu reflejo llega tarde… no te acerques 😨 #shorts",
    "descripcion": "Son las tres y te levantas al baño. En el espejo, tu reflejo lo hace todo un segundo tarde. ¿Tú te acercarías a mirar?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "pendiente"},
-  {"serie": "turno", "parte": 3, "video": "videos/turno/Turno_de_Noche_3.mp4",
+   "estado": "programado",
+   "fecha": "2026-11-15 19:00"
+  },
+  {
+   "serie": "turno",
+   "parte": 3,
+   "video": "videos/turno/Turno_de_Noche_3.mp4",
    "titulo": "Regla 3: el baño está siempre roto 🚽 Turno de noche (Parte 3) #shorts",
    "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 3 dice que el baño está siempre roto, aunque alguien te pida la llave. ¿Tú le habrías dado la llave a esa niña? Mañana, la regla 4.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "pendiente"}
+   "estado": "programado",
+   "fecha": "2026-11-15 23:00",
+   "url": "https://youtube.com/shorts/ehpqQDBD0Y4"
+  }
  ]
 }

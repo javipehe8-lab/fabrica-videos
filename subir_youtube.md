@@ -3,7 +3,7 @@
 Metricool gratis solo deja 20 publicaciones al mes, y se agotaron. Ahora los vídeos se suben **directamente a YouTube Studio** con Claude en Chrome (el Chrome de Javi, con la sesión de YouTube abierta en el canal "Historias de las 3AM"), y se programan con el programador del propio YouTube.
 
 - Las tareas que **fabrican** vídeos (Turno de noche, Si oyes esto a las 3AM) ya NO usan Metricool: al terminar, añaden el vídeo a `cola_youtube.json` con `"estado": "pendiente"` (serie, parte, video, titulo, descripcion) y hacen commit y push.
-- La tarea de **subida** (necesita el ordenador de Javi encendido con la app de Claude y Chrome abiertos) sube todo lo pendiente.
+- La tarea de **subida** (cada día a las 17:47; necesita el ordenador de Javi encendido con la app de Claude y Chrome abiertos) sube todo lo pendiente. Si un día el ordenador está apagado, no pasa nada: al día siguiente sube lo atrasado y lo reparte en los siguientes días libres.
 
 ## Cómo asignar fecha a cada vídeo pendiente
 - Hora fija por serie: `cola_youtube.json["horas"]` (3am → 19:00, turno → 23:00, hora de España).
