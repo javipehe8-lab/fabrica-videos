@@ -156,6 +156,47 @@ def luces_base(luz=1.0, extra=()):
         L_.append(Luz((9.2, 5.6, 14), SODIO, 9.0, fuerza=0.7 * luz))
     return L_ + list(extra)
 
+# ---------- el aseo (pared del fondo de la tienda) ----------
+ASEO = (-1.1, -5.95)                         # centro de la puerta del aseo (x, z de la pared)
+
+def aseo(esc, luz_dentro=0.0, tirador=0.0, agua=0.0, cartel=True):
+    """puerta del aseo en la pared del fondo. luz_dentro: rendija de luz bajo la puerta (0-1).
+    tirador: desplazamiento del pomo (alguien lo mueve desde dentro). agua: charco que sale por debajo (0-1). cartel: AVERIADO"""
+    x, z = ASEO
+    _caja_en(esc, x - 0.6, 0, z, x + 0.6, 2.25, z + 0.06, (70, 72, 74), sesgo=0.4)         # marco
+    _caja_en(esc, x - 0.5, 0.035, z + 0.06, x + 0.5, 2.15, z + 0.1, (92, 118, 140), sesgo=0.5)   # puerta
+    _caja_en(esc, x + 0.32, 0.98 + tirador, z + 0.1, x + 0.42, 1.04 + tirador, z + 0.18, (200, 196, 180), sesgo=0.8)  # pomo
+    if luz_dentro > 0: _caja_en(esc, x - 0.48, 0.0, z + 0.07, x + 0.48, 0.035, z + 0.1, tuple(int(v * luz_dentro) for v in (230, 240, 220)), emite=True, sesgo=0.7)
+    # placa ASEO sobre la puerta
+    _caja_en(esc, x - 0.35, 2.3, z + 0.01, x + 0.35, 2.55, z + 0.05, BLANCO, sesgo=0.5)
+    esc.etiquetas.append(((x, 2.425, z + 0.08), "ASEO", 0.17, (30, 60, 120)))
+    if cartel:                                                                              # folio pegado con celo
+        _caja_en(esc, x - 0.34, 1.38, z + 0.1, x + 0.34, 1.72, z + 0.115, (236, 234, 224), sesgo=0.9)
+        esc.etiquetas.append(((x, 1.55, z + 0.13), "AVERIADO", min(0.1, 0.56 / (0.62 * len(tr("AVERIADO")))), (200, 30, 30)))
+    if agua > 0:                                                                            # charco que sale por debajo
+        r = 0.2 + 0.9 * agua
+        _caja_en(esc, x - 0.45 * (0.5 + agua), 0.012, z + 0.1, x + 0.45 * (0.5 + agua), 0.016, z + 0.1 + r, (66, 80, 92), sesgo=0.6)
+
+def huellas(esc, pts, col=(78, 86, 88)):
+    """huellas mojadas en el suelo (lista de (x, z, yaw))"""
+    for k, (x, z, yaw) in enumerate(pts):
+        lado = 0.07 if k % 2 else -0.07
+        M = cadena(mover(x + lado * math.cos(yaw), 0.013, z - lado * math.sin(yaw)), rot_y(yaw))
+        esc.add(caja(0.09, 0.004, 0.17, col), M, sesgo=0.2)
+
+def mano_llave(esc, x=1.25, y=1.3, z=-2.15, brillo=1.0):
+    """tu mano con la palma hacia arriba y la llave del aseo (con su llavero rojo) encima"""
+    piel = (190, 160, 140)
+    _caja_en(esc, x - 0.06, y - 0.04, z - 0.32, x + 0.06, y + 0.02, z - 0.06, UNIFORME, sesgo=0.6)      # manga
+    _caja_en(esc, x - 0.06, y - 0.02, z - 0.08, x + 0.06, y + 0.01, z + 0.05, piel, sesgo=0.7)          # palma
+    for k in range(4): _caja_en(esc, x - 0.055 + k * 0.03, y - 0.015, z + 0.05, x - 0.035 + k * 0.03, y + 0.015, z + 0.13, piel, sesgo=0.7)
+    _caja_en(esc, x - 0.1, y - 0.015, z - 0.04, x - 0.06, y + 0.015, z + 0.04, piel, sesgo=0.7)         # pulgar
+    m = tuple(int(min(255, v * brillo)) for v in (190, 186, 160))
+    _caja_en(esc, x - 0.008, y + 0.012, z - 0.06, x + 0.008, y + 0.024, z + 0.04, m, sesgo=0.9)   # caña de la llave
+    _caja_en(esc, x - 0.025, y + 0.012, z + 0.04, x + 0.025, y + 0.024, z + 0.08, m, sesgo=0.9)   # cabeza
+    _caja_en(esc, x - 0.03, y + 0.012, z - 0.16, x + 0.03, y + 0.03, z - 0.06, (180, 36, 34), sesgo=0.9)  # llavero
+    esc.etiquetas.append(((x, y + 0.035, z - 0.11), "ASEO", 0.022, (245, 240, 230)))
+
 # ---------- personajes ----------
 def empleado(esc, p, x=1.2, z=-2.6, yaw=0.0, cara="neutral"):
     """tú: el empleado (uniforme rojo y gorra). Se ve poco: de espaldas, en cámaras o de lejos."""
@@ -175,6 +216,10 @@ def cliente(esc, p, x, z, yaw=0.0, cara="neutral", alto=1.0, abrigo=(60, 64, 58)
     base = cadena(mover(x, 0, z), rot_y(yaw), mover(0, u(L["ul"] + L["ll"] + 6), 0))
     esc.add(prisma(u(24), u(30), u(80), tuple(int(v * 0.92) for v in abrigo), n=6), base)
     return cab
+
+def nina(esc, p, x, z, yaw=0.0, cara="neutral", abrigo=(196, 160, 40)):
+    """niña pequeña con chubasquero amarillo y capucha (empapada)"""
+    return cliente(esc, p, x, z, yaw=yaw, cara=cara, alto=0.66, abrigo=abrigo, piel=(214, 204, 198))
 
 # ---------- cámaras típicas ----------
 def cam_llegada(t, D):
@@ -201,15 +246,17 @@ def proyectar(cam, p):
 def etiquetas(img, esc, cam, luz=1.0):
     """números de los surtidores y rótulo, dibujados encima con tamaño según la distancia"""
     d = ImageDraw.Draw(img)
-    for p, txt in esc.etiquetas:
+    for e in esc.etiquetas:
+        p, txt = e[0], e[1]                                               # (pos, texto[, alto en metros[, color]])
         q = proyectar(cam, p)
         if not q or q[2] > 24: continue
         f = 1 / math.tan(math.radians(cam.fov) / 2)
-        alto_m = 0.32 if len(txt) <= 2 else 0.4                          # altura real del texto en metros
+        alto_m = e[2] if len(e) > 2 else (0.32 if len(txt) <= 2 else 0.4)   # altura real del texto en metros
         size = int(min(220, alto_m / q[2] * f * H / 2))
         if size < 10: continue
         a = max(0.0, 1 - q[2] / 24)
-        col = tuple(int(lerp(f_, c_, a)) for f_, c_ in zip(NIEBLA[0], (20, 20, 20) if len(txt) <= 2 else (200, 40, 36)))
+        c0 = e[3] if len(e) > 3 else ((20, 20, 20) if len(txt) <= 2 else (200, 40, 36))
+        col = tuple(int(lerp(f_, c_, a)) for f_, c_ in zip(NIEBLA[0], c0))
         d.text((q[0], q[1]), tr(txt), font=font(size), fill=col, anchor="mm")
     return img
 

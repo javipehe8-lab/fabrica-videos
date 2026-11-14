@@ -187,6 +187,32 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 3 ----
+        if os.environ.get("EP") == "noche3":
+            def gota_(): t_ = T(0.12); return np.sin(2 * np.pi * (1400 - 5000 * t_) * t_) * np.exp(-t_ * 45) * 0.35       # gota de agua
+            def pomo_(d):                                                                       # pomo que alguien sacude desde dentro
+                x = np.zeros(int(SR * d))
+                for i in range(int(d / 0.11)):
+                    j = int(i * 0.11 * SR); c = bp(rng.normal(0, 1, int(SR * 0.05)), 1200, 4000) * np.exp(-T(0.05) * 70)
+                    x[j:j + len(c)] += c[: len(x) - j] * 0.9
+                return x
+            if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "lista": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6); put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.35)), 2000, 6000) * 0.12, a + D * 0.5, 1.0)
+            if n == "nina":
+                put(sfx, ding() * 0.9, a + 0.1, 1.0); put(sfx, chime(), a + 0.35, 0.6)
+                for i in range(int(D * 0.75 / 0.4)): put(sfx, step() * 0.7, a + 0.3 + i * 0.4, 0.8)
+                for i in range(int(D / 0.35)): put(sfx, gota_(), a + 0.2 + i * 0.35 + rng.uniform(0, 0.1), 0.6)
+            if n == "pide":
+                for i in range(int(D / 0.5)): put(sfx, gota_(), a + 0.2 + i * 0.5, 0.5)
+                for i in range(4): put(sfx, step() * 0.7, a + D * 0.75 + i * 0.35, 0.8)
+                put(sfx, ding() * 0.5, a + D * 0.98, 0.7)
+            if n == "puerta": put(sfx, pomo_(D * 0.2), a + D * 0.25, 0.7); put(sfx, pomo_(D * 0.45), a + D * 0.52, 1.0); put(sfx, buzz(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.6), a + D * 0.4, 0.5)
+            if n == "camara": put(sfx, static(D) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.2, 0.5); put(sfx, sting(1.3) * 0.7, a + D * 0.65, 0.8)
+            if n == "giro":
+                for i in range(int(D / 0.28)): put(sfx, gota_(), a + 0.1 + i * 0.28, 0.8)
+                put(sfx, heartbeat(4, 80), a + 0.2, 0.6); put(sfx, sting(1.6), a + D * 0.55, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, pomo_(0.4), a + D * 0.4, 0.5); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 2 ----
         if os.environ.get("EP") == "noche2":
             def ring_(d):                                                                      # timbre de teléfono antiguo: 1,2 s de ciclo
