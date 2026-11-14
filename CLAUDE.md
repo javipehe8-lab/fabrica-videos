@@ -51,7 +51,10 @@ Partes 3-5: la gente se queda 39-42 s de media, dure el vídeo 1:10 o 1:18; solo
 4. `bash hacer_episodio.sh N` → `videos/El_Sonriente_ParteN.mp4` (tiene que pesar menos de 95 MB).
 5. Comprueba 4-6 fotogramas con ffmpeg antes de publicar.
 
-## Publicar (Metricool)
+## Publicar (desde el 14/11/2026: YouTube Studio, NO Metricool)
+**Metricool ya no se usa** (el plan gratis tiene un límite de 20 publicaciones al mes). Al terminar un vídeo, añádelo a `cola_youtube.json` con estado "pendiente" (serie, parte, video, titulo, descripcion) y haz commit y push. Lo sube y lo programa la tarea semanal desde el Chrome de Javi: ver `subir_youtube.md`. Lo de abajo es el formato de títulos y textos, que se sigue aplicando.
+
+### Antes (Metricool)
 - Marca: blogId `7684641`, zona horaria `Europe/Madrid`. Red: YouTube (Short).
 - URL del vídeo: `https://raw.githubusercontent.com/javipehe8-lab/fabrica-videos/main/videos/El_Sonriente_ParteN.mp4` (haz commit y push antes).
 - SIEMPRE: `type: "short"`, `privacy: "public"`, `madeForKids: false`, `category: "FILM_ANIMATION"`, título con " #shorts", descripción con hashtags y `firstCommentText` con una pregunta para los comentarios.
