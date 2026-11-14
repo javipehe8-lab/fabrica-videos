@@ -258,6 +258,32 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 15 ----
+        if os.environ.get("EP") == "3am15":
+            clic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.03)), 2000) * np.exp(-T(0.03) * 110) * 1.0                    # interruptor de la radio
+            sintonia_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 900, 4000) * (0.3 + 0.7 * np.abs(np.sin(2 * np.pi * 7 * T(d)))) * 0.35   # dial buscando
+            zumbido_ = lambda d: (np.sin(2 * np.pi * 50 * T(d)) + 0.5 * np.sin(2 * np.pi * 100 * T(d))) * 0.06            # válvulas calientes
+            if n == "radio":
+                put(sfx, clic_(), a + 0.25, 1.3); put(sfx, static(0.7) * 0.6, a + 0.27, 0.8); put(sfx, zumbido_(D), a + 0.3, 1.0)
+                put(sfx, sting(1.2) * 0.5, a + 0.25, 0.9)
+            if n == "tiempo":
+                put(sfx, zumbido_(D), a, 1.0); put(sfx, static(D * 0.7) * 0.15, a, 0.5)
+                put(sfx, static(0.8) * 0.9, a + 3.1, 1.0); put(sfx, beep(0.3, 1000) * 0.6, a + 3.3, 0.7)
+            if n == "aviso":
+                put(sfx, zumbido_(D), a, 1.0); put(sfx, sintonia_(0.7), a + 0.5, 1.0); put(sfx, beep(0.25, 1000), a + 1.15, 0.7)
+                put(sfx, heartbeat(4, 80), a + 2.8, 0.6)
+            if n == "casa": put(sfx, zumbido_(D), a, 0.8); put(sfx, impact() * 0.6, a + 1.45, 0.9); put(sfx, heartbeat(5, 110), a + 1.6, 0.8)
+            if n == "abrigo": put(sfx, zumbido_(D), a, 1.0); put(sfx, riser(D * 0.6), a + D * 0.4, 0.5)
+            if n == "rincon": put(sfx, zumbido_(D), a, 0.8); put(sfx, heartbeat(5, 95), a + 0.2, 0.7)
+            if n == "perchero": put(sfx, heartbeat(3, 70), a, 0.5); put(sfx, sting(1.4) * 0.8, a + 1.0, 1.0); put(sfx, boom(1.4, 60) * 0.6, a + 1.0, 0.8)
+            if n == "gira":
+                put(sfx, clic_(), a + 0.7, 1.3); put(sfx, powerdown(0.5) * 0.6, a + 0.7, 0.7)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 1.3)), 200, 900) * np.exp(-T(1.3) * 1.2) * 0.35, a + 1.6, 0.8)   # crujido de cuello, lento
+                put(sfx, boom(2.0, 50), a + 3.0, 1.3); put(sfx, sting(1.6), a + 3.0, 1.1); put(sfx, scream(1.0) * 0.4, a + 3.05, 0.6)
+            if n == "final":
+                put(sfx, clic_(), a + 0.2, 1.2); put(sfx, static(D * 0.8) * 0.4, a + 0.22, 0.6)
+                put(sfx, boom(2.2, 45), a + D * 0.4, 1.3); put(sfx, sting(1.4), a + D * 0.4, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 14 ----
         if os.environ.get("EP") == "3am14":
             gota_ = lambda: np.sin(2 * np.pi * 1800 * T(0.05) * (1 - T(0.05) * 8)) * np.exp(-T(0.05) * 70) * 0.35       # gota en la pila

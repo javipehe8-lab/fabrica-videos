@@ -38,6 +38,7 @@ if not EN and os.environ.get("VOZ_ES") == "mx" and os.path.exists(PIPER_MX):
 # El guion puede añadir personajes propios: VOCES = {"MAMA": ("ef_dora", 1.05, 0)}; MONSTRUOS = {"FALSA"} -> voz con efecto de monstruo
 REPARTO.update(getattr(_G, "VOCES", {}))
 MONSTRUOS = {"SONRIENTE"} | set(getattr(_G, "MONSTRUOS", ()))
+RADIOS = set(getattr(_G, "RADIOS", ()))   # RADIOS = {"LOCUTOR"} -> voz como por el altavoz de una radio vieja
 if os.environ.get("VOZ"):
     REPARTO["NARRADOR"] = (os.environ["VOZ"], float(os.environ.get("VELOCIDAD", REPARTO["NARRADOR"][1])), 0)
 
@@ -57,6 +58,14 @@ def monstruo(w):
     env = np.convolve(np.abs(w), np.ones(400) / 400, mode="same")
     out += rng.normal(0, 1, len(w)).astype(np.float32) * env * 0.35
     return out / (np.abs(out).max() + 1e-9) * 0.9
+
+def radio(w):
+    """altavoz viejo: banda estrecha, algo saturada y con un siseo de fondo"""
+    from scipy.signal import butter, sosfilt
+    w = sosfilt(butter(4, [380, 3000], "bandpass", fs=24000, output="sos"), w)
+    w = np.tanh(w / (np.abs(w).max() + 1e-9) * 2.2)
+    w = w + np.random.default_rng(3).normal(0, 1, len(w)) * 0.025
+    return (w / (np.abs(w).max() + 1e-9) * 0.85).astype(np.float32)
 
 def piper(texto, vel):
     import subprocess, tempfile
@@ -105,6 +114,7 @@ def main(out):
             nz = np.where(np.abs(w) > 0.01)[0]
             if len(nz): w = w[max(0, nz[0] - 600): nz[-1] + 1200]
             w = monstruo(tono(w, semis + 5)) if quien in MONSTRUOS and quien != "SONRIENTE" else (monstruo(w) if quien == "SONRIENTE" else tono(w, semis))
+            if quien in RADIOS: w = radio(w)
             parts.append({"text": s, "wav": w, "quien": quien})
         sub, t, chunks = [], 0.0, []
         for k, p in enumerate(parts):
