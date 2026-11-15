@@ -187,6 +187,32 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 4 ----
+        if os.environ.get("EP") == "noche4":
+            def moneda_(f=3200):                                                                # moneda que cae sobre el mostrador
+                t_ = T(0.25); return (np.sin(2 * np.pi * f * t_) + 0.6 * np.sin(2 * np.pi * f * 1.48 * t_)) * np.exp(-t_ * 22) * 0.3
+            def cajon_():                                                                       # timbre y golpe del cajón de la caja
+                t_ = T(0.6); c = np.sin(2 * np.pi * 1760 * t_) * np.exp(-t_ * 8) * 0.35
+                c[int(SR * 0.12):] += lp(rng.normal(0, 1, len(c) - int(SR * 0.12)), 400) * np.exp(-T(0.6 - 0.12)[: len(c) - int(SR * 0.12)] * 14) * 0.9
+                return c
+            if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "lista": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6)
+            if n == "anciano":
+                put(sfx, ding() * 0.9, a + 0.1, 1.0); put(sfx, chime(), a + 0.35, 0.6)
+                for i in range(int(D * 0.8 / 0.6)): put(sfx, step() * 0.6, a + 0.4 + i * 0.6, 0.7)
+            if n == "monedas":
+                for i in range(4): put(sfx, moneda_(3000 + 260 * i), a + D * (0.15 + 0.11 * i), 0.8)
+                put(sfx, buzz(D) * 0.4, a, 0.5)
+            if n == "niego":
+                for i in range(4): put(sfx, moneda_(2600 + 200 * i) * 0.6, a + D * 0.08 + i * 0.06, 0.6)
+                put(sfx, heartbeat(3, 66), a + D * 0.3, 0.6); put(sfx, riser(D * 0.5), a + D * 0.45, 0.5)
+            if n == "camara": put(sfx, static(D) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.2, 0.5); put(sfx, sting(1.3) * 0.7, a + D * 0.65, 0.8)
+            if n == "giro":
+                put(sfx, cajon_(), a + D * 0.08, 1.1)
+                for i in range(6): put(sfx, moneda_(2400 + 300 * (i % 3)) * 0.5, a + D * 0.2 + i * 0.07, 0.6)
+                put(sfx, sting(1.6), a + D * 0.55, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, static(0.5) * 0.4, a + D * 0.1, 0.6); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 3 ----
         if os.environ.get("EP") == "noche3":
             def gota_(): t_ = T(0.12); return np.sin(2 * np.pi * (1400 - 5000 * t_) * t_) * np.exp(-t_ * 45) * 0.35       # gota de agua

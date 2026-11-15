@@ -308,3 +308,45 @@ def hoja_reglas(img, t, lineas, resalta=None, nota=None, nota_p=0.0, zoom=1.0, c
         txt = tr(nota); n = max(1, int(len(txt) * min(1, nota_p)))
         d.text((x0 + 70 * zoom, y0 + h - 120 * zoom), txt[:n], font=font(int(58 * zoom)), fill=(40, 60, 160), anchor="lm")
     return img
+
+# ---------- piezas añadidas en la Parte 4 ----------
+def anciano(esc, p, x, z, yaw=0.0, cara="neutral", abrigo=(92, 74, 56), pelo=(188, 186, 180)):
+    """anciano encorvado con abrigo largo de otra época, pelo canoso y boina (seco, aunque fuera haya niebla)"""
+    def boina(e, cab, u):
+        e.add(esfera(u(27), (52, 48, 46), 1), cadena(cab, mover(0, u(14), -u(2)), escala(1.1, 0.42, 1.12)))
+    p = add(p, pose(body=9, head=-7))
+    cab = humano(esc, p, x=x, z=z, yaw=yaw, ropa=abrigo, piel=(200, 182, 168), pantalon=(56, 52, 48), alto=0.95, cara=cara, pelo=pelo, extra_cabeza=boina)
+    s = 0.95 * 1.75 / 3.06; u = lambda v: v / 100 * s
+    base = cadena(mover(x, 0, z), rot_y(yaw), mover(0, u(L["ul"] + L["ll"] + 6), 0))
+    esc.add(prisma(u(24), u(31), u(85), tuple(int(v * 0.9) for v in abrigo), n=6), base)
+    return cab
+
+def monedas(esc, pts, col=(196, 168, 92), r=0.03, texto=None):
+    """monedas sobre una superficie: pts = [(x, y, z)]; texto: lo que se lee en cada una (p. ej. "1986")"""
+    for (x, y, z) in pts:
+        esc.add(prisma(r, r, 0.006, col, n=10), mover(x, y + 0.006, z), sesgo=0.9)
+        if texto: esc.etiquetas.append(((x, y + 0.008, z), texto, r * 0.42, (90, 70, 30)))
+
+def tabaco(esc, x, z, y=1.12):
+    """paquete de tabaco antiguo sobre el mostrador"""
+    _caja_en(esc, x - 0.045, y, z - 0.03, x + 0.045, y + 0.13, z + 0.03, (220, 214, 196), sesgo=0.8)
+    _caja_en(esc, x - 0.046, y + 0.07, z - 0.031, x + 0.046, y + 0.11, z + 0.031, (170, 40, 36), sesgo=0.85)
+
+CAJA_REG = (1.9, -1.85)                      # centro de la caja registradora (x, z)
+
+def caja_registradora(esc, fecha=None, cajon=0.0, pesetas=0, luz=1.0, fecha_col=(110, 240, 170)):
+    """lado del empleado de la caja: pantalla trasera con la fecha (etiqueta) y el cajón, que se abre hacia ti (cajon 0-1).
+    pesetas: cuántas monedas antiguas hay en el cajón (0 = cajón vacío)"""
+    x, z = CAJA_REG
+    _caja_en(esc, 1.7, 1.5, -1.962, 2.1, 1.7, -1.952, tuple(int(v * 0.35 * luz) for v in fecha_col), emite=True, sesgo=0.9)
+    if fecha: esc.etiquetas.append(((x, 1.6, -1.97), fecha, 0.045, fecha_col))
+    if cajon > 0:
+        z0 = -2.0 - 0.38 * cajon
+        _caja_en(esc, 1.58, 1.13, z0, 2.22, 1.15, z0 + 0.36, (36, 36, 40), sesgo=0.7)          # fondo
+        _caja_en(esc, 1.58, 1.15, z0, 2.22, 1.24, z0 + 0.012, (46, 46, 50), sesgo=0.75)        # frente
+        for k in range(1, 4): _caja_en(esc, 1.58 + k * 0.16 - 0.004, 1.15, z0, 1.58 + k * 0.16 + 0.004, 1.2, z0 + 0.36, (60, 60, 64), sesgo=0.75)
+        r_ = __import__("random").Random(4)
+        pts = [(1.58 + 0.08 + 0.16 * (i % 4) + r_.uniform(-0.035, 0.035), 1.15 + 0.008 * (i // 8), z0 + 0.05 + r_.uniform(0, 0.27)) for i in range(pesetas)]
+        cols = [(196, 168, 92), (170, 170, 164), (206, 176, 80)]
+        for i, (px, py, pz) in enumerate(pts):
+            esc.add(prisma(0.022, 0.022, 0.005, cols[i % 3], n=8), mover(px, py + 0.005, pz), sesgo=0.95)
