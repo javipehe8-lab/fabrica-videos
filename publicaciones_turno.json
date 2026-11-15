@@ -26,6 +26,13 @@
    "via": "Metricool",
    "metricool_id": 427836407,
    "video": "videos/turno/Turno_de_Noche_3.mp4"
+  },
+  {
+   "parte": 4,
+   "regla": "No sirvas a nadie que pague con monedas antiguas",
+   "titulo": "Regla 4: no aceptes monedas antiguas 🪙 Turno de noche (Parte 4) #shorts",
+   "video": "videos/turno/Turno_de_Noche_4.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -46,6 +53,12 @@
    "titulo": "Rule 3: the restroom is always broken 🚽 Night Shift (Part 3) #shorts",
    "video": "videos/turno/en/Night_Shift_3.mp4",
    "estado": "pendiente de subir a mano (15/11 00:30)"
+  },
+  {
+   "parte": 4,
+   "titulo": "Rule 4: don't take old coins 🪙 Night Shift (Part 4) #shorts",
+   "video": "videos/turno/en/Night_Shift_4.mp4",
+   "estado": "pendiente de subir a mano (16/11 00:30)"
   }
  ]
 }
