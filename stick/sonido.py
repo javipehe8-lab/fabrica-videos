@@ -284,6 +284,41 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 16 ----
+        if os.environ.get("EP") == "3am16":
+            motor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 140) * (0.7 + 0.3 * np.sin(2 * np.pi * 9 * T(d))) * 0.45   # motor del taxi
+            aviso_ = lambda: np.concatenate([beep(0.07, 1320), np.zeros(int(SR * 0.05)), beep(0.09, 1760)])                     # notificación
+            tecla_ = lambda: hp(rng.normal(0, 1, int(SR * 0.015)), 3000) * np.exp(-T(0.015) * 200) * 0.5
+            gota_ = lambda: np.sin(2 * np.pi * 1600 * T(0.05) * (1 - T(0.05) * 8)) * np.exp(-T(0.05) * 70) * 0.3
+            rio_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 500) * 0.25
+            if n == "taxi":
+                put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, motor_(D), a, 0.8)
+                for i in range(3): put(sfx, gota_(), a + 0.8 + i * 0.9, 0.7)
+            if n == "ojos": put(sfx, motor_(D), a, 0.7); put(sfx, heartbeat(5, 85), a + 0.3, 0.7); put(sfx, beep(0.1, 900) * 0.5, a + D * 0.75, 0.6)
+            if n == "numero":
+                put(sfx, motor_(D), a, 0.6)
+                for i in range(10): put(sfx, tecla_(), a + 0.3 + i * 0.16, 0.8)
+                put(sfx, whoosh(0.3), a + D * 0.8, 0.5)
+            if n == "respuesta":
+                put(sfx, motor_(D), a, 0.6); put(sfx, aviso_(), a + 0.3, 0.9)
+                put(sfx, sting(1.4) * 0.8, a + D * 0.75, 1.0); put(sfx, heartbeat(3, 110), a + D * 0.7, 0.7)
+            if n == "puente": put(sfx, motor_(D), a, 0.9); put(sfx, rio_(D), a, 0.6); put(sfx, riser(D * 0.8) * 0.6, a + D * 0.2, 0.5)
+            if n == "flores":
+                put(sfx, motor_(D * 0.5) * np.linspace(1, 0, int(SR * D * 0.5)), a, 0.8)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.9)), 1500, 5000) * np.linspace(0.5, 0, int(SR * 0.9)), a + 0.2, 0.5)   # frenazo
+                put(sfx, rio_(D), a, 0.6); put(sfx, heartbeat(4, 100), a + D * 0.5, 0.7)
+            if n == "habla":
+                put(sfx, rio_(D), a, 0.5)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 1.0)), 200, 900) * np.exp(-T(1.0) * 1.5) * 0.35, a + D * 0.25, 0.8)   # cuello que cruje
+                put(sfx, boom(2.0, 55), a + D * 0.42, 1.3); put(sfx, sting(1.6), a + D * 0.42, 1.1)
+            if n == "puerta":
+                put(sfx, impact() * 0.5, a + D * 0.05, 0.8); put(sfx, rio_(D), a, 1.0)
+                put(sfx, riser(D * 0.5) * 0.6, a + D * 0.35, 0.6); put(sfx, boom(1.8, 45), a + D * 0.8, 1.1); put(sfx, scream(1.0) * 0.35, a + D * 0.82, 0.6)
+            if n == "final":
+                put(sfx, rio_(D * 0.8), a, 0.5)
+                for i in range(3): put(sfx, gota_(), a + 0.3 + i * 0.6, 0.7)
+                put(sfx, boom(2.2, 45), a + D * 0.4, 1.3); put(sfx, sting(1.4), a + D * 0.4, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 15 ----
         if os.environ.get("EP") == "3am15":
             clic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.03)), 2000) * np.exp(-T(0.03) * 110) * 1.0                    # interruptor de la radio
