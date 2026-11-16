@@ -33,6 +33,13 @@
    "titulo": "Regla 4: no aceptes monedas antiguas 🪙 Turno de noche (Parte 4) #shorts",
    "video": "videos/turno/Turno_de_Noche_4.mp4",
    "estado": "en cola_youtube.json (pendiente)"
+  },
+  {
+   "parte": 5,
+   "regla": "Si la niebla entra en la tienda, apaga todas las luces y no respires",
+   "titulo": "Regla 5: si entra la niebla, no respires 🌫️ Turno de noche (Parte 5) #shorts",
+   "video": "videos/turno/Turno_de_Noche_5.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -59,6 +66,12 @@
    "titulo": "Rule 4: don't take old coins 🪙 Night Shift (Part 4) #shorts",
    "video": "videos/turno/en/Night_Shift_4.mp4",
    "estado": "pendiente de subir a mano (16/11 00:30)"
+  },
+  {
+   "parte": 5,
+   "titulo": "Rule 5: if the fog gets in, don't breathe 🌫️ Night Shift (Part 5) #shorts",
+   "video": "videos/turno/en/Night_Shift_5.mp4",
+   "estado": "pendiente de subir a mano (17/11 00:30)"
   }
  ]
 }
