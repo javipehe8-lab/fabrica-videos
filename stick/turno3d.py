@@ -429,3 +429,24 @@ def render_niebla(esc, cam, luces, k, alfa=0.75, desenfoque=10, **kw):
 def cam_puerta_cctv():
     """CAM 1 girada hacia la puerta: desde la esquina alta de la derecha, a lo largo de la cristalera"""
     return Camara(ojo=(4.7, 2.8, -0.5), mira=(-3.0, 0.2, -1.0), fov=62)
+
+# ---------- arranque (desde la Parte 6): el primer segundo tiene que parar el scroll ----------
+def aclarar(img, k=1.35, gamma=0.8):
+    """sube la exposición de un plano 3D (en el móvil los planos oscuros con niebla se ven como una mancha gris)"""
+    import numpy as _np
+    a = _np.asarray(img).astype(_np.float32) / 255.0
+    a = _np.clip((a ** gamma) * k, 0, 1)
+    return Image.fromarray((a * 255).astype(_np.uint8))
+
+def rotulo_regla(img, n, texto, p=1.0, y=430, col=(235, 40, 40)):
+    """'REGLA N' + la regla en grande sobre el plano de arranque (p: 0-1 para la animación de entrada).
+    Va en la zona alta, lejos de los subtítulos (y > 1300)."""
+    if p <= 0: return img
+    d = ImageDraw.Draw(img)
+    s = 0.6 + 0.4 * min(1.0, p)
+    d.text((W / 2, y - 120 * s), f"{tr('REGLA')} {n}", font=font(int(120 * s)), fill=col, anchor="mm", stroke_width=10, stroke_fill=(0, 0, 0))
+    fnt = font(int(64 * s))
+    lineas = _envolver(d, tr(texto), fnt, W - 140)
+    for i, ln in enumerate(lineas[:3]):
+        d.text((W / 2, y + i * 78 * s), ln, font=fnt, fill=(255, 255, 255), anchor="mm", stroke_width=8, stroke_fill=(0, 0, 0))
+    return img
