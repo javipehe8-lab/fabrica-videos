@@ -280,13 +280,13 @@ def _envolver(d, txt, fnt, ancho):
     if cur: lineas.append(cur)
     return lineas
 
-def hoja_reglas(img, t, lineas, resalta=None, nota=None, nota_p=0.0, zoom=1.0, cy=None):
+def hoja_reglas(img, t, lineas, resalta=None, nota=None, nota_p=0.0, zoom=1.0, cy=None, h_extra=0):
     """la hoja plastificada de reglas en primer plano (plano subjetivo).
     lineas: textos de las reglas; "?" = regla tachada con rotulador (aún no se ha descubierto).
     resalta: índice de la regla del episodio (fondo amarillo). nota: texto a mano al pie, que se escribe según nota_p (0-1)."""
     d = ImageDraw.Draw(img)
     cx = W / 2; cy = cy or 860
-    w, h = 900 * zoom, 1120 * zoom
+    w, h = 900 * zoom, (1120 + h_extra) * zoom          # h_extra: hoja más larga cuando ya hay muchas reglas
     x0, y0 = cx - w / 2, cy - h / 2
     d.rectangle((x0 + 18, y0 + 22, x0 + w + 18, y0 + h + 22), fill=(10, 10, 10))
     d.rectangle((x0, y0, x0 + w, y0 + h), fill=(226, 222, 204), outline=(120, 118, 100), width=6)
@@ -350,3 +350,82 @@ def caja_registradora(esc, fecha=None, cajon=0.0, pesetas=0, luz=1.0, fecha_col=
         cols = [(196, 168, 92), (170, 170, 164), (206, 176, 80)]
         for i, (px, py, pz) in enumerate(pts):
             esc.add(prisma(0.022, 0.022, 0.005, cols[i % 3], n=8), mover(px, py + 0.005, pz), sesgo=0.95)
+
+# ---------- piezas añadidas en la Parte 5 ----------
+PUERTA_T = (-3.0, 0.0)                       # puerta de la tienda (x, z de la fachada)
+
+def niebla_suelo(esc, k, origen=PUERTA_T, alcance=7.5, alto=0.4, col=(150, 158, 156), emite=False, t=0.0, semilla=5, n=90):
+    """niebla baja que entra por debajo de la puerta y se extiende por el suelo de la tienda.
+    k: cuánto ha avanzado (0-1). Jirones = cajas planas de distintos tamaños; con emite=True brillan un poco (para planos a oscuras)."""
+    if k <= 0: return
+    r_ = __import__("random").Random(semilla)
+    for i in range(n):
+        ang = r_.uniform(-math.pi * 0.95, -math.pi * 0.05)                 # hacia dentro de la tienda (z < 0)
+        d = r_.uniform(0, 1) ** 0.8 * alcance
+        if d > k * alcance: continue
+        x = origen[0] + math.cos(ang) * d * 1.15 + 0.12 * math.sin(t * 0.7 + i)
+        z = origen[1] + math.sin(ang) * d * 0.8 - 0.1
+        if not (-4.9 < x < 4.9 and -5.9 < z < -0.05): continue
+        w_, dd = r_.uniform(0.9, 2.0), r_.uniform(0.6, 1.4)
+        h_ = alto * r_.uniform(0.15, 1.0) * min(1.0, 0.4 + k) * max(0.35, 1 - d / alcance * 0.6)
+        c = tuple(int(v * r_.uniform(0.85, 1.05)) for v in col)
+        esc.add(caja(w_, h_, dd, c, base=True), cadena(mover(x, 0.0, z), rot_y(r_.uniform(0, math.pi))), emite, sesgo=0.05)
+
+def luz_figura(x, z, yaw, f=1.0, y=1.5):
+    """resplandor frío y débil que desprende la figura de niebla (ilumina su parte delantera)"""
+    return Luz((x + 0.9 * math.sin(yaw), y, z + 0.9 * math.cos(yaw)), (170, 190, 190), 2.6, fuerza=0.9 * f)
+
+def figura_niebla(esc, p, x, z, yaw=0.0, col=(118, 126, 124), gorra=True, alto=1.08, brillo=1.0, emite=True):
+    """una silueta hecha de niebla, sin cara (brilla débilmente: se ve a oscuras). gorra=True: tiene la forma de la gorra del uniforme"""
+    c = tuple(int(min(255, v * brillo)) for v in col)
+    def gor(e, cab, u):
+        if gorra:
+            e.add(esfera(u(26), c, 1), cadena(cab, mover(0, u(10), 0), escala(1, 0.55, 1)))
+            e.add(caja(u(36), u(4), u(22), c), cadena(cab, mover(0, u(8), u(24))))
+    n0 = len(esc.objs)
+    cab = humano(esc, p, x=x, z=z, yaw=yaw, ropa=c, piel=c, pantalon=c, alto=alto, cara="ninguna", extra_cabeza=gor)
+    if emite:
+        for i in range(n0, len(esc.objs)):
+            m, M, _, f, s = esc.objs[i]
+            esc.objs[i] = (m, M, True, f, s)
+    return cab
+
+def vaho(img, texto, cx, cy, size=120, p=1.0, rot=-6, ancho=None):
+    """texto escrito con el dedo en el vaho de un cristal o plástico: mancha blanquecina + letras borrosas (p: 0-1 aparece)"""
+    if p <= 0: return img
+    from PIL import ImageFilter
+    capa = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(capa)
+    fnt = font(size)
+    txt = tr(texto)
+    while ancho and d.textlength(txt, font=fnt) > ancho and size > 30:
+        size -= 4; fnt = font(size)
+    tw = d.textlength(txt, font=fnt)
+    d.ellipse((cx - tw / 2 - 120, cy - size * 1.5, cx + tw / 2 + 120, cy + size * 1.5), fill=(214, 222, 220, int(225 * min(1, p * 2))))
+    capa = capa.filter(ImageFilter.GaussianBlur(45))
+    letras = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    n = max(1, int(len(txt) * min(1.0, p * 1.4)))
+    dl = ImageDraw.Draw(letras)
+    dl.text((cx + 5, cy + 6), txt[:n], font=fnt, fill=(40, 50, 50, int(150 * min(1, p * 1.5))), anchor="mm")     # surco más oscuro
+    dl.text((cx, cy), txt[:n], font=fnt, fill=(255, 255, 255, int(255 * min(1, p * 1.5))), anchor="mm")
+    letras = letras.rotate(rot, center=(cx, cy), resample=Image.BICUBIC).filter(ImageFilter.GaussianBlur(3))
+    out = Image.alpha_composite(Image.alpha_composite(img.convert("RGBA"), capa), letras)
+    return out.convert("RGB")
+
+def render_niebla(esc, cam, luces, k, alfa=0.75, desenfoque=10, **kw):
+    """renderiza la escena con la niebla baja SEMITRANSPARENTE: se dibuja con y sin niebla y se mezclan
+    (la niebla, desenfocada, se funde con lo que hay detrás). kw: opciones de niebla_suelo (t, col, emite, origen...)"""
+    from PIL import ImageFilter, ImageChops
+    limpio = esc.render(cam, luces)
+    n0 = len(esc.objs)
+    niebla_suelo(esc, k, **kw)
+    if len(esc.objs) == n0: return limpio
+    con = esc.render(cam, luces)
+    del esc.objs[n0:]
+    dif = ImageChops.difference(limpio, con).convert("L").point(lambda v: 255 if v > 6 else 0)
+    mask = dif.filter(ImageFilter.GaussianBlur(desenfoque * 2.5)).point(lambda v: int(v * alfa))
+    return Image.composite(con.filter(ImageFilter.GaussianBlur(desenfoque)), limpio, mask)
+
+def cam_puerta_cctv():
+    """CAM 1 girada hacia la puerta: desde la esquina alta de la derecha, a lo largo de la cristalera"""
+    return Camara(ojo=(4.7, 2.8, -0.5), mira=(-3.0, 0.2, -1.0), fov=62)

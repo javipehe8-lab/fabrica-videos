@@ -187,6 +187,27 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 5 ----
+        if os.environ.get("EP") == "noche5":
+            def siseo_(d):                                                                      # la niebla colándose: siseo que crece
+                return bp(rng.normal(0, 1, int(SR * d)), 300, 2500) * np.linspace(0.05, 0.35, int(SR * d))
+            def clac_():                                                                        # interruptor general
+                t_ = T(0.3); return bp(rng.normal(0, 1, len(t_)), 800, 5000) * np.exp(-t_ * 60) * 0.9 + boom(0.3, 70)[: len(t_)] * 0.5
+            if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "lista": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6); put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.35)), 2000, 6000) * 0.12, a + D * 0.45, 1.0)
+            if n == "niebla": put(sfx, siseo_(D), a, 0.9); put(sfx, buzz(D) * 0.5, a, 0.6); put(sfx, riser(D * 0.5), a + D * 0.5, 0.4)
+            if n == "apago":
+                put(sfx, clac_(), a + D * 0.12, 1.2); put(sfx, siseo_(D) * 0.6, a, 0.6)
+                for i in range(int(D * 0.7 / 0.75)): put(sfx, step() * 0.55, a + D * 0.28 + i * 0.75, 0.7)
+            if n == "voz":
+                for i in range(3): put(sfx, step() * 0.6, a + 0.1 + i * 0.6, 0.7)
+                put(sfx, heartbeat(3, 70), a + D * 0.3, 0.6); put(sfx, riser(D * 0.5), a + D * 0.45, 0.5)
+            if n == "aguanto": put(sfx, heartbeat(5, 96), a, 0.9); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 200) * 0.3, a, 0.8); put(sfx, sting(1.3) * 0.6, a + D * 0.7, 0.7)
+            if n == "giro":
+                put(sfx, clac_(), a, 1.0); put(sfx, buzz(D) * 0.6, a + 0.05, 0.7); put(sfx, siseo_(D * 0.3)[::-1] * 0.6, a, 0.6)
+                put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.4)), 1500, 5000) * 0.1, a + D * 0.45, 1.0); put(sfx, sting(1.6), a + D * 0.6, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, siseo_(0.8) * 0.5, a + D * 0.35, 0.6); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 4 ----
         if os.environ.get("EP") == "noche4":
             def moneda_(f=3200):                                                                # moneda que cae sobre el mostrador
