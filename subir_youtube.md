@@ -24,7 +24,7 @@ Carga las herramientas de Claude en Chrome en UNA llamada a ToolSearch (tabs_con
       inp.files = dt.files; inp.dispatchEvent(new Event('change', {bubbles: true}));
       'ok ' + window.__v.size
       ```
-   b. Título: clic en el cuadro del título, `ctrl+a` y escribe el título. Descripción: clic en el cuadro de descripción y escríbela. Clic en una zona vacía para cerrar las sugerencias de hashtags.
+   b. Título: clic en el cuadro del título, `ctrl+a` y escribe el título. Descripción: busca el cuadro con `find` ("textbox de descripción 'Cuenta a los usuarios de qué va tu vídeo'") y haz clic en su ref (NO por coordenadas: el 14/11 cuatro vídeos se quedaron sin descripción por eso), escríbela y comprueba con una captura que el texto está dentro. Clic en una zona vacía para cerrar las sugerencias de hashtags.
    c. `find` "radio 'No, no está creado para niños'" → `scroll_to` + clic. OBLIGATORIO.
    d. "Siguiente" tres veces (esperando ~2 s entre clics) hasta "Visibilidad".
    e. Abre "Programar". Clic en la fecha → elige el día en el calendario. Clic en la hora → `ctrl+a` → escribe "HH:MM" → Enter. **Comprueba con zoom que fecha y hora son las correctas** antes de seguir (a veces la hora se queda en 0:00: repítelo).
