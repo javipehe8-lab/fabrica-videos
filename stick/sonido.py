@@ -305,6 +305,40 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 17 ----
+        if os.environ.get("EP") == "3am17":
+            cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.35)), 300, 1100) * (0.5 + 0.5 * np.sin(2 * np.pi * 23 * T(0.35))) * np.exp(-T(0.35) * 6) * 0.5   # madera que cruje
+            blando_ = lambda: lp(rng.normal(0, 1, int(SR * 0.5)), 180) * np.exp(-T(0.5) * 5) * 1.2                      # pisada sobre algo blando
+            aliento_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 250, 1400) * np.sin(np.pi * T(d) / d) ** 2 * 0.45     # respiración
+            clic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.03)), 2000) * np.exp(-T(0.03) * 110)
+            if n == "reloj":
+                put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, beep(0.1, 880), a + 0.05, 1.0); put(sfx, beep(0.1, 880), a + 0.3, 1.0)
+                for i in range(3): put(sfx, step(), a + D * 0.5 + i * 0.55, 0.7); put(sfx, cruje_(), a + D * 0.5 + i * 0.55, 0.5)
+            if n == "trece":
+                for i in range(9): put(sfx, step(), a + 0.05 + i * D * 0.92 / 8.8, 0.8); put(sfx, cruje_(), a + 0.05 + i * D * 0.92 / 8.8, 0.35)
+            if n == "catorce":
+                put(sfx, step(), a + 0.95, 0.9); put(sfx, cruje_(), a + 0.95, 0.6)
+                put(sfx, riser(1.2) * 0.6, a + 1.7, 0.6); put(sfx, blando_(), a + 2.87, 1.2)
+                put(sfx, boom(1.8, 50), a + 2.87, 1.2); put(sfx, sting(1.4), a + 2.87, 1.0)
+            if n == "blando": put(sfx, blando_(), a + 0.25, 1.0); put(sfx, heartbeat(4, 90), a + 0.6, 0.7)
+            if n == "respira":
+                put(sfx, heartbeat(5, 110), a, 0.6)
+                put(sfx, aliento_(1.1), a + 1.75, 1.0); put(sfx, aliento_(1.2), a + 2.95, 0.9)
+            if n == "movil":
+                put(sfx, clic_(), a + 0.35, 1.0); put(sfx, aliento_(1.0), a + 0.8, 0.7)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.4)), 300, 1500) * np.exp(-T(0.4) * 4) * 0.8, a + 2.6, 1.0)   # cuello que cruje
+                put(sfx, boom(2.0, 55), a + 3.0, 1.3); put(sfx, sting(1.6), a + 3.0, 1.1); put(sfx, scream(1.0) * 0.5, a + 3.02, 0.7)
+            if n == "subes":
+                for i in range(int(D * 0.55 / 0.17)): put(sfx, step(), a + i * 0.17, 0.9)
+                put(sfx, heartbeat(4, 160), a, 0.8); put(sfx, whoosh(0.4), a + D * 0.55, 0.8)
+            if n == "cuenta":
+                put(sfx, heartbeat(6, 120), a + 0.3, 0.6)
+                for c in (2.51, 3.54, 4.63): put(sfx, cruje_(), a + c - 0.1, 0.9); put(sfx, step(), a + c - 0.1, 0.7)
+            if n == "final":
+                put(sfx, aliento_(1.2), a + 1.2, 0.8)
+                put(sfx, boom(2.0, 55), a + 2.62, 1.3); put(sfx, sting(1.6), a + 2.62, 1.1)
+                put(sfx, boom(2.2, 45), a + 4.1, 1.3); put(sfx, sting(1.4), a + 4.1, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 16 ----
         if os.environ.get("EP") == "3am16":
             motor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 140) * (0.7 + 0.3 * np.sin(2 * np.pi * 9 * T(d))) * 0.45   # motor del taxi
