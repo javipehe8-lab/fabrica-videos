@@ -40,6 +40,13 @@
    "titulo": "Regla 5: si entra la niebla, no respires 🌫️ Turno de noche (Parte 5) #shorts",
    "video": "videos/turno/Turno_de_Noche_5.mp4",
    "estado": "en cola_youtube.json (pendiente)"
+  },
+  {
+   "parte": 6,
+   "regla": "Si alguien pregunta por el kilómetro 10, di que no existe",
+   "titulo": "Regla 6: el kilómetro 10 no existe 🚗 Turno de noche (Parte 6) #shorts",
+   "video": "videos/turno/Turno_de_Noche_6.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -72,6 +79,12 @@
    "titulo": "Rule 5: if the fog gets in, don't breathe 🌫️ Night Shift (Part 5) #shorts",
    "video": "videos/turno/en/Night_Shift_5.mp4",
    "estado": "pendiente de subir a mano (17/11 00:30)"
+  },
+  {
+   "parte": 6,
+   "titulo": "Rule 6: mile 10 doesn't exist 🚗 Night Shift (Part 6) #shorts",
+   "video": "videos/turno/en/Night_Shift_6.mp4",
+   "estado": "pendiente de subir a mano"
   }
  ]
 }
