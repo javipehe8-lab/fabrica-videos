@@ -450,3 +450,116 @@ def rotulo_regla(img, n, texto, p=1.0, y=430, col=(235, 40, 40)):
     for i, ln in enumerate(lineas[:3]):
         d.text((W / 2, y + i * 78 * s), ln, font=fnt, fill=(255, 255, 255), anchor="mm", stroke_width=8, stroke_fill=(0, 0, 0))
     return img
+
+# ---------- piezas añadidas en la Parte 6: el coche familiar, los pasajeros y el cuaderno de Raúl ----------
+ASIENTOS = {"conductor": (0.42, 0.05), "copiloto": (-0.42, 0.05), "detras_izq": (0.42, -1.0), "detras_der": (-0.42, -1.0)}
+
+def coche_familiar(esc, x, z, yaw=0.0, col=(58, 70, 86), faros=0.0, pilotos=0.0, ventanilla=1.0):
+    """turismo familiar con la cabina ABIERTA (montantes y techo, sin cristales) para ver quién va dentro.
+    Mira hacia +z local; el conductor va a la izquierda (+x local). pilotos: luces rojas de atrás (0-1).
+    ventanilla: 1 = ventanilla del conductor bajada (las demás llevan un cristal oscuro hasta media altura)."""
+    M = cadena(mover(x, 0, z), rot_y(yaw))
+    oscuro = tuple(int(v * 0.6) for v in col)
+    esc.add(caja(1.8, 0.62, 4.3, col, base=True), cadena(M, mover(0, 0.36, 0)))                  # carrocería (0.36-0.98)
+    esc.add(caja(1.82, 0.08, 4.32, (30, 30, 32), base=True), cadena(M, mover(0, 0.3, 0)))        # bajos
+    esc.add(caja(1.7, 0.04, 2.3, (34, 32, 30), base=True), cadena(M, mover(0, 0.97, -0.45)))     # suelo/interior oscuro
+    # techo y montantes
+    esc.add(caja(1.62, 0.07, 2.25, col, base=True), cadena(M, mover(0, 1.6, -0.45)))
+    for sx in (-0.78, 0.78):
+        for sz, inc in ((0.7, 0.35), (-0.4, 0.0), (-1.55, -0.3)):
+            esc.add(caja(0.07, 0.64, 0.08, oscuro, base=True), cadena(M, mover(sx, 0.98, sz), rot_x(inc)))
+    esc.add(caja(1.55, 0.04, 0.6, (24, 28, 34)), cadena(M, mover(0, 1.3, 0.85), rot_x(-0.95)))   # parabrisas (oscuro)
+    # asientos (respaldos) y volante
+    for n_, (sx, sz) in ASIENTOS.items():
+        esc.add(caja(0.5, 0.62, 0.12, (46, 44, 48), base=True), cadena(M, mover(sx, 0.95, sz - 0.3), rot_x(-0.15)))
+        esc.add(caja(0.26, 0.14, 0.1, (46, 44, 48), base=True), cadena(M, mover(sx, 1.58, sz - 0.38)))   # reposacabezas
+    esc.add(prisma(0.17, 0.17, 0.03, (24, 24, 26), n=8), cadena(M, mover(0.42, 1.15, 0.5), rot_x(-1.2)))
+    # cristales bajos de las otras puertas (medio subidos)
+    for sx, sz, d in ((-0.81, 0.15, 1.0), (-0.81, -0.98, 1.0), (0.81, -0.98, 1.0)):
+        esc.add(caja(0.02, 0.22, d, (40, 50, 58)), cadena(M, mover(sx, 1.09, sz)))
+    if ventanilla < 1: esc.add(caja(0.02, 0.5 * (1 - ventanilla), 1.0, (40, 50, 58)), cadena(M, mover(0.81, 0.98 + 0.25 * (1 - ventanilla), 0.15)))
+    for sx in (-0.86, 0.86):                                                                     # ruedas
+        for sz in (-1.35, 1.35): esc.add(caja(0.25, 0.62, 0.62, (14, 14, 14)), cadena(M, mover(sx, 0.31, sz)))
+        f = tuple(int(v * faros) for v in (255, 250, 220)) if faros > 0 else (70, 70, 64)
+        esc.add(caja(0.38, 0.16, 0.05, f), cadena(M, mover(sx * 0.72, 0.78, 2.16)), emite=faros > 0)
+        r = tuple(int(v * (0.3 + 0.7 * pilotos)) for v in (255, 40, 30))
+        esc.add(caja(0.38, 0.14, 0.05, r), cadena(M, mover(sx * 0.72, 0.8, -2.16)), emite=pilotos > 0)
+    esc.add(caja(0.5, 0.12, 0.02, (210, 210, 200)), cadena(M, mover(0, 0.62, -2.17)))           # matrícula
+    return M
+
+def pasajero(esc, M, asiento, ropa=(70, 60, 80), piel=(200, 186, 172), alto=1.0, cara="neutral", pelo=None,
+             mira=0.0, brazo=None, extra_cabeza=None, gira=0.0):
+    """alguien sentado en el coche M (de coche_familiar), sin piernas (quedan dentro de la carrocería).
+    mira: ladea la cabeza (grados); gira: gira el cuerpo hacia la ventanilla (rad). brazo: pose del brazo derecho (a2u, a2l)"""
+    sx, sz = ASIENTOS[asiento]
+    s = alto * 1.75 / 3.06
+    cad = 1.36 * s                                   # altura de la cadera de pie
+    p = pose(head=mira, a1u=40, a1l=60, a2u=40, a2l=60)
+    if brazo: p.update(a2u=brazo[0], a2l=brazo[1])
+    Mw = cadena(M, mover(sx, 0, sz))
+    # humano trabaja en coordenadas del mundo: sacamos posición y giro de la matriz
+    px, py, pz = (Mw @ np.array([0, 0, 0, 1.0]))[:3]
+    yaw = math.atan2(M[0, 2], M[2, 2]) + gira
+    n0 = len(esc.objs)
+    cab = humano(esc, p, x=px, z=pz, y=0.6 + (1 - alto) * 0.55 - cad, yaw=yaw, ropa=ropa, piel=piel, pantalon=ropa, alto=alto, cara=cara, pelo=pelo, extra_cabeza=extra_cabeza)
+    del esc.objs[-6:]                                # fuera las piernas (las 6 últimas piezas)
+    return cab
+
+def capucha(col):
+    """extra_cabeza: capucha del chubasquero (para la niña)"""
+    def f(e, cab, u): e.add(esfera(u(32), col, 1), cadena(cab, mover(0, u(6), -u(8)), escala(1.08, 1.05, 1.0)))
+    return f
+
+def cuaderno3d(esc, x, y, z, yaw=0.0, abierto=False, col=(40, 70, 60)):
+    """el cuaderno de Raúl en 3D (tapas verdes, hojas onduladas por el agua); se ve 'RAÚL' en la tapa"""
+    M = cadena(mover(x, y, z), rot_y(yaw))
+    esc.add(caja(0.22, 0.03, 0.3, col), M, sesgo=0.6)
+    esc.add(caja(0.2, 0.026, 0.29, (214, 208, 186)), cadena(M, mover(0.012, 0.0, 0)), sesgo=0.65)
+    esc.add(caja(0.22, 0.004, 0.3, col), cadena(M, mover(0, 0.017, 0)), sesgo=0.7)
+    esc.etiquetas.append(((x, y + 0.025, z), "RAÚL", 0.05, (230, 226, 210)))
+
+def cuaderno(img, t, pagina=0.0, lineas=(), nombre_p=0.0, mojado=0.6, cy=820, escala=1.0):
+    """el cuaderno de Raúl en primer plano (2D). pagina 0 = tapa cerrada (con RAÚL escrito a mano); 1 = abierto por la última página.
+    lineas: notas a mano; nombre_p (0-1): se ve 'EL SIGUIENTE:' y un nombre emborronado por el agua."""
+    from PIL import ImageFilter
+    d = ImageDraw.Draw(img)
+    w, h = 760 * escala, 1000 * escala
+    x0, y0 = W / 2 - w / 2, cy - h / 2
+    d.rectangle((x0 + 22, y0 + 26, x0 + w + 22, y0 + h + 26), fill=(8, 8, 8))
+    if pagina < 0.5:
+        d.rectangle((x0, y0, x0 + w, y0 + h), fill=(44, 74, 62), outline=(20, 34, 30), width=8)
+        d.rectangle((x0 + 60 * escala, y0 + 170 * escala, x0 + w - 60 * escala, y0 + 330 * escala), fill=(222, 216, 196))
+        d.text((W / 2, y0 + 250 * escala), tr("RAÚL"), font=font(int(110 * escala)), fill=(40, 60, 160), anchor="mm")
+        d.text((W / 2, y0 + 420 * escala), tr("KM 9"), font=font(int(60 * escala)), fill=(214, 210, 190), anchor="mm")
+    else:
+        d.rectangle((x0, y0, x0 + w, y0 + h), fill=(222, 216, 194), outline=(150, 140, 120), width=6)
+        for k in range(14): d.line((x0 + 30, y0 + 120 * escala + k * 62 * escala, x0 + w - 30, y0 + 120 * escala + k * 62 * escala), fill=(170, 180, 200), width=2)
+        d.line((x0 + 110 * escala, y0, x0 + 110 * escala, y0 + h), fill=(210, 120, 120), width=3)
+        for i, ln in enumerate(lineas):
+            fs = 54
+            while d.textlength(tr(ln), font=font(int(fs * escala))) > w - 170 * escala and fs > 26: fs -= 2
+            d.text((x0 + 130 * escala, y0 + 160 * escala + i * 124 * escala), tr(ln), font=font(int(fs * escala)), fill=(40, 60, 150), anchor="lm")
+        if nombre_p > 0:
+            yy = y0 + 160 * escala + len(lineas) * 124 * escala + 40 * escala
+            d.text((x0 + 130 * escala, yy), tr("EL SIGUIENTE:"), font=font(int(64 * escala)), fill=(150, 30, 30), anchor="lm")
+            # el nombre: tinta corrida por el agua (no se lee, pero es el tuyo): letras muy emborronadas y chorretones
+            capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+            a = int(255 * min(1, nombre_p))
+            fn = font(int(76 * escala))
+            dc.text((x0 + 150 * escala, yy + 120 * escala), "Mxnuel Arxas", font=fn, fill=(40, 50, 150, a), anchor="lm")
+            r_ = __import__("random").Random(6)
+            tw = dc.textlength("Mxnuel Arxas", font=fn)
+            for j in range(6):
+                xx = x0 + 150 * escala + r_.uniform(0, tw); ll = r_.uniform(60, 200) * escala * min(1, nombre_p * 1.3)
+                dc.line((xx, yy + 140 * escala, xx + 4, yy + 140 * escala + ll), fill=(40, 50, 150, int(a * 0.7)), width=int(10 * escala))
+            capa = capa.filter(ImageFilter.GaussianBlur(14 * escala))
+            img.paste(capa, (0, 0), capa)
+    if mojado > 0:                                       # manchas de agua y hojas onduladas
+        capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+        r_ = __import__("random").Random(9)
+        for j in range(7):
+            cx_, cy_, rr = r_.uniform(x0, x0 + w), r_.uniform(y0, y0 + h), r_.uniform(60, 160) * escala
+            dc.ellipse((cx_ - rr, cy_ - rr, cx_ + rr, cy_ + rr), fill=(60, 70, 80, int(60 * mojado)))
+        capa = capa.filter(ImageFilter.GaussianBlur(25))
+        img.paste(capa, (0, 0), capa)
+    return img

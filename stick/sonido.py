@@ -187,6 +187,26 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 6 ----
+        if os.environ.get("EP") == "noche6":
+            def motor_(d, f=46):                                                                # motor de coche al ralentí
+                t_ = T(d); return (np.sin(2 * np.pi * f * t_) * (0.6 + 0.4 * np.sin(2 * np.pi * 7 * t_)) * 0.25 + lp(rng.normal(0, 1, len(t_)), 180) * 0.4)
+            def ventanilla_(d=0.9):                                                             # ventanilla eléctrica bajando
+                t_ = T(d); return bp(rng.normal(0, 1, len(t_)), 300, 1400) * 0.35 * np.minimum(1, t_ * 8) * np.minimum(1, (d - t_) * 8)
+            def pagina_(): return bp(rng.normal(0, 1, int(SR * 0.25)), 1500, 7000) * np.exp(-T(0.25) * 14) * 0.5
+            if n == "arranque": put(sfx, boom(1.4, 55), a, 1.2); put(sfx, motor_(D) * 0.7, a, 0.6); put(sfx, sting(1.2) * 0.6, a + 0.1, 0.7)
+            if n == "premisa": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.2, a, 1.0)
+            if n == "coche": put(sfx, motor_(D), a, 0.9); put(sfx, ventanilla_(), a + D * 0.3, 0.8); put(sfx, heartbeat(3, 68), a + D * 0.6, 0.5)
+            if n == "niego": put(sfx, motor_(D) * np.linspace(1, 0.2, int(SR * D)), a, 0.9); put(sfx, riser(D * 0.5), a + D * 0.4, 0.4)
+            if n == "vuelve":
+                put(sfx, static(D) * 0.35, a, 0.6)
+                for i in range(3): put(sfx, beep(0.08, 1000), a + i * D / 3 + 0.05, 0.5); put(sfx, motor_(0.8) * 0.6, a + i * D / 3, 0.6)
+            if n == "nina": put(sfx, motor_(D) * 0.5, a, 0.6); put(sfx, ventanilla_(), a + D * 0.4, 0.9); put(sfx, heartbeat(4, 84), a + D * 0.3, 0.6); put(sfx, riser(D * 0.6), a + D * 0.4, 0.5)
+            if n == "giro":
+                put(sfx, pagina_(), a + D * 0.3, 0.9); put(sfx, pagina_(), a + D * 0.35, 0.7)
+                put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.3)), 2000, 6000) * 0.1, a + D * 0.45, 1.0); put(sfx, sting(1.6), a + D * 0.6, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, motor_(D) * np.linspace(0.6, 0, int(SR * D)), a, 0.6); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 5 ----
         if os.environ.get("EP") == "noche5":
             def siseo_(d):                                                                      # la niebla colándose: siseo que crece

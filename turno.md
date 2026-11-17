@@ -51,5 +51,7 @@ Si al llegar al 12 la serie va bien, empieza la temporada 2 con el empleado nuev
 
 ## Episodios emitidos (resumen + objeto final, para encadenar)
 1-5: ver las versiones emitidas en el banco de arriba. Final de la 5: la niebla tiene la voz de Raúl y escribió en el vaho "TÚ TODAVÍA NO".
+6. **Regla 6: si alguien pregunta por el kilómetro 10, di que no existe.** A la una, un coche familiar (padre, madre, niño y niña con chubasquero granate) pregunta por el km 10; dices que no existe. Vuelve cada media hora con uno menos (CAM 2: 3, 2…); a las 2:30 solo queda la niña atrás, sin nadie al volante: "Raúl dice que es tuyo."
+   **Final/objeto:** el cuaderno verde de Raúl (tapa "RAÚL · KM 9"; notas: "Le dije que sí. / Respiré. / Ya no me acuerdo de mi cara."); en la última página, "EL SIGUIENTE:" y tu nombre, corrido por el agua (nunca se lee). Cierre: "Raúl escribió mi nombre antes de conocerme." Piezas nuevas en turno3d: `coche_familiar`, `pasajero`, `capucha`, `cuaderno3d`, `cuaderno` (2D).
 
 
