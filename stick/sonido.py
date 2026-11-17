@@ -325,6 +325,42 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 18 ----
+        if os.environ.get("EP") == "3am18":
+            def chirr_(d=0.42):                                                              # cadena oxidada del columpio
+                tt = T(d); f = 1500 + 500 * np.sin(np.pi * tt / d) + 60 * np.sin(2 * np.pi * 31 * tt)
+                return (np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.3 * bp(rng.normal(0, 1, len(tt)), 1200, 3000)) * np.sin(np.pi * tt / d) ** 2 * 0.22
+            toc_ = lambda: lp(rng.normal(0, 1, int(SR * 0.25)), 500) * np.exp(-T(0.25) * 20) * 1.0 + np.sin(2 * np.pi * 150 * T(0.25)) * np.exp(-T(0.25) * 15) * 0.4
+            clank_ = lambda: bp(rng.normal(0, 1, int(SR * 0.3)), 600, 4000) * np.exp(-T(0.3) * 18) * 0.8
+            clic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.03)), 2000) * np.exp(-T(0.03) * 110)
+            def chirridos(a, t0, t1, g):
+                k = 0
+                while 0.683 + k * 1.366 < t1:
+                    tc = 0.683 + k * 1.366
+                    if tc >= t0: put(sfx, chirr_(), a + tc - 0.2, g)
+                    k += 1
+            if n == "reloj":
+                put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, beep(0.1, 880), a + 0.05, 1.0); put(sfx, beep(0.1, 880), a + 0.3, 1.0)
+                chirridos(a, 0.0, D, 0.8)
+            if n == "chirrido": chirridos(a, 0.0, D, 1.0)
+            if n == "oscuro": chirridos(a, 0.0, D, 0.45); put(sfx, heartbeat(3, 80), a + 1.0, 0.5)
+            if n == "llamas":
+                for i in range(3): put(sfx, beep(0.05, 700 + i * 120), a + 0.1 + i * 0.12, 0.6)
+                put(sfx, beep(0.9, 425), a + 0.6, 0.35)                                              # tono de llamada
+                put(sfx, clic_(), a + 1.35, 0.9); chirridos(a, 1.4, D, 0.45)
+            if n == "para":
+                chirridos(a, 0.0, 1.4, 0.9); put(sfx, clank_(), a + 1.4, 1.2); put(sfx, sting(1.0) * 0.6, a + 1.4, 0.8)
+                put(sfx, heartbeat(3, 120), a + 1.6, 0.7)
+                put(sfx, boom(2.0, 55), a + 2.9, 1.3); put(sfx, sting(1.6), a + 2.9, 1.1)
+            if n == "cuelgas":
+                put(sfx, clic_(), a + 0.1, 1.0); chirridos(a, 0.0, 3.5, 0.9)
+                put(sfx, boom(2.0, 55), a + 3.6, 1.3); put(sfx, sting(1.6), a + 3.6, 1.1); put(sfx, scream(1.0) * 0.4, a + 3.62, 0.6)
+            if n == "voz": put(sfx, heartbeat(5, 120), a, 0.7); put(sfx, whoosh(0.6), a + 2.4, 0.7)
+            if n == "final":
+                for g in (0.55, 0.85, 1.15): put(sfx, toc_(), a + g, 1.2)
+                chirridos(a, 0.0, 1.8, 0.35)
+                put(sfx, boom(2.2, 45), a + 1.8, 1.3); put(sfx, sting(1.4), a + 1.8, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 17 ----
         if os.environ.get("EP") == "3am17":
             cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.35)), 300, 1100) * (0.5 + 0.5 * np.sin(2 * np.pi * 23 * T(0.35))) * np.exp(-T(0.35) * 6) * 0.5   # madera que cruje

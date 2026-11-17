@@ -414,7 +414,9 @@ EN = {"REGLAS DEL TURNO DE NOCHE": "NIGHT SHIFT RULES", "Yo le dije que sí. —
       "PUENTE VIEJO.": "OLD BRIDGE.", "EN 1998.": "IN 1998.", "PUENTE VIEJO": "OLD BRIDGE", "SI A LAS 3 EL TAXISTA": "IF AT 3AM THE DRIVER",
       "NO PARPADEA…": "NEVER BLINKS…", "NO TE BAJES": "DON'T GET OUT", "DONDE ÉL PARE": "WHERE HE STOPS",
       "SI A LAS 3 HAY UN": "IF AT 3AM THERE'S", "ESCALÓN DE MÁS…": "ONE STEP TOO MANY…", "NO LO": "DON'T STEP", "PISES": "ON IT",
-      "EL ESCALÓN 14": "STEP 14"}
+      "EL ESCALÓN 14": "STEP 14",
+      "ÑIC": "CREAK", "TOC": "KNOCK", "POLICÍA · 112": "POLICE · 911", "EL NIÑO DEL COLUMPIO": "THE SWING KID",
+      "SI A LAS 3 VES A": "IF AT 3AM YOU SEE", "UN NIÑO SOLO…": "A CHILD ALONE…", "NO LLAMES": "DON'T CALL", "A NADIE": "ANYONE"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
