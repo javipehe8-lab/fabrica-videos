@@ -341,6 +341,27 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 19 ----
+        if os.environ.get("EP") == "3am19":
+            def vibra_(d):                                                                     # móvil vibrando sobre el sofá
+                tt = T(d); return lp(rng.normal(0, 1, len(tt)), 220) * (np.sin(2 * np.pi * 50 * tt) * 0.5 + 0.5) * ((tt % 0.9) < 0.5) * 1.4
+            zumbido_ = lambda d: (np.sin(2 * np.pi * 50 * T(d)) * 0.5 + np.sin(2 * np.pi * 100 * T(d)) * 0.25) * 0.12   # nevera / tele
+            clic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.03)), 2000) * np.exp(-T(0.03) * 110)
+            if n == "llama":
+                put(sfx, vibra_(1.9), a, 1.0); put(sfx, sting(1.2) * 0.5, a, 0.9)
+                put(sfx, clic_(), a + 1.9, 0.9); put(sfx, zumbido_(D - 1.9), a + 1.9, 0.6)
+            if n == "susurra": put(sfx, zumbido_(D), a, 0.9); put(sfx, static(D) * 0.12, a, 0.7); put(sfx, heartbeat(3, 70), a + D * 0.6, 0.5)
+            if n == "sofa": put(sfx, zumbido_(D), a, 0.6); put(sfx, whoosh(0.5), a, 0.5)
+            if n == "ronca": put(sfx, zumbido_(D) * 0.5, a, 0.5); put(sfx, beep(0.08, 900), a + D * 0.5, 0.5)
+            if n == "insiste": put(sfx, static(D) * 0.18, a, 0.8); put(sfx, zumbido_(D), a, 0.8); put(sfx, heartbeat(4, 90), a + 0.4, 0.6)
+            if n == "pecho": put(sfx, heartbeat(5, 120), a, 0.8)
+            if n == "ojos":
+                put(sfx, heartbeat(2, 130), a, 0.6)
+                put(sfx, boom(2.0, 55), a + 1.55, 1.3); put(sfx, sting(1.6), a + 1.55, 1.1); put(sfx, whoosh(0.5), a + 2.4, 0.6)
+            if n == "final":
+                for i in range(3): put(sfx, beep(0.12, 480), a + 0.15 + i * 0.25, 0.7)
+                put(sfx, boom(2.2, 45), a + 1.5, 1.3); put(sfx, sting(1.4), a + 1.5, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 18 ----
         if os.environ.get("EP") == "3am18":
             def chirr_(d=0.42):                                                              # cadena oxidada del columpio
