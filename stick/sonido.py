@@ -187,6 +187,22 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 7 ----
+        if os.environ.get("EP") == "noche7":
+            def pagina_(): return bp(rng.normal(0, 1, int(SR * 0.25)), 1500, 7000) * np.exp(-T(0.25) * 14) * 0.5
+            def boli_(d):                                                                       # bolígrafo rascando el papel, a tirones
+                t_ = T(d); return bp(rng.normal(0, 1, len(t_)), 2500, 8000) * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 5 * t_))) * 0.18
+            if n == "arranque": put(sfx, boom(1.4, 55), a, 1.2); put(sfx, boli_(D), a, 0.8); put(sfx, sting(1.2) * 0.6, a + 0.1, 0.7)
+            if n == "premisa": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6)
+            if n == "abro": put(sfx, pagina_(), a + D * 0.45, 1.0); put(sfx, heartbeat(3, 70), a + D * 0.2, 0.4)
+            if n == "noches":
+                for i in range(5): put(sfx, pagina_(), a + i * D / 5, 0.8)
+                put(sfx, riser(D * 0.5), a + D * 0.5, 0.4)
+            if n == "sola": put(sfx, boli_(D * 0.6), a + D * 0.25, 1.0); put(sfx, heartbeat(4, 84), a + D * 0.2, 0.6)
+            if n == "cam": put(sfx, static(D) * 0.4, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.05, 0.5); put(sfx, boli_(D), a, 0.6); put(sfx, sting(1.4), a + D * 0.55, 0.9)
+            if n == "giro": put(sfx, boli_(D * 0.65), a + D * 0.1, 0.9); put(sfx, riser(D * 0.6), a + D * 0.3, 0.5); put(sfx, sting(1.6), a + D * 0.75, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 120) * np.linspace(0.1, 0.6, int(SR * D)), a, 0.8); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 6 ----
         if os.environ.get("EP") == "noche6":
             def motor_(d, f=46):                                                                # motor de coche al ralentí

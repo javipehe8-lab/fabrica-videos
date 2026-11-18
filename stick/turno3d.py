@@ -563,3 +563,97 @@ def cuaderno(img, t, pagina=0.0, lineas=(), nombre_p=0.0, mojado=0.6, cy=820, es
         capa = capa.filter(ImageFilter.GaussianBlur(25))
         img.paste(capa, (0, 0), capa)
     return img
+
+# ---------- piezas añadidas en la Parte 7: páginas que se escriben solas, bolígrafo y camión ----------
+LETRA = "/usr/share/fonts/truetype/google-fonts/Lora-Italic-Variable.ttf"   # "letra a mano" (cursiva)
+
+def pagina(img, lineas, fecha=None, p=None, cy=900, escala=1.0, humeda=None, pluma=True, t=0.0, tinta=(30, 50, 150), mojado=0.5, size=74):
+    """una página del cuaderno de Raúl en primer plano, con letra a mano que se escribe SOLA.
+    lineas: textos (se traducen con tr); p: cuánto hay escrito, en líneas (2.5 = dos líneas y media; None = todo);
+    fecha: cabecera arriba a la derecha (p. ej. '18 NOV 1986'); humeda: índice de la línea con la tinta aún húmeda (brilla y gotea);
+    pluma: la punta de un bolígrafo, sin mano, al final de lo escrito. Devuelve la imagen."""
+    from PIL import ImageFilter
+    d = ImageDraw.Draw(img)
+    w, h = 900 * escala, 980 * escala
+    x0, y0 = W / 2 - w / 2, cy - h / 2
+    d.rectangle((x0 + 22, y0 + 26, x0 + w + 22, y0 + h + 26), fill=(8, 8, 8))
+    d.rectangle((x0, y0, x0 + w, y0 + h), fill=(226, 220, 198), outline=(150, 140, 120), width=6)
+    paso = 118 * escala
+    for k in range(9): d.line((x0 + 24, y0 + 200 * escala + k * paso, x0 + w - 24, y0 + 200 * escala + k * paso), fill=(168, 178, 200), width=2)
+    d.line((x0 + 100 * escala, y0, x0 + 100 * escala, y0 + h), fill=(210, 120, 120), width=3)
+    if fecha:
+        d.text((x0 + w - 50 * escala, y0 + 90 * escala), tr(fecha), font=font(int(60 * escala), LETRA), fill=(160, 30, 30), anchor="rm", stroke_width=1, stroke_fill=(160, 30, 30))
+    total = len(lineas) if p is None else p
+    fin = None
+    for i, ln in enumerate(lineas):
+        if i >= total: break
+        txt = tr(ln)
+        fs = size
+        while d.textlength(txt, font=font(int(fs * escala), LETRA)) > w - 160 * escala and fs > 30: fs -= 2
+        fn = font(int(fs * escala), LETRA)
+        n = len(txt) if i + 1 <= total else max(0, int(len(txt) * (total - i)))
+        parte = txt[:n]
+        yy = y0 + 200 * escala + i * paso - 8 * escala
+        col = tinta if humeda != i else (14, 24, 90)
+        d.text((x0 + 125 * escala, yy), parte, font=fn, fill=col, anchor="ls", stroke_width=1, stroke_fill=col)
+        fin = (x0 + 125 * escala + d.textlength(parte, font=fn), yy - 14 * escala)
+        if humeda == i:                                  # tinta fresca: brillo encima y chorretones
+            capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+            r_ = __import__("random").Random(11)
+            tw = d.textlength(parte, font=fn)
+            for j in range(5):
+                xx = x0 + 125 * escala + r_.uniform(0, tw); ll = r_.uniform(40, 130) * escala * (0.6 + 0.4 * math.sin(t * 2 + j) ** 2)
+                dc.line((xx, yy, xx + 2, yy + ll), fill=(20, 30, 110, 200), width=int(7 * escala))
+                dc.ellipse((xx - 6 * escala, yy + ll - 6 * escala, xx + 8 * escala, yy + ll + 8 * escala), fill=(20, 30, 110, 200))
+            capa = capa.filter(ImageFilter.GaussianBlur(2))
+            img.paste(capa, (0, 0), capa)
+            d = ImageDraw.Draw(img)
+            d.text((x0 + 125 * escala - 2, yy - 3), parte, font=fn, fill=(120, 140, 230), anchor="ls")
+            d.text((x0 + 125 * escala, yy), parte, font=fn, fill=col, anchor="ls", stroke_width=1, stroke_fill=col)
+    if mojado > 0:
+        capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+        r_ = __import__("random").Random(9)
+        for j in range(6):
+            cx_, cy_, rr = r_.uniform(x0, x0 + w), r_.uniform(y0, y0 + h), r_.uniform(60, 150) * escala
+            dc.ellipse((cx_ - rr, cy_ - rr, cx_ + rr, cy_ + rr), fill=(60, 70, 80, int(55 * mojado)))
+        capa = capa.filter(ImageFilter.GaussianBlur(25))
+        img.paste(capa, (0, 0), capa)
+    if pluma and fin is not None:                        # bolígrafo sin mano: la punta en el último trazo
+        d = ImageDraw.Draw(img)
+        fx_, fy_ = fin[0] + 4 * math.sin(t * 23), fin[1] + 3 * math.cos(t * 31)
+        L_ = 420 * escala; a = math.radians(52)          # el cuerpo baja hacia la derecha (no tapa lo escrito)
+        ux, uy = math.cos(a), math.sin(a); nx, ny = -uy, ux
+        def pt(s, o): return (fx_ + ux * s + nx * o, fy_ + uy * s + ny * o)
+        d.polygon([pt(0, 0), pt(40 * escala, -9 * escala), pt(40 * escala, 9 * escala)], fill=(40, 40, 44))
+        d.polygon([pt(40 * escala, -14 * escala), pt(L_, -16 * escala), pt(L_, 16 * escala), pt(40 * escala, 14 * escala)], fill=(232, 232, 236), outline=(20, 20, 24))
+        d.polygon([pt(L_ - 60 * escala, -17 * escala), pt(L_, -17 * escala), pt(L_, 17 * escala), pt(L_ - 60 * escala, 17 * escala)], fill=(30, 50, 150))
+        d.line([pt(70 * escala, 18 * escala), pt(L_ - 70 * escala, 18 * escala)], fill=(30, 50, 150), width=int(6 * escala))
+    return img
+
+def boligrafo3d(esc, x, y, z, yaw=0.0, inclina=0.0):
+    """bolígrafo (cuerpo blanco y capuchón azul) sobre el mostrador o en la mano"""
+    M = cadena(mover(x, y, z), rot_y(yaw), rot_x(inclina))
+    esc.add(caja(0.012, 0.012, 0.15, (230, 230, 234)), M, sesgo=0.8)
+    esc.add(caja(0.014, 0.014, 0.03, (30, 50, 150)), cadena(M, mover(0, 0, -0.07)), sesgo=0.8)
+
+def cuaderno3d_abierto(esc, x, y, z, yaw=0.0, col=(40, 70, 60)):
+    """el cuaderno de Raúl abierto sobre el mostrador (dos páginas claras con renglones de tinta)"""
+    M = cadena(mover(x, y, z), rot_y(yaw))
+    esc.add(caja(0.46, 0.012, 0.31, col), M, sesgo=0.6)
+    for sx in (-0.115, 0.115):
+        esc.add(caja(0.215, 0.012, 0.29, (226, 220, 198)), cadena(M, mover(sx, 0.012, 0)), sesgo=0.7)
+        for k in range(6):
+            esc.add(caja(0.15, 0.003, 0.012, (40, 60, 150)), cadena(M, mover(sx - 0.01 * k % 3, 0.019, -0.11 + k * 0.042)), sesgo=0.9)
+
+def camion(esc, x, z, yaw=0.0, faros=0.0, col=(170, 170, 166), cabina_col=(120, 30, 30)):
+    """camión de reparto SIN logotipo (cabina + caja blanca sucia). Mira hacia +z local. faros 0-1"""
+    M = cadena(mover(x, 0, z), rot_y(yaw))
+    esc.add(caja(2.4, 2.3, 2.0, cabina_col, base=True), cadena(M, mover(0, 0.5, 2.6)))            # cabina
+    esc.add(caja(2.2, 0.8, 0.05, (20, 24, 30)), cadena(M, mover(0, 2.1, 3.61)))                    # parabrisas
+    esc.add(caja(2.5, 3.0, 6.0, col, base=True), cadena(M, mover(0, 0.6, -1.5)))                   # caja de carga (lisa: sin logo)
+    esc.add(caja(2.52, 0.08, 6.02, (110, 110, 106)), cadena(M, mover(0, 3.55, -1.5)))
+    for sx in (-1.1, 1.1):
+        for sz in (2.6, -0.5, -3.4): esc.add(caja(0.35, 1.0, 1.0, (14, 14, 14)), cadena(M, mover(sx, 0.5, sz)))
+        f = tuple(int(v * faros) for v in (255, 248, 210)) if faros > 0 else (80, 80, 74)
+        esc.add(caja(0.42, 0.24, 0.05, f), cadena(M, mover(sx * 0.82, 0.95, 3.62)), emite=faros > 0)
+    return M

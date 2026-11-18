@@ -55,3 +55,5 @@ Si al llegar al 12 la serie va bien, empieza la temporada 2 con el empleado nuev
    **Final/objeto:** el cuaderno verde de Raúl (tapa "RAÚL · KM 9"; notas: "Le dije que sí. / Respiré. / Ya no me acuerdo de mi cara."); en la última página, "EL SIGUIENTE:" y tu nombre, corrido por el agua (nunca se lee). Cierre: "Raúl escribió mi nombre antes de conocerme." Piezas nuevas en turno3d: `coche_familiar`, `pasajero`, `capucha`, `cuaderno3d`, `cuaderno` (2D).
 
 
+7. **Regla 7: no leas nada que no hayas escrito tú.** Lees igual el cuaderno de Raúl: cada página es una de tus noches aquí (surtidor 4, cabina, niña, pesetas, niebla), fechadas del 12 al 16 NOV 1986. Mientras lees, se escribe sola una línea con la letra de Raúl: "3:14. No mires la cámara uno." La miras: en la CAM 1 no estás leyendo, estás escribiendo.
+   **Final/objeto:** la última línea, aún húmeda (gotea tinta): "A las 5 llega el camión. Firmaré." Cierre: "Yo no he firmado nada. Todavía." Piezas nuevas en turno3d: `pagina` (página que se escribe sola, con bolígrafo sin mano y tinta húmeda), `boligrafo3d`, `cuaderno3d_abierto`, `camion` (sin logotipo; ya sale a lo lejos en la tarjeta final).
