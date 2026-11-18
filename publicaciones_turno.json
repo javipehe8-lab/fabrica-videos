@@ -47,6 +47,13 @@
    "titulo": "Regla 6: el kilómetro 10 no existe 🚗 Turno de noche (Parte 6) #shorts",
    "video": "videos/turno/Turno_de_Noche_6.mp4",
    "estado": "en cola_youtube.json (pendiente)"
+  },
+  {
+   "parte": 7,
+   "regla": "No leas nada que no hayas escrito tú",
+   "titulo": "Regla 7: no leas nada que no hayas escrito tú 📓 Turno de noche (Parte 7) #shorts",
+   "video": "videos/turno/Turno_de_Noche_7.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -84,6 +91,12 @@
    "parte": 6,
    "titulo": "Rule 6: mile 10 doesn't exist 🚗 Night Shift (Part 6) #shorts",
    "video": "videos/turno/en/Night_Shift_6.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 7,
+   "titulo": "Rule 7: don't read anything you didn't write 📓 Night Shift (Part 7) #shorts",
+   "video": "videos/turno/en/Night_Shift_7.mp4",
    "estado": "pendiente de subir a mano"
   }
  ]
