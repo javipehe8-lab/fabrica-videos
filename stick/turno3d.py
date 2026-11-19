@@ -760,7 +760,7 @@ def pecho_placa(img, nombre, t=0.0, p=1.0, mojado=0.0):
     # fondo: el mostrador, más allá del pecho
     d = ImageDraw.Draw(img)
     d.rectangle((0, 0, W, H), fill=(54, 50, 46))
-    d.rectangle((0, 1450 + dy, W, H), fill=(150, 146, 136))
+    if 1450 + dy < H: d.rectangle((0, 1450 + dy, W, H), fill=(150, 146, 136))
     # el pecho: una curva grande de tela roja que llena el plano (con pliegues)
     ys = _np.linspace(0, 1, H)[:, None]
     xs = _np.linspace(-1, 1, W)[None, :]
