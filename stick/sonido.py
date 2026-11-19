@@ -362,6 +362,36 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 20 ----
+        if os.environ.get("EP") == "3am20":
+            motor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 130) * (0.75 + 0.25 * np.sin(2 * np.pi * 7 * T(d))) * 0.45   # motor del coche
+            aviso_ = lambda: np.concatenate([beep(0.09, 988), np.zeros(int(SR * 0.04)), beep(0.12, 1319)])                    # aviso del GPS
+            tic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.02)), 2500) * np.exp(-T(0.02) * 160) * 0.8                           # intermitente
+            if n == "gps": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, aviso_(), a + 0.1, 1.0); put(sfx, motor_(D), a, 0.8)
+            if n == "camino": put(sfx, motor_(D), a, 0.8); put(sfx, aviso_(), a + 0.2, 0.7); put(sfx, heartbeat(3, 75), a + D * 0.55, 0.6)
+            if n == "detras": put(sfx, motor_(D), a, 0.8); put(sfx, riser(D * 0.8) * 0.5, a + D * 0.2, 0.5)
+            if n == "insiste":
+                put(sfx, motor_(D), a, 0.8); tt, k = 1.4, 0
+                while tt < D - 0.1:
+                    put(sfx, aviso_(), a + tt, 0.8); tt += max(0.12, 0.66 - 0.09 * k); k += 1
+                put(sfx, static(D * 0.3) * 0.4, a + D * 0.7, 0.6)
+            if n == "gira":
+                put(sfx, motor_(D), a, 0.6); put(sfx, heartbeat(5, 95), a + 0.3, 0.6)
+                tt = D * 0.22 - (D * 0.22) % (1 / 2.6) + 1 / 2.6
+                while tt < D * 0.92: put(sfx, tic_(), a + tt, 1.0); tt += 1 / 2.6
+            if n == "apagan":
+                put(sfx, motor_(D * 0.68), a, 0.5); put(sfx, riser(D * 0.6) * 0.6, a + D * 0.08, 0.6)
+                put(sfx, boom(2.0, 55), a + D * 0.68, 1.3); put(sfx, sting(1.6), a + D * 0.68, 1.1)
+            if n == "completa":
+                put(sfx, static(2.9) * 0.15, a, 0.5); put(sfx, aviso_(), a + 2.95, 0.9); put(sfx, boom(1.6, 45), a + 3.1, 0.9)
+            if n == "otra":
+                put(sfx, motor_(D), a, 0.8)
+                for i in range(int(D / 0.8)): put(sfx, aviso_(), a + 0.3 + i * 0.8, 0.6)
+                put(sfx, boom(2.0, 55), a + D * 0.78, 1.3); put(sfx, sting(1.6), a + D * 0.78, 1.1)
+            if n == "final":
+                put(sfx, aviso_(), a + 0.2, 0.7)
+                put(sfx, boom(2.2, 45), a + D * 0.38, 1.3); put(sfx, sting(1.4), a + D * 0.38, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 19 ----
         if os.environ.get("EP") == "3am19":
             def vibra_(d):                                                                     # móvil vibrando sobre el sofá
