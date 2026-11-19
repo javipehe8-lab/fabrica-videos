@@ -657,3 +657,154 @@ def camion(esc, x, z, yaw=0.0, faros=0.0, col=(170, 170, 166), cabina_col=(120, 
         f = tuple(int(v * faros) for v in (255, 248, 210)) if faros > 0 else (80, 80, 74)
         esc.add(caja(0.42, 0.24, 0.05, f), cadena(M, mover(sx * 0.82, 0.95, 3.62)), emite=faros > 0)
     return M
+
+# ---------- piezas añadidas en la Parte 8: el albarán, la caja de reparto y la placa del uniforme ----------
+def firma(d, x, y, ancho, p=1.0, col=(30, 50, 150), grosor=6, semilla=3):
+    """una firma a mano (garabato cursivo) de izquierda a derecha; p (0-1): cuánto está trazada"""
+    import random as _r
+    r_ = _r.Random(semilla)
+    pts, n = [], 60
+    amp = [r_.uniform(0.35, 1.0) for _ in range(9)]
+    for i in range(int(n * min(1, p)) + 1):
+        u = i / n
+        a = amp[int(u * 8.99)]
+        pts.append((x + u * ancho + 22 * math.sin(u * 31), y - a * 46 * math.sin(u * 24 + 0.6) - 14 * u))
+    if len(pts) > 1: d.line(pts, fill=col, width=grosor, joint="curve")
+    if p >= 1: d.line((x + ancho * 0.05, y + 30, x + ancho * 0.95, y + 18), fill=col, width=grosor - 1)   # rúbrica
+    return d
+
+def nombre_emborronado(img, x, y, size=76, a=1.0, col=(40, 50, 150), anchor="lm", blur=12):
+    """tu nombre, escrito pero corrido por el agua: no se llega a leer nunca"""
+    from PIL import ImageFilter
+    capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+    fn = font(int(size))
+    dc.text((x, y), "Mxnuel Arxas", font=fn, fill=(*col, int(255 * a)), anchor=anchor)
+    tw = dc.textlength("Mxnuel Arxas", font=fn)
+    x0 = x - (tw / 2 if anchor[0] == "m" else 0)
+    r_ = __import__("random").Random(6)
+    for j in range(6):
+        xx = x0 + r_.uniform(0, tw); ll = r_.uniform(0.6, 2.2) * size
+        dc.line((xx, y + size * 0.3, xx + 4, y + size * 0.3 + ll), fill=(*col, int(180 * a)), width=max(3, int(size / 8)))
+    capa = capa.filter(ImageFilter.GaussianBlur(blur))
+    img.paste(capa, (0, 0), capa)
+    return img
+
+def albaran(img, fecha="20 NOV 2026", firma_p=1.0, marca=0.0, cy=900, escala=1.0, t=0.0):
+    """el albarán de entrega del camión en primer plano (copia rosa). Ya viene firmado (firma_p) con TU letra;
+    fecha: la de la entrega (escrita a mano); marca (0-1): círculo rojo alrededor de la fecha."""
+    d = ImageDraw.Draw(img)
+    w, h = 880 * escala, 1040 * escala
+    x0, y0 = W / 2 - w / 2, cy - h / 2
+    d.rectangle((x0 + 22, y0 + 26, x0 + w + 22, y0 + h + 26), fill=(8, 8, 8))
+    d.rectangle((x0, y0, x0 + w, y0 + h), fill=(236, 218, 216), outline=(150, 120, 120), width=6)
+    for k in range(int(w / (26 * escala))):                       # trepado de arriba (hoja arrancada del talonario)
+        cx_ = x0 + 13 * escala + k * 26 * escala
+        d.ellipse((cx_ - 6 * escala, y0 + 14 * escala, cx_ + 6 * escala, y0 + 26 * escala), fill=(120, 100, 100))
+    s = lambda v: int(v * escala)
+    d.text((x0 + s(50), y0 + s(95)), tr("ALBARÁN DE ENTREGA"), font=font(s(56)), fill=(40, 30, 34), anchor="lm")
+    d.text((x0 + w - s(50), y0 + s(165)), "Nº 0008", font=font(s(44)), fill=(170, 30, 30), anchor="rm")
+    d.line((x0 + s(40), y0 + s(210), x0 + w - s(40), y0 + s(210)), fill=(120, 90, 90), width=4)
+    filas = [(tr("DESTINO:"), tr("KILÓMETRO 9")), (tr("BULTOS:"), tr("1 CAJA")), (tr("TURNO:"), tr("NOCHE"))]
+    for i, (k_, v_) in enumerate(filas):
+        yy = y0 + s(285) + i * s(95)
+        d.text((x0 + s(50), yy), k_, font=font(s(44)), fill=(90, 60, 64), anchor="lm")
+        d.text((x0 + s(400), yy), v_, font=font(s(50), LETRA), fill=(30, 50, 150), anchor="lm", stroke_width=1, stroke_fill=(30, 50, 150))
+    yf = y0 + s(600)
+    d.text((x0 + s(50), yf), tr("FECHA:"), font=font(s(44)), fill=(90, 60, 64), anchor="lm")
+    fx = x0 + s(400)
+    d.text((fx, yf), tr(fecha), font=font(s(60), LETRA), fill=(30, 50, 150), anchor="lm", stroke_width=1, stroke_fill=(30, 50, 150))
+    if marca > 0:
+        tw = d.textlength(tr(fecha), font=font(s(60), LETRA))
+        d.ellipse((fx - s(30), yf - s(62), fx + tw + s(30), yf + s(58)), outline=(220, 30, 30), width=int(10 * min(1, marca)) + 1)
+    yr = y0 + s(760)
+    d.text((x0 + s(50), yr), tr("RECIBÍ:"), font=font(s(44)), fill=(90, 60, 64), anchor="lm")
+    d.rectangle((x0 + s(50), yr + s(50), x0 + w - s(50), yr + s(240)), outline=(140, 110, 110), width=3)
+    if firma_p > 0: firma(d, x0 + s(120), yr + s(150), w - s(260), p=firma_p, grosor=max(3, s(7)))
+    return img
+
+def caja_carton(esc, x, y, z, abierta=0.0, yaw=0.0, dentro=None, mojada=0.0):
+    """caja de reparto de cartón (0.55 x 0.38 x 0.42 m) con una etiqueta blanca en la tapa.
+    abierta (0-1): las solapas se abren hacia los lados. dentro: color de lo que hay dentro (p. ej. el uniforme)."""
+    M = cadena(mover(x, y, z), rot_y(yaw))
+    c = tuple(int(v * (1 - 0.3 * mojada)) for v in (170, 128, 82))
+    w_, h_, d_ = 0.55, 0.38, 0.42
+    esc.add(caja(w_, 0.02, d_, tuple(int(v * 0.8) for v in c)), cadena(M, mover(0, 0.01, 0)), sesgo=0.4)
+    for sx in (-1, 1): esc.add(caja(0.02, h_, d_, c, base=True), cadena(M, mover(sx * w_ / 2, 0, 0)), sesgo=0.4)
+    for sz in (-1, 1): esc.add(caja(w_, h_, 0.02, tuple(int(v * 0.92) for v in c), base=True), cadena(M, mover(0, 0, sz * d_ / 2)), sesgo=0.4)
+    if dentro: esc.add(caja(w_ - 0.06, 0.03, d_ - 0.06, dentro), cadena(M, mover(0, h_ - 0.08, 0)), sesgo=0.6)
+    if dentro:                                           # pliegues y cuello de la ropa doblada
+        osc = tuple(int(v * 0.6) for v in dentro)
+        for k in (-1, 1): esc.add(caja(0.02, 0.012, d_ - 0.1, osc), cadena(M, mover(k * 0.12, h_ - 0.05, 0)), sesgo=0.7)
+        esc.add(caja(0.2, 0.02, 0.05, osc), cadena(M, mover(0, h_ - 0.045, -d_ / 2 + 0.08)), sesgo=0.7)
+    a = math.pi * 0.85 * ease(abierta)
+    for sx in (-1, 1):                                   # solapas
+        piv = cadena(M, mover(sx * w_ / 2, h_, 0), rot_z(sx * a))
+        esc.add(caja(w_ / 2, 0.012, d_, c), cadena(piv, mover(-sx * w_ / 4, 0, 0)), sesgo=0.5)
+    if abierta < 0.2:                                    # etiqueta blanca sobre la tapa
+        esc.add(caja(0.26, 0.004, 0.16, (236, 234, 226)), cadena(M, mover(-0.12, h_ + 0.01, 0.05)), sesgo=0.9)
+    return M
+
+def albaran3d(esc, x, y, z, yaw=0.0, inclina=0.0):
+    """el albarán (hoja rosa) en 3D: en la mano del conductor o sobre el mostrador"""
+    M = cadena(mover(x, y, z), rot_y(yaw), rot_x(inclina))
+    esc.add(caja(0.21, 0.004, 0.27, (236, 214, 212)), M, sesgo=0.8)
+    for k in range(5): esc.add(caja(0.14, 0.002, 0.01, (90, 70, 80)), cadena(M, mover(-0.02, 0.003, -0.09 + k * 0.04)), sesgo=0.9)
+    esc.add(caja(0.12, 0.002, 0.012, (30, 50, 150)), cadena(M, mover(0.02, 0.003, 0.11)), sesgo=0.95)   # la firma
+
+def pecho_placa(img, nombre, t=0.0, p=1.0, mojado=0.0):
+    """plano subjetivo mirando hacia abajo: tu pecho, con el uniforme rojo y la placa con el nombre.
+    nombre: lo que pone la placa (se traduce con tr). p (0-1): lo que se ha bajado la mirada (desliza el plano)."""
+    from PIL import ImageFilter
+    import numpy as _np
+    dy = int((1 - ease(p)) * 500)
+    # fondo: el mostrador, más allá del pecho
+    d = ImageDraw.Draw(img)
+    d.rectangle((0, 0, W, H), fill=(54, 50, 46))
+    d.rectangle((0, 1450 + dy, W, H), fill=(150, 146, 136))
+    # el pecho: una curva grande de tela roja que llena el plano (con pliegues)
+    ys = _np.linspace(0, 1, H)[:, None]
+    xs = _np.linspace(-1, 1, W)[None, :]
+    luz = 0.55 + 0.45 * _np.cos(xs * 1.3) * (0.7 + 0.3 * (1 - ys))
+    pl = 0.06 * _np.sin(xs * 9 + ys * 4 + 0.4 * math.sin(t * 0.8))
+    f = _np.clip(luz + pl, 0.15, 1.0)
+    rojo = _np.stack([150 * f, 36 * f, 36 * f], -1).astype(_np.uint8)
+    tela = Image.fromarray(rojo)
+    mask = Image.new("L", (W, H), 0); dm = ImageDraw.Draw(mask)
+    dm.ellipse((-420, -900 + dy, W + 420, 1560 + dy), fill=255)
+    img.paste(tela, (0, 0), mask)
+    d = ImageDraw.Draw(img)
+    # cremallera y bolsillo
+    d.line((W / 2 + 40, 0, W / 2 + 60, 1500 + dy), fill=(70, 18, 18), width=10)
+    d.rectangle((560, 640 + dy, 920, 980 + dy), outline=(100, 24, 24), width=8)
+    # la placa (metal dorado, letras negras grabadas)
+    px0, py0, px1, py1 = 160, 560 + dy, 520, 760 + dy
+    d.rounded_rectangle((px0 + 10, py0 + 14, px1 + 10, py1 + 14), 18, fill=(40, 10, 10))
+    d.rounded_rectangle((px0, py0, px1, py1), 18, fill=(214, 186, 110), outline=(120, 96, 40), width=6)
+    d.line((px0 + 24, py0 + 22, px1 - 60, py0 + 22), fill=(250, 236, 180), width=6)                  # brillo
+    txt = tr(nombre)
+    fs = 110
+    while d.textlength(txt, font=font(fs)) > (px1 - px0) - 50 and fs > 40: fs -= 4
+    d.text(((px0 + px1) / 2, (py0 + py1) / 2 + 6), txt, font=font(fs), fill=(26, 20, 16), anchor="mm")
+    if mojado > 0:                                       # manchas de humedad en la tela
+        capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+        r_ = __import__("random").Random(4)
+        for j in range(7):
+            cx_, cy_, rr = r_.uniform(0, W), r_.uniform(0, 1400), r_.uniform(80, 200)
+            dc.ellipse((cx_ - rr, cy_ - rr + dy, cx_ + rr, cy_ + rr + dy), fill=(40, 6, 6, int(90 * mojado)))
+        capa = capa.filter(ImageFilter.GaussianBlur(30))
+        img.paste(capa, (0, 0), capa)
+    return img
+
+def vapor(img, cx, cy, ancho, t, n=8, alfa=90, alto=600):
+    """niebla/vapor que sube de algo (2D, semitransparente y desenfocado)"""
+    from PIL import ImageFilter
+    capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+    for j in range(n):
+        ph = (t * 0.35 + j / n) % 1.0
+        x = cx + (j / (n - 1) - 0.5) * ancho + 40 * math.sin(t * 1.3 + j * 2)
+        y = cy - ph * alto
+        r = 70 + 130 * ph
+        dc.ellipse((x - r, y - r * 0.7, x + r, y + r * 0.7), fill=(190, 198, 196, int(alfa * math.sin(math.pi * ph))))
+    capa = capa.filter(ImageFilter.GaussianBlur(26))
+    img.paste(capa, (0, 0), capa)
+    return img

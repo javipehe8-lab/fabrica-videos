@@ -187,6 +187,27 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 8 ----
+        if os.environ.get("EP") == "noche8":
+            def diesel_(d, f=38):                                                               # motor diésel del camión al ralentí
+                t_ = T(d); return (np.sin(2 * np.pi * f * t_) * (0.6 + 0.4 * np.sign(np.sin(2 * np.pi * 9 * t_))) * 0.22 + lp(rng.normal(0, 1, len(t_)), 160) * 0.45)
+            def freno_(d=0.7):                                                                  # freno de aire: siseo
+                t_ = T(d); return hp(rng.normal(0, 1, len(t_)), 2500) * np.exp(-t_ * 4) * 0.4
+            def papel_(): return bp(rng.normal(0, 1, int(SR * 0.25)), 1500, 7000) * np.exp(-T(0.25) * 14) * 0.5
+            def carton_(d=0.5):                                                                 # solapas de cartón
+                t_ = T(d); return bp(rng.normal(0, 1, len(t_)), 400, 2500) * np.exp(-t_ * 7) * 0.5
+            if n == "arranque": put(sfx, boom(1.4, 55), a, 1.2); put(sfx, diesel_(D) * 0.6, a, 0.7); put(sfx, sting(1.2) * 0.6, a + 0.1, 0.7)
+            if n == "premisa": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6); put(sfx, diesel_(D) * 0.2, a, 0.6)
+            if n == "llega":
+                put(sfx, static(D * 0.55) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.05, 0.5)
+                put(sfx, diesel_(D) * np.linspace(0.4, 1.0, int(SR * D)), a, 0.8); put(sfx, freno_(), a + D * 0.48, 0.9)
+                put(sfx, heartbeat(3, 70), a + D * 0.6, 0.5)
+            if n == "albaran": put(sfx, papel_(), a + 0.1, 1.0); put(sfx, diesel_(D) * 0.3, a, 0.5); put(sfx, riser(D * 0.5), a + D * 0.5, 0.45); put(sfx, sting(1.2) * 0.7, a + D * 0.7, 0.7)
+            if n == "nofirmo": put(sfx, papel_(), a + D * 0.1, 0.8); put(sfx, heartbeat(4, 84), a + D * 0.2, 0.6); put(sfx, sting(1.4), a + D * 0.45, 0.8)
+            if n == "caja": put(sfx, carton_(), a + D * 0.4, 1.0); put(sfx, carton_(), a + D * 0.5, 0.8); put(sfx, lp(rng.normal(0, 1, int(SR * D * 0.5)), 600) * 0.25, a + D * 0.5, 1.0); put(sfx, riser(D * 0.5), a + D * 0.5, 0.4)
+            if n == "placa": put(sfx, heartbeat(5, 96), a, 0.7); put(sfx, riser(D * 0.6), a + D * 0.2, 0.5); put(sfx, sting(1.6), a + D * 0.75, 1.0)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, diesel_(D) * np.linspace(0.5, 0, int(SR * D)), a, 0.6); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 7 ----
         if os.environ.get("EP") == "noche7":
             def pagina_(): return bp(rng.normal(0, 1, int(SR * 0.25)), 1500, 7000) * np.exp(-T(0.25) * 14) * 0.5
