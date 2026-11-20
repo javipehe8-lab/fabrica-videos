@@ -61,6 +61,13 @@
    "titulo": "Regla 8: si el camión llega antes de las 6, no firmes 🚚 Turno de noche (Parte 8) #shorts",
    "video": "videos/turno/Turno_de_Noche_8.mp4",
    "estado": "en cola_youtube.json (pendiente)"
+  },
+  {
+   "parte": 9,
+   "regla": "Si ves a Raúl, no le dejes entrar",
+   "titulo": "Regla 9: si ves a Raúl, no le dejes entrar 🚪 Turno de noche (Parte 9) #shorts",
+   "video": "videos/turno/Turno_de_Noche_9.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -110,6 +117,12 @@
    "parte": 8,
    "titulo": "Rule 8: if the truck comes before 6, don't sign 🚚 Night Shift (Part 8) #shorts",
    "video": "videos/turno/en/Night_Shift_8.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 9,
+   "titulo": "Rule 9: If you see Raul, don't let him in 🚪 Night Shift (Part 9) #shorts",
+   "video": "videos/turno/en/Night_Shift_9.mp4",
    "estado": "pendiente de subir a mano"
   }
  ]
