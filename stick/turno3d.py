@@ -808,3 +808,78 @@ def vapor(img, cx, cy, ancho, t, n=8, alfa=90, alto=600):
     capa = capa.filter(ImageFilter.GaussianBlur(26))
     img.paste(capa, (0, 0), capa)
     return img
+
+# ---------- piezas añadidas en la Parte 9: Raúl al otro lado del cristal ----------
+UNIFORME_MOJADO = (104, 24, 26)
+
+def _u(alto=1.0):
+    s = alto * 1.75 / 3.06
+    return lambda v: v / 100 * s
+
+def raul(esc, p, x, z, yaw=0.0, cara="neutral", mojado=1.0, placa=True):
+    """Raúl (o lo que queda de él): tu mismo uniforme y gorra, empapado, con una placa dorada en el pecho.
+    Devuelve (cab, placa_pos): la matriz de la cabeza (para cara_puntos) y el centro 3D de la placa (para escribir el nombre en 2D)."""
+    col = tuple(int(lerp(a, b, mojado)) for a, b in zip(UNIFORME, UNIFORME_MOJADO))
+    def gorra(e, cab, u):
+        e.add(esfera(u(26), col, 1), cadena(cab, mover(0, u(10), 0), escala(1, 0.55, 1)))
+        e.add(caja(u(36), u(4), u(22), col), cadena(cab, mover(0, u(8), u(24))))
+    cab = humano(esc, p, x=x, z=z, yaw=yaw, ropa=col, piel=(196, 186, 178), pantalon=(34, 36, 44), cara=cara, extra_cabeza=gorra)
+    pp = None
+    if placa:
+        u = _u(); rb = math.radians(p.get("body", 0))
+        M = cadena(mover(x, 0, z), rot_y(yaw), mover(0, u(L["ul"] + L["ll"]) + u(6), 0), rot_x(rb), mover(-u(9), u(L["torso"] * 0.72), u(10.4)))
+        esc.add(caja(0.12, 0.045, 0.012, (214, 186, 110)), M, sesgo=0.8)
+        pp = tuple((M @ np.array([0, 0, 0.007, 1.0]))[:3])
+    return cab, pp
+
+def cara_puntos(cab, alto=1.0):
+    """posiciones 3D de los ojos (izq, der) y la boca de un humano, a partir de la matriz de la cabeza que devuelve humano()"""
+    u = _u(alto); HR = L["head"] * 0.75
+    P = lambda v: tuple((cab @ np.array([*v, 1.0]))[:3])
+    return P((-u(12), u(4), u(HR) * 0.95)), P((u(12), u(4), u(HR) * 0.95)), P((0, -u(15), u(HR) * 0.9))
+
+def lagrimas(img, cam, cab, p=1.0, t=0.0, col=(170, 190, 200)):
+    """dos regueros brillantes que caen de los ojos (p: 0-1, lo que han bajado)"""
+    if p <= 0: return img
+    d = ImageDraw.Draw(img)
+    for i, e in enumerate(cara_puntos(cab)[:2]):
+        q = proyectar(cam, e)
+        if not q: continue
+        s = 300 / max(q[2], 0.3)
+        largo = s * 0.55 * p
+        pts = [(q[0] + math.sin(j * 0.5 + i + t) * s * 0.01, q[1] + s * 0.03 + largo * j / 8) for j in range(9)]
+        d.line(pts, fill=col, width=max(3, int(s / 40)))
+    return img
+
+def sonrisa(img, cam, cab, p=1.0, ancho=1.0, col=(24, 12, 12)):
+    """una sonrisa dibujada encima de la cara: una raja oscura demasiado ancha (p: 0-1 lo que se abre)"""
+    if p <= 0: return img
+    q = proyectar(cam, cara_puntos(cab)[2])
+    if not q: return img
+    d = ImageDraw.Draw(img); s = 1.0 / max(q[2], 0.3) * 110 * ancho * (0.35 + 0.65 * p)
+    d.arc((q[0] - s, q[1] - s * 0.55, q[0] + s, q[1] + s * 0.35), 12, 168, fill=col, width=max(3, int(s / 8)))
+    return img
+
+def cristal(img, t=0.0, gotas=1.0, vaho_=0.0, reflejo=0.25, semilla=9, caja_=None):
+    """el cristal de la puerta entre tú y lo de fuera (2D): reflejo frío, vaho en el borde inferior y gotas que resbalan.
+    caja_=(x0, y0, x1, y1): zona del cristal (por defecto, toda la imagen)."""
+    from PIL import ImageFilter
+    x0, y0, x1, y1 = caja_ or (0, 0, W, H)
+    capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+    if reflejo > 0:                                   # dos bandas diagonales de reflejo
+        for k, off in enumerate((0.25, 0.62)):
+            cx = x0 + (x1 - x0) * off
+            dc.polygon([(cx - 60, y0), (cx + 90 + 40 * k, y0), (cx - 160 + 40 * k, y1), (cx - 310, y1)], fill=(200, 220, 225, int(40 * reflejo)))
+    if vaho_ > 0:
+        dc.rectangle((x0, y1 - (y1 - y0) * 0.28, x1, y1), fill=(200, 210, 210, int(110 * vaho_)))
+    capa = capa.filter(ImageFilter.GaussianBlur(30))
+    img = Image.alpha_composite(img.convert("RGBA"), capa)
+    g = Image.new("RGBA", img.size, (0, 0, 0, 0)); dg = ImageDraw.Draw(g)
+    r_ = __import__("random").Random(semilla)
+    for j in range(int(46 * gotas)):
+        gx = r_.uniform(x0, x1); v = r_.uniform(40, 160); gy = y0 + (r_.uniform(0, y1 - y0) + t * v) % (y1 - y0)
+        rr = r_.uniform(5, 13)
+        dg.line((gx, gy - rr * r_.uniform(3, 12), gx, gy), fill=(220, 235, 240, 70), width=int(rr * 0.6))
+        dg.ellipse((gx - rr, gy - rr, gx + rr, gy + rr * 1.2), fill=(225, 238, 242, 120), outline=(30, 40, 44, 120), width=2)
+    g = g.filter(ImageFilter.GaussianBlur(1.2))
+    return Image.alpha_composite(img, g).convert("RGB")

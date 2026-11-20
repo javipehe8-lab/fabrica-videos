@@ -187,6 +187,25 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 9 ----
+        if os.environ.get("EP") == "noche9":
+            def golpe_():                                                                       # nudillos/palma contra el cristal
+                return (lp(rng.normal(0, 1, int(SR * 0.12)), 700) * np.exp(-T(0.12) * 40) * 0.9
+                        + bp(rng.normal(0, 1, int(SR * 0.12)), 2000, 5000) * np.exp(-T(0.12) * 60) * 0.25)
+            def golpes_(d, cada=0.43, g=1.0):
+                for i in range(int(d / cada)): put(sfx, golpe_() * g * (0.8 + 0.2 * (i % 2)), a + i * cada, 1.0)
+            def lluvia_(d): return hp(rng.normal(0, 1, int(SR * d)), 3000) * 0.05
+            if n == "arranque": put(sfx, boom(1.4, 55), a, 1.2); put(sfx, sting(1.2) * 0.6, a + 0.1, 0.7); put(sfx, lluvia_(D), a, 1.0); golpes_(0.9, 0.3, 0.7)
+            if n == "premisa": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6); put(sfx, lluvia_(D) * 0.6, a, 1.0)
+            if n == "golpes":
+                put(sfx, static(D * 0.45) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.05, 0.5)
+                golpes_(D, 0.45, 1.0); put(sfx, lluvia_(D), a, 1.0)
+            if n == "habla": golpes_(D * 0.4, 0.5, 0.6); put(sfx, heartbeat(4, 84), a + D * 0.2, 0.5); put(sfx, lluvia_(D), a, 1.0)
+            if n == "placa": put(sfx, riser(D * 0.6), a + D * 0.2, 0.45); put(sfx, sting(1.2) * 0.7, a + D * 0.45, 0.7); put(sfx, lluvia_(D), a, 1.0)
+            if n == "noabro": put(sfx, heartbeat(5, 96), a, 0.7); put(sfx, sting(1.6), a + D * 0.35, 1.0); put(sfx, lluvia_(D), a, 1.0)
+            if n == "cam1": put(sfx, static(D) * 0.4, a, 0.7); put(sfx, beep(0.08, 1000), a + 0.05, 0.5); golpes_(D, 0.45, 0.5); put(sfx, riser(D * 0.6), a + D * 0.4, 0.5)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, static(D) * 0.3, a, 0.6); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 8 ----
         if os.environ.get("EP") == "noche8":
             def diesel_(d, f=38):                                                               # motor diésel del camión al ralentí
