@@ -68,6 +68,13 @@
    "titulo": "Regla 9: si ves a Raúl, no le dejes entrar 🚪 Turno de noche (Parte 9) #shorts",
    "video": "videos/turno/Turno_de_Noche_9.mp4",
    "estado": "en cola_youtube.json (pendiente)"
+  },
+  {
+   "parte": 10,
+   "regla": "Las cámaras van 10 segundos por detrás; si alguna va por delante, sal por la puerta de atrás",
+   "titulo": "Regla 10: si una cámara va por delante, huye 📹 Turno de noche (Parte 10) #shorts",
+   "video": "videos/turno/Turno_de_Noche_10.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -123,6 +130,12 @@
    "parte": 9,
    "titulo": "Rule 9: If you see Raul, don't let him in 🚪 Night Shift (Part 9) #shorts",
    "video": "videos/turno/en/Night_Shift_9.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 10,
+   "titulo": "Rule 10: if a camera runs ahead, run 📹 Night Shift (Part 10) #shorts",
+   "video": "videos/turno/en/Night_Shift_10.mp4",
    "estado": "pendiente de subir a mano"
   }
  ]
