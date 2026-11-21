@@ -883,3 +883,79 @@ def cristal(img, t=0.0, gotas=1.0, vaho_=0.0, reflejo=0.25, semilla=9, caja_=Non
         dg.ellipse((gx - rr, gy - rr, gx + rr, gy + rr * 1.2), fill=(225, 238, 242, 120), outline=(30, 40, 44, 120), width=2)
     g = g.filter(ImageFilter.GaussianBlur(1.2))
     return Image.alpha_composite(img, g).convert("RGB")
+
+# ---------- piezas añadidas en la Parte 10: el monitor de las cámaras, la puerta de atrás y el cartel del km 10 ----------
+PUERTA_A = (0.35, -5.95)                     # puerta de atrás (x, z de la pared del fondo), entre el aseo y la nevera
+
+def puerta_atras(esc, abierta=0.0, fuera=(196, 204, 202), cartel=True):
+    """puerta metálica de atrás en la pared del fondo (vista desde dentro). abierta 0-1: la hoja gira hacia fuera
+    y en el hueco se ve la niebla de detrás (blanca, emite)."""
+    x, z = PUERTA_A
+    _caja_en(esc, x - 0.52, 0, z - 0.02, x + 0.52, 2.16, z + 0.03, (70, 72, 74))                  # marco
+    if abierta > 0:
+        _caja_en(esc, x - 0.44, 0.01, z + 0.031, x + 0.44, 2.08, z + 0.04, fuera, emite=True)    # el hueco: niebla
+        ang = -abierta * 1.9                                                                        # la hoja, abriéndose hacia fuera (detrás de la pared)
+        M = cadena(mover(x - 0.44, 0, z + 0.05), rot_y(ang), mover(0.44, 1.04, 0))
+        esc.add(caja(0.88, 2.06, 0.04, (110, 116, 118)), M, sesgo=0.3)
+    else:
+        _caja_en(esc, x - 0.44, 0.01, z + 0.031, x + 0.44, 2.08, z + 0.07, (110, 116, 118), sesgo=0.3)
+        _caja_en(esc, x - 0.4, 1.0, z + 0.07, x + 0.36, 1.07, z + 0.12, (190, 190, 186), sesgo=0.5)   # barra antipánico
+    if cartel:
+        _caja_en(esc, x - 0.3, 2.26, z + 0.03, x + 0.3, 2.46, z + 0.06, (40, 190, 90), emite=True)      # luz verde de SALIDA
+        esc.etiquetas.append(((x, 2.36, z + 0.08), "SALIDA", 0.13, (240, 255, 240)))
+
+def trasera(esc, luz_puerta=1.0):
+    """detrás de la gasolinera: suelo de tierra y hierbajos, la pared trasera por fuera y la puerta abierta con luz"""
+    esc.add(subdividir(plano(40, 30, (62, 64, 56)), 10), mover(0, 0, -21), fondo=True)
+    esc.add(subdividir(pared(10, 3, (118, 114, 102)), 6), cadena(mover(0, 0, -6.05), rot_y(math.pi)))   # pared trasera, por fuera
+    x, z = PUERTA_A
+    _caja_en(esc, x - 0.44, 0.01, -6.1, x + 0.44, 2.08, -6.06, tuple(int(v * luz_puerta) for v in FLUOR), emite=True)
+    r_ = __import__("random").Random(12)
+    for i in range(40):                                                                               # matojos
+        hx, hz = r_.uniform(-12, 12), r_.uniform(-25, -7)
+        esc.add(prisma(0.14, 0.02, r_.uniform(0.2, 0.5), (70, 78, 56), n=4), mover(hx, 0, hz))
+
+def luz_trasera(f=1.0):
+    """la luz de la tienda que sale por la puerta de atrás, hacia la niebla"""
+    x, z = PUERTA_A
+    return [Luz((x, 2.0, z - 0.6), FLUOR, 9.0, dir=(0, -0.25, -1), cono=55, fuerza=1.1 * f), Luz((x, 3.0, z - 4.0), (170, 186, 186), 8.0, fuerza=0.5 * f)]
+
+def cartel_km(esc, x, z, texto="KILÓMETRO 10", yaw=0.0, luz=1.0, alto=1.9):
+    """cartel de carretera clavado en la tierra: dos postes y una placa blanca con borde rojo; el texto va en etiquetas"""
+    M = cadena(mover(x, 0, z), rot_y(yaw))
+    for sx in (-0.75, 0.75): esc.add(caja(0.08, alto + 0.5, 0.08, (120, 120, 116), base=True), cadena(M, mover(sx, 0, 0)))
+    esc.add(caja(1.9, 0.75, 0.05, (160, 30, 30)), cadena(M, mover(0, alto, 0.03)))
+    c = tuple(int(v * luz) for v in (232, 232, 222))
+    esc.add(caja(1.78, 0.63, 0.02, c), cadena(M, mover(0, alto, 0.065)), sesgo=0.2)
+    p = tuple((M @ np.array([0, alto, 0.1, 1.0]))[:3])
+    esc.etiquetas.append((p, texto, 0.2, (24, 24, 24)))
+    return p
+
+def monitor(fondo, pantalla, t=0.0, caja_=(70, 520, 1010, 1220), lcd=None, lcd_col=(110, 240, 170), ruido=0.5):
+    """el monitor de las cámaras de seguridad en primer plano (2D): carcasa beige, pantalla con la imagen CCTV
+    (con líneas de barrido y viñeta) y, opcional, el reloj de la caja (lcd = "04:10:12") debajo, para comparar horas."""
+    from PIL import ImageFilter
+    img = fondo.copy(); d = ImageDraw.Draw(img)
+    x0, y0, x1, y1 = caja_
+    d.rounded_rectangle((x0 - 40, y0 - 40, x1 + 40, y1 + 70), 40, fill=(150, 146, 128), outline=(40, 40, 36), width=6)
+    d.rounded_rectangle((x0 - 10, y0 - 10, x1 + 10, y1 + 10), 26, fill=(14, 14, 14))
+    pw, ph = x1 - x0, y1 - y0
+    sc = max(pw / W, ph / H)
+    p = pantalla.resize((int(W * sc), int(H * sc)), Image.BILINEAR)
+    ox, oy = (p.width - pw) // 2, int((p.height - ph) * 0.42)
+    p = p.crop((ox, oy, ox + pw, oy + ph))
+    a = np.asarray(p).astype(np.float32)
+    a[::4] *= 0.78                                                                    # líneas de barrido
+    yy, xx = np.mgrid[0:ph, 0:pw]
+    vig = 1 - 0.45 * (((xx - pw / 2) / (pw / 2)) ** 2 + ((yy - ph / 2) / (ph / 2)) ** 2) / 2
+    a *= vig[..., None]
+    a += np.random.default_rng(int(t * 30)).normal(0, 9 * ruido, a.shape[:2])[..., None]
+    p = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+    m = Image.new("L", (pw, ph), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, pw - 1, ph - 1), 22, fill=255)
+    img.paste(p, (x0, y0), m)
+    d.ellipse((x1 - 30, y1 + 30, x1 - 10, y1 + 50), fill=(60, 220, 90))                # piloto encendido
+    if lcd:
+        lx, ly = W / 2, y1 + 190
+        d.rounded_rectangle((lx - 230, ly - 70, lx + 230, ly + 70), 16, fill=(20, 26, 22), outline=(80, 84, 80), width=5)
+        d.text((lx, ly), lcd, font=font(96), fill=lcd_col, anchor="mm")
+    return img

@@ -187,6 +187,24 @@ def main(voz, out):
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
         if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        # ---- Turno de noche · 10 ----
+        if os.environ.get("EP") == "noche10":
+            def zumbido_(d): t_ = T(d); return (np.sin(2 * np.pi * 15734 / 100 * t_) * 0.04 + hp(rng.normal(0, 1, len(t_)), 6000) * 0.03)   # zumbido del monitor CRT
+            def tic_(d):                                                                       # segundero del reloj
+                for i in range(int(d)): put(sfx, beep(0.03, 2200) * 0.5, a + i + 0.2, 0.5)
+            def pasos_(d, cada=0.22):
+                for i in range(int(d / cada)): put(sfx, lp(rng.normal(0, 1, int(SR * 0.08)), 400) * np.exp(-T(0.08) * 50) * 0.8, a + i * cada, 1.0)
+            def puerta_():
+                x = lp(rng.normal(0, 1, int(SR * 0.4)), 300) * np.exp(-T(0.4) * 9); x[:int(SR * 0.2)] += bp(rng.normal(0, 1, int(SR * 0.2)), 1500, 4000) * np.exp(-T(0.2) * 30) * 0.4; return x
+            if n == "arranque": put(sfx, boom(1.4, 55), a, 1.2); put(sfx, sting(1.2) * 0.6, a + 0.1, 0.7); put(sfx, static(D) * 0.3, a, 0.6); put(sfx, zumbido_(D), a, 1.0)
+            if n == "premisa": put(sfx, buzz(D) * 0.6, a, 0.6); put(sfx, whoosh(0.3) * 0.5, a + 0.1, 0.6)
+            if n == "reloj": put(sfx, zumbido_(D), a, 1.0); tic_(D); put(sfx, riser(D * 0.5), a + D * 0.5, 0.4)
+            if n == "entra": put(sfx, zumbido_(D), a, 1.0); put(sfx, lp(rng.normal(0, 1, int(SR * D * 0.6)), 500) * 0.2, a, 1.0); put(sfx, sting(1.0) * 0.6, a + D * 0.58, 0.7)
+            if n == "detras": put(sfx, zumbido_(D), a, 1.0); put(sfx, heartbeat(4, 90), a, 0.6); put(sfx, riser(D * 0.6), a, 0.5); put(sfx, sting(1.4), a + D * 0.6, 0.9)
+            if n == "nuca": put(sfx, heartbeat(5, 104), a, 0.7); put(sfx, hp(rng.normal(0, 1, int(SR * 1.2)), 2500) * np.hanning(int(SR * 1.2)) * 0.25, a + D * 0.15, 1.0); put(sfx, sting(1.6), a + D * 0.6, 1.0)
+            if n == "huyo": pasos_(D * 0.4); put(sfx, puerta_(), a + D * 0.3, 1.0); put(sfx, static(D * 0.55) * 0.4, a + D * 0.45, 0.7); put(sfx, impact(), a + D * 0.45, 0.8)
+            if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, lp(rng.normal(0, 1, int(SR * D)), 300) * 0.15, a, 1.0); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
+            continue
         # ---- Turno de noche · 9 ----
         if os.environ.get("EP") == "noche9":
             def golpe_():                                                                       # nudillos/palma contra el cristal
