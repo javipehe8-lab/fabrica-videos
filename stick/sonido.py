@@ -399,6 +399,36 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 22 ----
+        if os.environ.get("EP") == "3am22":
+            arrastra_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 90, 700) * (0.55 + 0.45 * np.abs(np.sin(2 * np.pi * 2.3 * T(d)))) * (0.6 + 0.4 * rng.random(int(SR * d)) ** 4) * 0.9   # mueble arrastrado
+            chirr_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 700, 2200) * (np.sin(2 * np.pi * 11 * T(d)) * 0.5 + 0.5) * np.exp(-T(d) * 1.5) * 0.4   # madera que chirría
+            zumb_ = lambda d: (np.sin(2 * np.pi * 50 * T(d)) * 0.5 + np.sin(2 * np.pi * 100 * T(d)) * 0.25) * 0.1
+            tamborileo_ = lambda: lp(rng.normal(0, 1, int(SR * 0.05)), 700) * np.exp(-T(0.05) * 70)                                         # pasos sobre el techo
+            if n == "techo": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, arrastra_(D * 0.85), a, 1.0); put(sfx, chirr_(1.2), a + D * 0.3, 0.6)
+            if n == "vecina":
+                put(sfx, step(), a + 0.1, 0.6); put(sfx, step(), a + 0.4, 0.6)
+                put(sfx, impact(), a + D * 0.6, 0.6); put(sfx, whoosh(0.3), a + D * 0.55, 0.5)
+            if n == "solo": put(sfx, zumb_(D), a, 0.7); put(sfx, riser(D * 0.5) * 0.4, a + D * 0.5, 0.5)
+            if n == "encima":
+                for i in range(int(D * 0.65 / 0.22)): put(sfx, tamborileo_(), a + D * 0.05 + i * 0.22, 0.7)
+                put(sfx, arrastra_(D * 0.6), a + D * 0.05, 0.6)
+                put(sfx, boom(1.6, 55), a + D * 0.72, 1.1); put(sfx, heartbeat(3, 80), a + D * 0.75, 0.6)
+            if n == "trampilla":
+                put(sfx, zumb_(D), a, 0.6)
+                put(sfx, chirr_(1.2), a + D * 0.4, 1.0); put(sfx, arrastra_(0.8) * 0.6, a + D * 0.4, 0.6)
+                put(sfx, sting(1.2) * 0.7, a + D * 0.85, 0.8)
+            if n == "brazo":
+                put(sfx, whoosh(0.4, up=False), a + 0.05, 0.6); put(sfx, impact() * 0.5, a + D * 0.3, 0.6)
+                put(sfx, arrastra_(D * 0.55), a + D * 0.35, 1.3); put(sfx, chirr_(D * 0.55), a + D * 0.35, 0.8)
+                put(sfx, boom(1.0, 80) * 0.7, a + D * 0.92, 0.9)
+            if n == "aranazos": put(sfx, zumb_(D), a, 0.6); put(sfx, heartbeat(4, 90), a + 0.2, 0.7); put(sfx, riser(D * 0.6) * 0.5, a + D * 0.4, 0.6)
+            if n == "voz":
+                put(sfx, riser(D * 0.45) * 0.5, a, 0.6); put(sfx, boom(2.0, 50), a + D * 0.46, 1.3); put(sfx, sting(1.5), a + D * 0.46, 1.1)
+            if n == "final":
+                put(sfx, zumb_(D), a, 0.5); put(sfx, arrastra_(1.2) * 0.5, a + 0.1, 0.6)
+                put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 21 ----
         if os.environ.get("EP") == "3am21":
             vibra_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 220) * (np.sin(2 * np.pi * 50 * T(d)) * 0.5 + 0.5) * 1.3   # móvil vibrando

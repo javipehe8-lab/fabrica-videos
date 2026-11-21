@@ -428,7 +428,9 @@ EN = {"SI UNA CÁMARA VA POR DELANTE, SAL POR LA PUERTA DE ATRÁS": "IF A CAMERA
       "SI A LAS 3 EL GPS": "IF AT 3AM YOUR GPS", "INSISTE…": "KEEPS INSISTING…", "NO GIRES": "DON'T TURN",
       "¿mañana hay examen?": "is there a test tomorrow?", "no sé, buenas noches": "idk, good night", "¿QUIÉN ESTÁ\nDESPIERTO?": "WHO'S\nAWAKE?",
       "31 participantes": "31 members", "yo": "me", "YA LO SÉ.": "I KNOW.", "TE VEO.": "I SEE YOU.",
-      "SI A LAS 3 PREGUNTAN": "IF AT 3AM SOMEONE ASKS", "QUIÉN ESTÁ DESPIERTO…": "WHO'S AWAKE…", "NO CONTESTES": "DON'T ANSWER"}
+      "SI A LAS 3 PREGUNTAN": "IF AT 3AM SOMEONE ASKS", "QUIÉN ESTÁ DESPIERTO…": "WHO'S AWAKE…", "NO CONTESTES": "DON'T ANSWER",
+      "SI A LAS 3 SE ARRASTRAN": "IF AT 3AM YOU HEAR", "MUEBLES…": "FURNITURE DRAGGING…", "NO SUBAS A MIRAR": "DON'T GO UP TO LOOK",
+      "LA VECINA DE ABAJO": "THE NEIGHBOR DOWNSTAIRS", "EL DESVÁN": "THE ATTIC"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
