@@ -415,6 +415,31 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 23 ----
+        if os.environ.get("EP") == "3am23":
+            toc_ = lambda: lp(rng.normal(0, 1, int(SR * 0.12)), 380) * np.exp(-T(0.12) * 40) * 2.2 + np.sin(2 * np.pi * 110 * T(0.12)) * np.exp(-T(0.12) * 35) * 0.5   # golpe en la pared
+            hueco_ = lambda: bp(rng.normal(0, 1, int(SR * 0.16)), 150, 900) * np.exp(-T(0.16) * 30) * 2.0 + np.sin(2 * np.pi * 150 * T(0.16)) * np.exp(-T(0.16) * 25) * 0.5   # golpe en madera
+            zumb_ = lambda d: (np.sin(2 * np.pi * 50 * T(d)) * 0.5 + np.sin(2 * np.pi * 100 * T(d)) * 0.25) * 0.1
+            chirr_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 700, 2200) * (np.sin(2 * np.pi * 11 * T(d)) * 0.5 + 0.5) * np.exp(-T(d) * 1.5) * 0.4
+            tres = lambda t0, f, gap=0.3, g=1.0: [put(sfx, f(), a + t0 + i * gap, g) for i in range(3)]
+            if n == "golpes": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, zumb_(D), a, 0.6); tres(1.25, toc_, g=1.1)
+            if n == "senal": tres(D * 0.3, toc_, 0.25, 0.6); tres(D * 0.62, toc_, 0.25, 0.6)
+            if n == "contestas": tres(1.15, toc_, g=1.0)
+            if n == "manana": put(sfx, step(), a + 0.2, 0.6); put(sfx, step(), a + 0.6, 0.6); put(sfx, impact(), a + D * 0.8, 0.7); put(sfx, whoosh(0.3), a + D * 0.78, 0.5)
+            if n == "vacio":
+                put(sfx, zumb_(D), a, 0.6); tres(D * 0.25, toc_, 0.32, 0.9)
+                put(sfx, boom(2.0, 50), a + D * 0.73, 1.3); put(sfx, sting(1.5), a + D * 0.73, 1.1)
+            if n == "noche": put(sfx, zumb_(D), a, 0.6); put(sfx, heartbeat(3, 80), a, 0.5); tres(1.55, toc_, g=1.1)
+            if n == "armario":
+                put(sfx, zumb_(D), a, 0.6); put(sfx, riser(D * 0.5) * 0.4, a, 0.5); tres(D * 0.5, hueco_, 0.34, 1.3)
+                put(sfx, boom(1.4, 60), a + D * 0.5 + 0.68, 0.9)
+            if n == "toca":
+                put(sfx, chirr_(1.4), a + D * 0.05, 1.0); put(sfx, boom(2.0, 50), a + D * 0.44, 1.3); put(sfx, sting(1.5), a + D * 0.44, 1.1)
+                tres(D * 0.72, hueco_, 0.3, 0.7)
+            if n == "final":
+                put(sfx, zumb_(D), a, 0.5); tres(0.3, hueco_, 0.3, 0.6)
+                put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 22 ----
         if os.environ.get("EP") == "3am22":
             arrastra_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 90, 700) * (0.55 + 0.45 * np.abs(np.sin(2 * np.pi * 2.3 * T(d)))) * (0.6 + 0.4 * rng.random(int(SR * d)) ** 4) * 0.9   # mueble arrastrado
