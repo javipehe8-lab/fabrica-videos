@@ -75,6 +75,13 @@
    "titulo": "Regla 10: si una cámara va por delante, huye 📹 Turno de noche (Parte 10) #shorts",
    "video": "videos/turno/Turno_de_Noche_10.mp4",
    "estado": "en cola_youtube.json (pendiente)"
+  },
+  {
+   "parte": 11,
+   "regla": "Nunca cruces el kilómetro 10",
+   "titulo": "Regla 11: nunca cruces el kilómetro 10 🪧 Turno de noche (Parte 11) #shorts",
+   "video": "videos/turno/Turno_de_Noche_11.mp4",
+   "estado": "en cola_youtube.json (pendiente)"
   }
  ],
  "en": [
@@ -136,6 +143,12 @@
    "parte": 10,
    "titulo": "Rule 10: if a camera runs ahead, run 📹 Night Shift (Part 10) #shorts",
    "video": "videos/turno/en/Night_Shift_10.mp4",
+   "estado": "pendiente de subir a mano"
+  },
+  {
+   "parte": 11,
+   "titulo": "Rule 11: never cross mile 10 🪧 Night Shift (Part 11) #shorts",
+   "video": "videos/turno/en/Night_Shift_11.mp4",
    "estado": "pendiente de subir a mano"
   }
  ]
