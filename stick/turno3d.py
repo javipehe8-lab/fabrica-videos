@@ -959,3 +959,67 @@ def monitor(fondo, pantalla, t=0.0, caja_=(70, 520, 1010, 1220), lcd=None, lcd_c
         d.rounded_rectangle((lx - 230, ly - 70, lx + 230, ly + 70), 16, fill=(20, 26, 22), outline=(80, 84, 80), width=5)
         d.text((lx, ly), lcd, font=font(96), fill=lcd_col, anchor="mm")
     return img
+
+# ---------- piezas añadidas en la Parte 11: la otra gasolinera (kilómetro 10) y la hoja de reglas en blanco ----------
+def otra_gasolinera(t=0.0, rotulo="KILÓMETRO 10 · 24H", luz=1.0, cabina_kw=None):
+    """la gasolinera del kilómetro 10: idéntica a la tuya (mundo) pero con otro rótulo en la fachada"""
+    esc = mundo(t, luz=luz, cabina_kw=cabina_kw)
+    esc.etiquetas = [(e[0], rotulo, 0.56, (200, 30, 30)) if e[1] == "KILÓMETRO 9 · 24H" else e for e in esc.etiquetas]
+    return esc
+
+def plantilla(esc, pos, p, yaw=math.pi, cual="empleado", cara="neutral"):
+    """un empleado del turno de noche (todos con TU uniforme): cual = 'anciano' (boina, pelo cano), 'raul' (empapado, con placa),
+    'empleado' (tú) o 'sincara' (otro, sin cara). Devuelve la matriz de la cabeza."""
+    x, z = pos
+    if cual == "anciano": return anciano(esc, p, x, z, yaw=yaw, cara=cara, abrigo=UNIFORME)
+    if cual == "raul": return raul(esc, p, x, z, yaw=yaw, cara=cara, mojado=0.8)[0]
+    if cual == "sincara": return humano(esc, p, x=x, z=z, yaw=yaw, ropa=UNIFORME, piel=(214, 210, 204), pantalon=(40, 42, 50), cara="ninguna",
+                                        extra_cabeza=lambda e, cab, u: (e.add(esfera(u(26), UNIFORME, 1), cadena(cab, mover(0, u(10), 0), escala(1, 0.55, 1))),
+                                                                         e.add(caja(u(36), u(4), u(22), UNIFORME), cadena(cab, mover(0, u(8), u(24))))))
+    return empleado(esc, p, x, z, yaw=yaw, cara=cara)
+
+def pose_saludo(t, k=1.0, fase=0.0):
+    """mano derecha en alto, saludando de lado a lado (k 0-1: cuánto ha subido el brazo). Todos a la vez si comparten fase."""
+    return pose(a1u=-8, a1l=10, a2u=lerp(-12, 150, k), a2l=lerp(12, 30 + 24 * math.sin(t * 6 + fase), k), head=-4)
+
+def hoja_blanca(img, texto="Regla 12:", p=1.0, cy=880, zoom=0.8, t=0.0, humeda=True, boli=True, tinta=(30, 50, 150)):
+    """una hoja de reglas NUEVA, en blanco (solo la cabecera impresa), con una línea a mano arriba (p: 0-1 escrito).
+    humeda: la tinta aún brilla y gotea. boli: un bolígrafo suelto al lado, recién soltado."""
+    from PIL import ImageFilter
+    d = ImageDraw.Draw(img)
+    w, h = 900 * zoom, 1180 * zoom
+    x0, y0 = W / 2 - w / 2, cy - h / 2
+    d.rectangle((x0 + 18, y0 + 22, x0 + w + 18, y0 + h + 22), fill=(10, 10, 10))
+    d.rectangle((x0, y0, x0 + w, y0 + h), fill=(238, 236, 226), outline=(130, 128, 112), width=6)
+    d.text((W / 2, y0 + 80 * zoom), tr("REGLAS DEL TURNO DE NOCHE"), font=font(int(50 * zoom)), fill=(150, 30, 30), anchor="mm")
+    for k in range(9):                                     # renglones vacíos, muy tenues
+        yy = y0 + 330 * zoom + k * 88 * zoom
+        d.line((x0 + 50 * zoom, yy, x0 + w - 50 * zoom, yy), fill=(214, 212, 200), width=2)
+    txt = tr(texto); n = max(0, int(len(txt) * min(1.0, p)))
+    if n:
+        fn = font(int(120 * zoom), LETRA)
+        tx, ty = x0 + 70 * zoom, y0 + 250 * zoom
+        d.text((tx, ty), txt[:n], font=fn, fill=tinta, anchor="ls", stroke_width=2, stroke_fill=tinta)
+        tw = d.textlength(txt[:n], font=fn)
+        if humeda:
+            capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+            r_ = __import__("random").Random(13)
+            for j in range(4):
+                xx = tx + r_.uniform(0.1, 0.9) * tw; ll = r_.uniform(50, 150) * zoom * (0.6 + 0.4 * math.sin(t * 1.5 + j) ** 2)
+                dc.line((xx, ty, xx + 2, ty + ll), fill=(20, 30, 110, 210), width=int(8 * zoom))
+                dc.ellipse((xx - 7 * zoom, ty + ll - 7 * zoom, xx + 9 * zoom, ty + ll + 9 * zoom), fill=(20, 30, 110, 210))
+            capa = capa.filter(ImageFilter.GaussianBlur(2))
+            img.paste(capa, (0, 0), capa)
+            d = ImageDraw.Draw(img)
+            d.text((tx - 3, ty - 4), txt[:n], font=fn, fill=(130, 150, 235), anchor="ls")
+            d.text((tx, ty), txt[:n], font=fn, fill=tinta, anchor="ls", stroke_width=2, stroke_fill=tinta)
+    if boli:                                               # bolígrafo suelto, en diagonal, sobre la hoja
+        fx_, fy_ = x0 + w * 0.62, y0 + 300 * zoom
+        L_ = 520 * zoom; a = math.radians(58)
+        ux, uy = math.cos(a), math.sin(a); nx, ny = -uy, ux
+        def pt(s, o): return (fx_ + ux * s + nx * o, fy_ + uy * s + ny * o)
+        d.polygon([pt(18, 26 * zoom), pt(L_ + 18, 26 * zoom), pt(L_ + 18, 46 * zoom), pt(18, 46 * zoom)], fill=(120, 118, 104))   # sombra
+        d.polygon([pt(0, 0), pt(46 * zoom, -10 * zoom), pt(46 * zoom, 10 * zoom)], fill=(40, 40, 44))
+        d.polygon([pt(46 * zoom, -16 * zoom), pt(L_, -18 * zoom), pt(L_, 18 * zoom), pt(46 * zoom, 16 * zoom)], fill=(232, 232, 236), outline=(20, 20, 24))
+        d.polygon([pt(L_ - 70 * zoom, -19 * zoom), pt(L_, -19 * zoom), pt(L_, 19 * zoom), pt(L_ - 70 * zoom, 19 * zoom)], fill=(30, 50, 150))
+    return img
