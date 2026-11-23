@@ -15,6 +15,9 @@ fi
 case "$N" in 3am*) K="${N#3am}"
   if [ "$L" = "en" ]; then OUTDIR="$ROOT/videos/3am/en"; OUT="$OUTDIR/If_You_Hear_This_$K.mp4"
   else OUTDIR="$ROOT/videos/3am"; OUT="$OUTDIR/Si_Oyes_Esto_$K.mp4"; fi;;
+  reglas*) K="${N#reglas}"
+  if [ "$L" = "en" ]; then OUTDIR="$ROOT/videos/reglas/en"; OUT="$OUTDIR/Rules_$K.mp4"
+  else OUTDIR="$ROOT/videos/reglas"; OUT="$OUTDIR/Reglas_$K.mp4"; fi;;
   noche*) K="${N#noche}"
   if [ "$L" = "en" ]; then OUTDIR="$ROOT/videos/turno/en"; OUT="$OUTDIR/Night_Shift_$K.mp4"
   else OUTDIR="$ROOT/videos/turno"; OUT="$OUTDIR/Turno_de_Noche_$K.mp4"; fi;;

@@ -403,6 +403,22 @@ def main(voz, out):
             if n == "giro": put(sfx, static(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.6), a, 0.5); put(sfx, sting(1.6), a + D * 0.6, 1.1)
             if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
             continue
+        # ---- Reglas · 1 ----
+        if os.environ.get("EP") == "reglas1":
+            if n == "arranque": put(sfx, buzz(D) * 0.7, a, 0.8); [put(sfx, beep(0.12, 660), a + 0.2 + i * 0.5, 0.6) for i in range(int(D / 0.5))]
+            if n == "panel": [put(sfx, beep(0.12, 660), a + 0.1 + i * 0.5, 0.7) for i in range(int(D / 0.5))]; put(sfx, buzz(D) * 0.5, a, 0.6)
+            if n == "voz": put(sfx, static(D) * 0.4, a, 0.7); put(sfx, sting(1.4) * 0.6, a + D * 0.45, 0.8)
+            if n == "camina":
+                for i in range(int(D / 0.55)): put(sfx, step(), a + 0.1 + i * 0.55, 0.8)
+                for i in range(5): put(sfx, impact() * 0.25, a + 0.5 + i * D / 6, 0.5)
+            if n == "cama": [put(sfx, beep(0.08, 1000), a + 0.2 + i * 0.8, 0.5) for i in range(int(D / 0.8))]; put(sfx, riser(D), a, 0.4)
+            if n == "cara": put(sfx, boom(2.0, 50), a + D * 0.55, 1.3); put(sfx, sting(1.6), a + D * 0.55, 1.1); put(sfx, scream(1.0) * 0.4, a + D * 0.58, 0.6)
+            if n == "puerta":
+                put(sfx, impact(), a + D * 0.1, 1.4); put(sfx, boom(1.2, 70), a + D * 0.1, 1.0)
+                put(sfx, beep(min(2.5, D * 0.8), 1000) * 0.8, a + D * 0.25, 0.9)
+                for i in range(6): put(sfx, impact() * 0.3, a + D * (0.3 + i * 0.08), 0.5)
+            if n == "final": put(sfx, boom(2.0, 45), a + 0.1, 1.2); put(sfx, beep(0.12, 660), a + 0.8, 0.6); put(sfx, beep(0.12, 660), a + 1.3, 0.6)
+            continue
         # ---- Turno de noche · 1 ----
         if os.environ.get("EP") == "noche1":
             if n == "llegada": put(sfx, lp(rng.normal(0, 1, int(SR * D)), 500) * 0.25, a, 1.0); put(sfx, buzz(D) * 0.5, a, 0.6)
