@@ -2,7 +2,8 @@
   "_info": "Cola de vídeos para subir a YouTube Studio desde el Chrome de Javi (ver subir_youtube.md). Las tareas diarias añaden aquí cada vídeo nuevo con estado 'pendiente'. La tarea de subida le asigna fecha y hora y lo pasa a 'programado'.",
   "horas": {
     "3am": "19:00",
-    "turno": "23:00"
+    "turno": "23:00",
+    "reglas": "23:00"
   },
   "videos": [
     {
@@ -252,6 +253,16 @@
       "titulo": "Si a las 3AM hay alguien en tu timbre… no mires a qué hora se fue 😨 #shorts",
       "descripcion": "Tu timbre con cámara te avisó a las tres: alguien en tu puerta. En la grabación no llama, no se mueve… solo mira fijo a la cámara. ¿Tú adelantarías el vídeo para ver cuándo se fue?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
       "estado": "pendiente",
+      "creado": "2026-11-23"
+    },
+    {
+      "serie": "reglas",
+      "parte": 1,
+      "video": "videos/reglas/Reglas_1.mp4",
+      "titulo": "Si llaman desde la 414, no vayas 😱 #shorts",
+      "descripcion": "Regla de los celadores de noche de un hospital: si llaman desde la habitación 414, no vayas. Lleva un año vacía. Por el interfono habla su madre, que murió allí. Óscar fue.\n\nCada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "pendiente",
+      "no_antes": "2026-11-25",
       "creado": "2026-11-23"
     }
   ]

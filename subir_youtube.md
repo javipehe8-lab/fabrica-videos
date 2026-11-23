@@ -6,8 +6,10 @@ Metricool gratis solo deja 20 publicaciones al mes, y se agotaron. Ahora los ví
 - La tarea de **subida** (cada día a las 17:47; necesita el ordenador de Javi encendido con la app de Claude y Chrome abiertos) sube todo lo pendiente. Si un día el ordenador está apagado, no pasa nada: al día siguiente sube lo atrasado y lo reparte en los siguientes días libres.
 
 ## Cómo asignar fecha a cada vídeo pendiente
-- Hora fija por serie: `cola_youtube.json["horas"]` (3am → 19:00, turno → 23:00, hora de España).
-- Cada serie publica como mucho un vídeo al día. Para cada serie, en orden de parte, el primer día libre a partir de hoy (si la hora de hoy ya pasó o falta menos de 1 hora, desde mañana), sin repetir un día que ya tenga un vídeo "programado" de esa serie en la cola.
+- Hora fija por serie: `cola_youtube.json["horas"]` (3am → 19:00, turno → 23:00, reglas → 23:00, hora de España).
+- **turno y reglas comparten la franja de las 23:00**: cuentan como UNA sola serie a efectos de días (nunca dos vídeos a las 23:00 el mismo día). Primero van los "turno" pendientes; "reglas" después. Turno de noche terminó en la Parte 12 (24/11); desde el 25/11 la franja es de Reglas.
+- Si un vídeo tiene `"no_antes": "AAAA-MM-DD"`, no lo programes antes de ese día.
+- Cada serie publica como mucho un vídeo al día. Para cada serie, en orden de parte, el primer día libre a partir de hoy (si la hora de hoy ya pasó o falta menos de 1 hora, desde mañana), sin repetir un día que ya tenga un vídeo "programado" de esa serie (o de su franja) en la cola.
 
 ## Procedimiento en Chrome (probado el 14/11/2026)
 Carga las herramientas de Claude en Chrome en UNA llamada a ToolSearch (tabs_context_mcp, tabs_create_mcp, tabs_close_mcp, navigate, computer, find, javascript_tool, browser_batch). Luego:
