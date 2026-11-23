@@ -78,6 +78,30 @@ def piper(texto, vel):
     w = w.astype(np.float32) / 32768
     return resample_poly(w, 160, 147).astype(np.float32) * 0.9   # 22050 -> 24000
 
+# Voces neuronales gratis de Microsoft (paquete edge-tts). Se usan solas si el paquete está instalado y
+# speech.platform.bing.com responde (hay que permitir ese dominio en la red del entorno). Si algo falla,
+# el episodio ENTERO se hace con Kokoro (nunca mezcladas). VOZ_ES=kokoro las desactiva.
+EDGE = {"em_alex": "es-ES-AlvaroNeural", "em_santa": "es-MX-JorgeNeural", "ef_dora": "es-ES-ElviraNeural"}
+EDGE_NARRADOR = os.environ.get("EDGE_NARRADOR", "es-ES-AlvaroNeural")
+
+def edge(texto, vel, voz):
+    import asyncio, subprocess, tempfile, edge_tts
+    pct = int(round((vel / 1.15 - 1) * 100))      # 1.15 (narrador Kokoro) = velocidad normal de Edge
+    with tempfile.NamedTemporaryFile(suffix=".mp3") as mp3:
+        asyncio.run(asyncio.wait_for(edge_tts.Communicate(texto, voz, rate=f"{pct:+d}%").save(mp3.name), 25))
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp3.name, "-f", "f32le", "-ac", "1", "-ar", "24000", "-"],
+                             check=True, capture_output=True).stdout
+    w = np.frombuffer(raw, np.float32).copy()
+    if len(w) < 2400: raise RuntimeError("audio vacío")
+    return w / (np.abs(w).max() + 1e-9) * 0.9
+
+def usar_edge():
+    if EN or os.environ.get("VOZ_ES", "edge") not in ("edge", ""): return False
+    try:
+        edge("Prueba.", 1.15, EDGE_NARRADOR); return True
+    except Exception as e:
+        print("Voz Edge no disponible, uso Kokoro:", type(e).__name__, str(e)[:120], flush=True); return False
+
 def trozos(texto):
     """[(hablante, frase limpia)]"""
     res, quien = [], "NARRADOR"
@@ -93,6 +117,8 @@ def main(out):
     sess = ort.InferenceSession(os.path.join(TTS, "kokoro.onnx"), providers=["CPUExecutionProvider"])
     bank = np.load(os.path.join(TTS, "voices.bin"))
     info = []
+    con_edge = usar_edge()
+    print("Voz:", "Edge (Microsoft)" if con_edge else "Kokoro", flush=True)
     for i, (_, texto) in enumerate(ESCENAS):
         parts = []
         for quien, s in trozos(texto):
@@ -104,7 +130,9 @@ def main(out):
             elif st.endswith("?"): vel *= 1.03
             if len(st.split()) <= 3 and quien == "NARRADOR": vel *= 0.94
             vel *= 1 + 0.03 * np.sin(len(parts) * 2.3)
-            if vname == "piper":
+            if con_edge and vname in EDGE:
+                w = edge(s, vel, EDGE_NARRADOR if quien == "NARRADOR" else EDGE[vname])
+            elif vname == "piper":
                 w = piper(s, vel)
             else:
                 ph = nar.phonemize(s)

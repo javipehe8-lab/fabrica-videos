@@ -13,3 +13,5 @@ if [ ! -f tts/piper_mx/es_MX-claude-high.onnx ]; then
   mkdir -p tts/piper_mx && curl -sSL -o tts/piper_mx/mx.zip https://github.com/javipehe8-lab/fabrica-videos/releases/download/voces/es_MX-claude-high.zip \
     && (cd tts/piper_mx && unzip -oq mx.zip && rm mx.zip) || echo "aviso: no se pudo bajar la voz mexicana"
 fi
+# Voces gratis de Microsoft (edge-tts). Si no hay red para pypi o para Microsoft, voz.py sigue con Kokoro.
+python3.13 -c "import edge_tts" 2>/dev/null || python3.13 -m pip install -q --break-system-packages edge-tts 2>/dev/null || echo "aviso: edge-tts no instalado, se usará Kokoro"
