@@ -434,6 +434,26 @@ def main(voz, out):
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
+        # ---- Si oyes esto a las 3AM · 24 ----
+        if os.environ.get("EP") == "3am24":
+            zumb_ = lambda d: (np.sin(2 * np.pi * 50 * T(d)) * 0.5 + np.sin(2 * np.pi * 100 * T(d)) * 0.25) * 0.1
+            vibra_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 120, 260) * (np.sin(2 * np.pi * 9 * T(d)) > 0) * 0.9   # móvil vibrando
+            chirr_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 700, 2200) * (np.sin(2 * np.pi * 11 * T(d)) * 0.5 + 0.5) * np.exp(-T(d) * 1.5) * 0.4
+            cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.25)), 300, 1400) * np.exp(-T(0.25) * 12) * 0.5
+            if n == "aviso": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, vibra_(1.4), a, 0.8); put(sfx, ding() * 0.5, a + 0.1, 0.7)
+            if n == "video": put(sfx, zumb_(D), a, 0.6); put(sfx, static(D) * 0.25, a, 0.5)
+            if n == "rapido":
+                put(sfx, static(D) * 0.4, a, 0.6); put(sfx, riser(D) * 0.5, a, 0.5)
+                for i in range(int(D / 0.5)): put(sfx, beep(0.04, 1800), a + 0.3 + i * 0.5, 0.4)
+            if n == "cuarenta": put(sfx, zumb_(D), a, 0.6); put(sfx, heartbeat(4, 95), a, 0.7); put(sfx, riser(D * 0.8) * 0.5, a, 0.6)
+            if n == "abierta": put(sfx, impact(), a, 1.1); put(sfx, boom(1.8, 55), a, 1.2); put(sfx, zumb_(D), a, 0.5)
+            if n == "hora": put(sfx, zumb_(D), a, 0.5); put(sfx, boom(2.0, 50), a + D * 0.62, 1.2); put(sfx, sting(1.5), a + D * 0.62, 1.0)
+            if n == "escalera":
+                for i in range(6): put(sfx, step(), a + 0.3 + i * 0.6, 0.9); put(sfx, cruje_(), a + 0.32 + i * 0.6, 0.6)
+                put(sfx, sting(1.2) * 0.7, a + D * 0.86, 0.9)
+            if n == "cuarto": put(sfx, chirr_(1.8), a + D * 0.05, 1.0); put(sfx, boom(2.0, 50), a + D * 0.52, 1.3); put(sfx, sting(1.5), a + D * 0.52, 1.1)
+            if n == "final": put(sfx, zumb_(D), a, 0.5); put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         # ---- Si oyes esto a las 3AM · 23 ----
         if os.environ.get("EP") == "3am23":
             toc_ = lambda: lp(rng.normal(0, 1, int(SR * 0.12)), 380) * np.exp(-T(0.12) * 40) * 2.2 + np.sin(2 * np.pi * 110 * T(0.12)) * np.exp(-T(0.12) * 35) * 0.5   # golpe en la pared
