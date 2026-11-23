@@ -1023,3 +1023,59 @@ def hoja_blanca(img, texto="Regla 12:", p=1.0, cy=880, zoom=0.8, t=0.0, humeda=T
         d.polygon([pt(46 * zoom, -16 * zoom), pt(L_, -18 * zoom), pt(L_, 18 * zoom), pt(46 * zoom, 16 * zoom)], fill=(232, 232, 236), outline=(20, 20, 24))
         d.polygon([pt(L_ - 70 * zoom, -19 * zoom), pt(L_, -19 * zoom), pt(L_, 19 * zoom), pt(L_ - 70 * zoom, 19 * zoom)], fill=(30, 50, 150))
     return img
+
+# ---------- piezas añadidas en la Parte 12: la hoja escrita a mano y el empleado nuevo ----------
+def hoja_mano(img, lineas, p=1.0, cy=900, zoom=0.86, t=0.0, size=None, humeda=True, pluma=True, tinta=(30, 50, 150), titulo=True,
+              arriba=330, salto=None):
+    """hoja de reglas escrita A MANO (varias líneas, con mi letra). p (0-1): cuánto texto está escrito (en orden);
+    la última letra escrita lleva la tinta húmeda y, si pluma, un bolígrafo SIN MANO escribiendo justo ahí."""
+    from PIL import ImageFilter
+    d = ImageDraw.Draw(img)
+    w, h = 900 * zoom, 1180 * zoom
+    x0, y0 = W / 2 - w / 2, cy - h / 2
+    d.rectangle((x0 + 18, y0 + 22, x0 + w + 18, y0 + h + 22), fill=(10, 10, 10))
+    d.rectangle((x0, y0, x0 + w, y0 + h), fill=(238, 236, 226), outline=(130, 128, 112), width=6)
+    if titulo: d.text((W / 2, y0 + 80 * zoom), tr("REGLAS DEL TURNO DE NOCHE"), font=font(int(50 * zoom)), fill=(150, 30, 30), anchor="mm")
+    n = len(lineas)
+    salto = salto or min(150, (h - arriba * zoom * 0.6 - 60 * zoom) / max(1, n) / zoom)
+    size = size or int(min(110, salto * 0.72))
+    fn = font(int(size * zoom), LETRA)
+    total = sum(len(l) for l in lineas); quedan = int(total * max(0.0, min(1.0, p)))
+    punta = None
+    for i, ln in enumerate(lineas):
+        yy = y0 + (arriba * 0.6 + 60) * zoom + (i + 0.8) * salto * zoom
+        d.line((x0 + 40 * zoom, yy + 12 * zoom, x0 + w - 40 * zoom, yy + 12 * zoom), fill=(214, 212, 200), width=2)
+        k = min(len(ln), quedan); quedan -= k
+        if k <= 0: continue
+        tx = x0 + 56 * zoom
+        d.text((tx, yy), ln[:k], font=fn, fill=tinta, anchor="ls", stroke_width=1, stroke_fill=tinta)
+        if k < len(ln) or (quedan == 0 and p < 1.0) or (i == n - 1 and k == len(ln)):
+            punta = (tx + d.textlength(ln[:k], font=fn), yy, tx, i)
+    if punta and humeda:                                   # brillo de tinta fresca en la línea que se está escribiendo
+        px, py, tx, i = punta
+        capa = Image.new("RGBA", img.size, (0, 0, 0, 0)); dc = ImageDraw.Draw(capa)
+        r_ = __import__("random").Random(31 + i)
+        for j in range(3):
+            xx = tx + r_.uniform(0.15, 0.95) * (px - tx); ll = r_.uniform(30, 90) * zoom * (0.6 + 0.4 * math.sin(t * 1.5 + j) ** 2)
+            dc.line((xx, py, xx + 2, py + ll), fill=(20, 30, 110, 200), width=int(6 * zoom))
+            dc.ellipse((xx - 6 * zoom, py + ll - 6 * zoom, xx + 7 * zoom, py + ll + 7 * zoom), fill=(20, 30, 110, 200))
+        capa = capa.filter(ImageFilter.GaussianBlur(2)); img.paste(capa, (0, 0), capa)
+        d = ImageDraw.Draw(img)
+    if punta and pluma and p < 1.0:                       # el bolígrafo escribe solo
+        px, py = punta[0] + 4 * math.sin(t * 40), punta[1] - 6 * zoom + 5 * math.cos(t * 33)
+        L_ = 400 * zoom; a = math.radians(-62)
+        ux, uy = math.cos(a), math.sin(a); nx, ny = -uy, ux
+        def pt(s, o): return (px + ux * s + nx * o, py + uy * s + ny * o)
+        d.polygon([pt(18, 26 * zoom), pt(L_ + 18, 26 * zoom), pt(L_ + 18, 46 * zoom), pt(18, 46 * zoom)], fill=(120, 118, 104))
+        d.polygon([pt(0, 0), pt(46 * zoom, -10 * zoom), pt(46 * zoom, 10 * zoom)], fill=(40, 40, 44))
+        d.polygon([pt(46 * zoom, -16 * zoom), pt(L_, -18 * zoom), pt(L_, 18 * zoom), pt(46 * zoom, 16 * zoom)], fill=(232, 232, 236), outline=(20, 20, 24))
+        d.polygon([pt(L_ - 70 * zoom, -19 * zoom), pt(L_, -19 * zoom), pt(L_, 19 * zoom), pt(L_ - 70 * zoom, 19 * zoom)], fill=(30, 50, 150))
+    return img
+
+def nuevo(esc, p, x, z, yaw=0.0, cara="neutral", hoja=True, pelo=(60, 44, 34)):
+    """el empleado NUEVO del turno de noche (temporada 2): mi uniforme pero sin gorra, pelo castaño, y la hoja de reglas en la mano"""
+    cab = humano(esc, p, x=x, z=z, yaw=yaw, ropa=UNIFORME, piel=(214, 196, 178), pantalon=(40, 42, 50), cara=cara, pelo=pelo)
+    if hoja:                                               # la hoja, sujeta delante del pecho
+        fx, fz = math.sin(yaw), math.cos(yaw)
+        esc.add(caja(0.22, 0.3, 0.01, (240, 238, 228)), cadena(mover(x + fx * 0.3 + fz * 0.12, 0.95, z + fz * 0.3 - fx * 0.12), rot_y(yaw), rot_x(-0.5)))
+    return cab
