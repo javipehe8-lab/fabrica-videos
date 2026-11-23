@@ -8,7 +8,7 @@ Repositorio público con el motor de animación stickman, el motor 3D estilo PS2
 - `stick/sonido.py`: música y efectos sincronizados por nombre de escena. Añade aquí los efectos de las escenas nuevas (bloque por episodio, con `os.environ.get("EP")` si un nombre se repite).
 - `biblia.md`: personajes, reglas y resumen de cada episodio. Léela antes de escribir y actualízala después.
 - `publicaciones.json`: registro de lo publicado (título, fecha, URL del vídeo).
-- **SERIE PRINCIPAL desde el 13/11/2026: "TURNO DE NOCHE" (3D estilo PS2), en `turno.md`.** Sustituye a El Sonriente (que terminó en la Parte 19 y ya NO se continúa). Las secciones de GANCHO y ELECCION de este archivo eran de El Sonriente y NO se aplican a Turno de noche; Duración, Diálogos, Música, Publicar y Subir a GitHub sí.
+- **Desde el 25/11/2026 la franja de las 23:00 es "REGLAS" (3D, autoconclusiva, final drástico), en `reglas.md`. "Turno de noche" (`turno.md`) terminó en la Parte 12.** Antes: SERIE PRINCIPAL desde el 13/11/2026: "TURNO DE NOCHE" (3D estilo PS2). Sustituye a El Sonriente (que terminó en la Parte 19 y ya NO se continúa). Las secciones de GANCHO y ELECCION de este archivo eran de El Sonriente y NO se aplican a Turno de noche; Duración, Diálogos, Música, Publicar y Subir a GitHub sí.
 - `tres_am.md`: SEGUNDA SERIE "Si oyes esto a las 3AM" (historias autoconclusivas, 19:00). Tiene sus propias reglas y su banco de historias; las reglas de GANCHO, ELECCION y biblia de este archivo son solo para El Sonriente.
 
 ## Gancho inicial (OBLIGATORIO desde la Parte 4)
@@ -61,7 +61,7 @@ Partes 3-5: la gente se queda 39-42 s de media, dure el vídeo 1:10 o 1:18; solo
 - Hora por defecto: 23:00 Europe/Madrid del mismo día.
 - Añade la publicación a `publicaciones.json` y haz commit.
 
-## Versión en inglés ("The Grinner")
+## Versión en inglés ("The Grinner") — YA NO SE HACE (Javi, 23/11/2026): solo vídeos en español
 - Misma animación, texto traducido: `stick/guionN_en.py` con los MISMOS nombres de escena que `guionN.py`. Serie: "THE GRINNER", el Sonriente = "the Grinner". Traduce de forma natural (inglés de EE. UU.), no literal; mantén las frases cortas.
 - Los textos fijos de pantalla se traducen con `tr()` de `motor.py`. Si una escena nueva dibuja texto, envuélvelo en `tr("...")` y añade la traducción al diccionario `EN`.
 - `bash hacer_episodio.sh N en` → `videos/en/The_Grinner_PartN.mp4` (voz `am_onyx`, inglés de EE. UU.).
