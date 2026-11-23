@@ -85,8 +85,11 @@ EDGE = {"em_alex": "es-ES-AlvaroNeural", "em_santa": "es-MX-JorgeNeural", "ef_do
 EDGE_NARRADOR = os.environ.get("EDGE_NARRADOR", "es-ES-AlvaroNeural")
 
 def edge(texto, vel, voz):
-    import asyncio, subprocess, tempfile, edge_tts
-    pct = int(round((vel / 1.15 - 1) * 100))      # 1.15 (narrador Kokoro) = velocidad normal de Edge
+    import asyncio, subprocess, tempfile, certifi
+    ca = os.path.expanduser("~/.ccr/ca-bundle.crt")      # proxy de la nube: certificado propio
+    if os.path.exists(ca): certifi.where = lambda: ca
+    import edge_tts
+    pct = int(round((vel / 1.15 - 1) * 100)) - 12  # Edge habla más rápido que Kokoro: -12 % deja el ritmo parecido
     with tempfile.NamedTemporaryFile(suffix=".mp3") as mp3:
         asyncio.run(asyncio.wait_for(edge_tts.Communicate(texto, voz, rate=f"{pct:+d}%").save(mp3.name), 25))
         raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp3.name, "-f", "f32le", "-ac", "1", "-ar", "24000", "-"],
