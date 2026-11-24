@@ -186,7 +186,7 @@ def main(voz, out):
             continue
         sr, w = wavfile.read(os.path.join(voz, f"{s.get('voz', k):02d}.wav"))
         put(mixv, w.astype(np.float64) / (np.abs(w).max() + 1e-9) * 0.9, s["start"] + 0.12)
-        if k: put(sfx, whoosh(0.35), a - 0.12, 0.6)
+        if k and not (os.environ.get("EP") == "3am25" and n in ("nada", "mensaje", "pasillo", "puerta", "escribes")): put(sfx, whoosh(0.35), a - 0.12, 0.6)
         # ---- Turno de noche · 12 (final de temporada) ----
         if os.environ.get("EP") == "noche12":
             def zumbido_(d): t_ = T(d); return np.sin(2 * np.pi * 100 * t_) * 0.03 + hp(rng.normal(0, 1, len(t_)), 6000) * 0.02   # fluorescentes
@@ -475,6 +475,36 @@ def main(voz, out):
             if n == "sonda":
                 for i in range(7): put(sfx, beep(0.06, 900 + i * 60), a + 0.2 + i * D * 0.11, 0.7)
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
+            continue
+        # ---- Si oyes esto a las 3AM · 25 ----
+        if os.environ.get("EP") == "3am25":
+            vibra_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 120, 260) * (np.sin(2 * np.pi * 9 * T(d)) > 0) * 0.9   # móvil vibrando
+            tic_ = lambda: hp(rng.normal(0, 1, int(SR * 0.03)), 2500) * np.exp(-T(0.03) * 150) * 0.6
+            nevera_ = lambda d: (np.sin(2 * np.pi * 60 * T(d)) * 0.5 + np.sin(2 * np.pi * 120 * T(d)) * 0.3) * 0.12
+            coche_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 500) * np.sin(np.pi * T(d) / d) * 0.5
+            chirr_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 700, 2200) * (np.sin(2 * np.pi * 11 * T(d)) * 0.5 + 0.5) * np.exp(-T(d) * 1.5) * 0.4
+            cruje_ = lambda: bp(rng.normal(0, 1, int(SR * 0.25)), 300, 1400) * np.exp(-T(0.25) * 12) * 0.4
+            tecla_ = lambda: hp(rng.normal(0, 1, int(SR * 0.02)), 3000) * np.exp(-T(0.02) * 200) * 0.25
+            if n == "reloj":                                           # la casa suena… y se corta en seco
+                corte = D * 0.12
+                put(sfx, nevera_(corte), a, 1.0); put(sfx, coche_(corte + 0.05), a, 0.9)
+                for i in range(int(corte / 0.5) + 1): put(sfx, tic_(), a + i * 0.5, 1.0)
+                put(sfx, boom(1.6, 40) * 0.6, a + corte, 0.8); put(sfx, sting(1.0) * 0.4, a + corte, 0.6)
+            if n == "nada":
+                for i in range(3):
+                    tl0 = a + i * D / 3
+                    put(sfx, nevera_(0.35) if i == 0 else (np.concatenate([tic_(), np.zeros(int(SR * 0.3))]) if i == 1 else coche_(0.35)), tl0, 0.9)
+            if n == "mensaje": put(sfx, vibra_(1.0), a, 1.2)
+            if n == "pasillo":
+                for i in range(5): put(sfx, step() * 0.6, a + 0.2 + i * 0.45, 0.7); put(sfx, cruje_(), a + 0.25 + i * 0.45, 0.5)
+            if n == "puerta": put(sfx, cruje_(), a + D * 0.15, 0.8); put(sfx, heartbeat(4, 70) * 0.6, a + D * 0.3, 0.6)
+            if n == "escribes":
+                for i in range(12): put(sfx, tecla_(), a + D * 0.1 + i * D * 0.045, 0.6)
+                put(sfx, heartbeat(3, 80) * 0.5, a, 0.5)
+            if n == "vibra":
+                put(sfx, vibra_(2.2), a + D * 0.12, 1.6); put(sfx, boom(1.8, 50), a + D * 0.12, 1.0); put(sfx, sting(1.4), a + D * 0.14, 0.9)
+            if n == "abre": put(sfx, chirr_(2.0), a + D * 0.05, 1.0); put(sfx, boom(2.0, 50), a + D * 0.5, 1.3); put(sfx, sting(1.5), a + D * 0.5, 1.1)
+            if n == "final": put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
             continue
         # ---- Si oyes esto a las 3AM · 24 ----
         if os.environ.get("EP") == "3am24":
@@ -1589,6 +1619,11 @@ def main(voz, out):
     estilo = elegir_estilo(); import zlib
     mus = musica_estilo(total, cuts, estilo, seed=zlib.crc32(os.environ.get('EP', '').encode()) % 1000)
     print('música:', estilo)
+    if os.environ.get("EP") == "3am25" and "reloj" in cuts and "vibra" in cuts:   # el silencio: la música se corta con la casa
+        a0, a1 = cuts["reloj"][0] + 0.45, cuts["vibra"][0] + (cuts["vibra"][1] - cuts["vibra"][0]) * 0.12
+        tt = np.arange(len(mus)) / SR
+        m = np.clip(np.maximum((a0 - tt) / 0.08, (tt - a1) / 0.05), 0, 1)
+        mus = mus * (0.12 + 0.88 * m)
     # ducking de música y efectos bajo la voz
     vol = np.convolve(np.abs(mixv), np.ones(2400) / 2400, mode="same")
     duck = 1 - 0.7 * np.clip(vol / 0.04, 0, 1)
