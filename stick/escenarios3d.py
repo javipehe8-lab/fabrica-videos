@@ -128,8 +128,8 @@ def negro(img, k):
     if k <= 0: return img
     return Image.blend(img, Image.new("RGB", img.size, (0, 0, 0)), min(1.0, k))
 
-def ficha_final(img, nombre, oficio, fecha, regla_rota, p=1.0, t=0.0):
-    """tarjeta del final drástico: sello REGLA ROTA + ficha de la víctima (desaparecido). Distinta de la de 3AM."""
+def ficha_final(img, nombre, oficio, fecha, regla_rota, p=1.0, t=0.0, sello="DESAPARECIDO"):
+    """tarjeta del final drástico: ficha de la víctima con un sello rojo (DESAPARECIDO, FALLECIDA, SUSTITUIDA…). Distinta de la de 3AM."""
     img = negro(img, 0.82)
     d = ImageDraw.Draw(img)
     if p <= 0: return img
@@ -142,7 +142,7 @@ def ficha_final(img, nombre, oficio, fecha, regla_rota, p=1.0, t=0.0):
     fr = font(38); ls = _envolver(d, tr("Regla rota:") + " " + tr(regla_rota), fr, W - 300)
     for i, l_ in enumerate(ls[:3]): d.text((150, 920 + i * 48), l_, font=fr, fill=(150, 30, 30), anchor="lm")
     # sello rojo torcido
-    txt = tr("DESAPARECIDO"); fs = 96
+    txt = tr(sello); fs = 96
     while ImageDraw.Draw(Image.new("RGB", (1, 1))).textlength(txt, font=font(fs)) > 600 and fs > 40: fs -= 4
     sello = Image.new("RGBA", (700, 200), (0, 0, 0, 0)); sd = ImageDraw.Draw(sello)
     sd.rounded_rectangle((10, 10, 690, 190), 20, outline=(210, 30, 30, 235), width=14)
@@ -169,4 +169,93 @@ def interfono_2d(img, num, habla=0.0, piloto=1.0, t=0.0, cy=700):
             hgt = (20 + 120 * abs(math.sin(t * 9 + i * 0.8)) * habla)
             x = cx - 180 + i * 30
             d.rectangle((x - 9, cy - 170 - hgt / 2, x + 9, cy - 170 + hgt / 2), fill=(235, 50, 50))
+    return img
+
+# ---------- piezas de hotel (Reglas 2): vestíbulo con recepción, claveros y libro de reservas ----------
+MADERA = (96, 62, 44)
+MOQUETA = (112, 34, 38)
+PAPEL_PINTADO = (88, 96, 78)
+
+def mostrador(esc, x0, x1, z, fondo=0.6, alto=1.1, col=MADERA, tapa=(150, 120, 90)):
+    """mostrador de recepción (frente hacia +z, en z). Encima: timbre y lámpara de mesa."""
+    _caja_en(esc, x0, 0, z - fondo, x1, alto, z, col)
+    _caja_en(esc, x0 - 0.05, alto, z - fondo - 0.05, x1 + 0.05, alto + 0.06, z + 0.06, tapa, sesgo=0.4)
+    for k in range(int((x1 - x0) / 0.8)):                       # paneles del frente
+        xx = x0 + 0.15 + k * 0.8
+        _caja_en(esc, xx, 0.15, z + 0.001, xx + 0.6, alto - 0.15, z + 0.02, tuple(int(v * 0.8) for v in col))
+
+def timbre(esc, x, y, z):
+    _caja_en(esc, x - 0.07, y, z - 0.07, x + 0.07, y + 0.02, z + 0.07, (40, 40, 40), sesgo=0.6)
+    esc.add(esfera(0.06, (220, 190, 90), 1), cadena(mover(x, y + 0.03, z), escala(1, 0.6, 1)), sesgo=0.6)
+
+def lampara_mesa(esc, x, y, z, on=1.0):
+    """lámpara de banquero (pantalla verde que brilla)"""
+    _caja_en(esc, x - 0.02, y, z - 0.02, x + 0.02, y + 0.3, z + 0.02, (180, 150, 80), sesgo=0.6)
+    _caja_en(esc, x - 0.18, y + 0.28, z - 0.07, x + 0.18, y + 0.38, z + 0.07, tuple(int(v * (0.4 + 0.6 * on)) for v in (60, 200, 110)), emite=True, sesgo=0.6)
+
+def claveros(esc, x, y, z, n=(4, 3), nums=None, vacio=None, falta=(), brillo0=0.0):
+    """casillero de llaves en la pared del fondo (z): n=(columnas, filas). nums: textos; la casilla 'vacio' no tiene llave.
+    brillo0: la llave de la casilla '0' brilla (0-1)."""
+    cols, filas = n; w, h = 0.32, 0.3
+    _caja_en(esc, x - cols * w / 2 - 0.08, y - 0.08, z, x + cols * w / 2 + 0.08, y + filas * h + 0.08, z + 0.08, MADERA)
+    nums = nums or [str(i) for i in range(cols * filas)]
+    for i, num in enumerate(nums):
+        cx = x - cols * w / 2 + (i % cols) * w + w / 2; cy = y + (filas - 1 - i // cols) * h + h / 2
+        _caja_en(esc, cx - 0.13, cy - 0.12, z + 0.08, cx + 0.13, cy + 0.12, z + 0.1, (40, 26, 20))
+        if num != vacio and num not in falta:
+            cero = num == "0"
+            c = (220, 190, 90) if not cero else tuple(int(lerp(a, b, brillo0)) for a, b in zip((190, 30, 26), (255, 30, 20)))
+            _caja_en(esc, cx - 0.02, cy - 0.1, z + 0.1, cx + 0.02, cy + 0.04, z + 0.13, c, emite=cero, sesgo=0.2)
+            _caja_en(esc, cx - 0.07 if cero else cx - 0.05, cy - 0.19 if cero else cy - 0.16, z + 0.1, cx + 0.07 if cero else cx + 0.05,
+                     cy - 0.08, z + 0.14, c if cero else (200, 200, 190), emite=cero, sesgo=0.2)
+        esc.etiquetas.append(((cx, cy + 0.08, z + 0.12), num, 0.07, (230, 210, 160)))
+
+def vestibulo(esc, luz=1.0, brillo0=0.0, falta=(), puerta_calle=0.0):
+    """vestíbulo de hotel pequeño: moqueta roja, papel pintado, mostrador en z=-3 (x -2..2), claveros detrás (pared z=-5),
+    puerta de cristal a la calle en la pared derecha (x=4) y entrada al pasillo de habitaciones a la izquierda."""
+    habitacion(esc, -4, 4, -5, 3, 3.0, PAPEL_PINTADO, MOQUETA, (70, 60, 52), sin=('s',), div=6)
+    for sx in (-3.99, 3.99): _caja_en(esc, sx - 0.01, 0, -5, sx + 0.01, 1.0, 3, MADERA)          # zócalo de madera
+    _caja_en(esc, -4, 0, -4.99, 4, 1.0, -4.97, MADERA)
+    mostrador(esc, -2.0, 2.0, -3.0)
+    timbre(esc, 0.9, 1.16, -3.25); lampara_mesa(esc, -1.4, 1.16, -3.3, luz)
+    claveros(esc, 0.0, 1.35, -4.97, n=(4, 3), nums=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "0"], falta=falta, brillo0=brillo0)
+    esc.etiquetas.append(((0.0, 2.55, -4.9), "RECEPCIÓN", 0.22, (220, 190, 110)))
+    # puerta de cristal a la calle (pared derecha): hueco azul noche con lluvia
+    _caja_en(esc, 3.97, 0, -0.9, 3.99, 2.3, 0.9, (50, 40, 34))
+    _caja_en(esc, 3.95, 0.05, -0.8 + 1.5 * puerta_calle, 3.96, 2.25, 0.8, (18, 26, 44), emite=True)
+    # pasillo de habitaciones a la izquierda (hueco oscuro) y planta
+    _caja_en(esc, -3.99, 0, -3.8, -3.96, 2.4, -2.6, (10, 8, 8), emite=True)
+    esc.add(prisma(0.25, 0.2, 0.5, (120, 80, 60), n=6), mover(3.3, 0.5, -4.4))
+    esc.add(esfera(0.45, (40, 80, 50), 1), cadena(mover(3.3, 0.95, -4.4), escala(1, 1.3, 1)))
+    luces = [Luz((-1.4, 1.6, -3.0), (120, 255, 160), 3.5, fuerza=0.9 * luz),
+             Luz((0, 2.8, -1.0), (255, 200, 140), 9, fuerza=0.85 * luz),
+             Luz((0, 2.6, -4.3), (255, 210, 150), 4, fuerza=0.7 * luz)]
+    for fx in (-2.0, 2.0): esc.add(esfera(0.18, tuple(int(v * luz) for v in (255, 220, 160)), 1), mover(fx, 2.75, -1.0), emite=True)
+    return luces
+
+def pasillo_hotel(esc, puertas=(), luces_on=None, largo=15.0):
+    """pasillo de hotel: moqueta roja, papel pintado, apliques cálidos (mismo formato de puertas que pasillo())."""
+    return pasillo(esc, largo, puertas=puertas, luces_on=luces_on, col_pared=(110, 70, 64), suelo=MOQUETA, techo=(80, 70, 64), zocalo=MADERA)
+
+def libro_reservas(img, filas, resalta=None, p_resalta=1.0, fecha="25 NOV 2026", cy=860, t=0.0):
+    """libro de reservas abierto en primer plano (2D): filas (hab, nombre, noche); la fila 'resalta' se subraya en rojo."""
+    d = ImageDraw.Draw(img); cx = W / 2; w, h = 960, 900
+    x0, y0 = cx - w / 2, cy - h / 2
+    d.rectangle((x0 + 20, y0 + 24, x0 + w + 20, y0 + h + 24), fill=(8, 6, 6))
+    d.rectangle((x0, y0, x0 + w, y0 + h), fill=(236, 226, 196), outline=(90, 60, 40), width=10)
+    d.line((cx, y0, cx, y0 + h), fill=(170, 150, 120), width=4)
+    d.text((cx, y0 + 70), tr("RESERVAS") + " · " + fecha, font=font(48), fill=(120, 30, 30), anchor="mm")
+    d.text((x0 + 50, y0 + 150), tr("HAB."), font=font(36), fill=(90, 80, 70), anchor="lm")
+    d.text((x0 + 230, y0 + 150), tr("NOMBRE"), font=font(36), fill=(90, 80, 70), anchor="lm")
+    for i, (hab, nom) in enumerate(filas):
+        y = y0 + 240 + i * 110
+        d.line((x0 + 40, y + 45, x0 + w - 40, y + 45), fill=(180, 170, 150), width=3)
+        roja = (i == resalta)
+        col = (40, 50, 140) if not roja else (170, 20, 20)
+        d.text((x0 + 70, y), hab, font=font(64), fill=col, anchor="lm")
+        d.text((x0 + 230, y), nom, font=font(58), fill=col, anchor="lm")
+        if roja and p_resalta > 0:
+            x1 = x0 + 220 + (w - 280) * min(1, p_resalta)
+            d.line((x0 + 220, y + 38, x1, y + 38), fill=(220, 30, 30), width=9)
+            d.ellipse((x0 + 30, y - 55, x0 + 120, y + 55), outline=(220, 30, 30), width=7)
     return img
