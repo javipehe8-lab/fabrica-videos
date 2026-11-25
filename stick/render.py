@@ -94,8 +94,8 @@ def render_frame(tl, fi):
     elif ESTILO == "ps2_3d": img = ps2(img, fi, res=3, bruma=0.3)   # la niebla ya la pone el 3D
     if fx.get("overlay"): img = fx["overlay"](img)     # textos nítidos encima del filtro (p. ej. la regla final en ps2)
     # corte con "punch": pequeño destello en cada cambio de escena
-    if sc["name"] != "final":
-        img = captions(img, sc["words"], t)
+    if sc["name"] != "final" and sc["name"] not in getattr(_g, "SIN_SUBS", ()):
+        img = captions(img, sc["words"], t, y=getattr(_g, "SUBS_Y", 1540))
         d = ImageDraw.Draw(img)
         d.text((60, 190), f"{TITULO} · {tr('PARTE')} {PARTE}" if PARTE else TITULO, font=font(34), fill=(255, 255, 255), anchor="lm", stroke_width=4, stroke_fill=(0, 0, 0))
     return img

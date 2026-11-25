@@ -21,6 +21,7 @@ case "$N" in 3am*) K="${N#3am}"
   noche*) K="${N#noche}"
   if [ "$L" = "en" ]; then OUTDIR="$ROOT/videos/turno/en"; OUT="$OUTDIR/Night_Shift_$K.mp4"
   else OUTDIR="$ROOT/videos/turno"; OUT="$OUTDIR/Turno_de_Noche_$K.mp4"; fi;;
+  hilo*) K="${N#hilo}"; OUTDIR="$ROOT/videos/hilos"; OUT="$OUTDIR/Hilos_Malditos_$K.mp4";;
   cur*) K="${N#cur}"; OUTDIR="$ROOT/videos/curiosidades"; OUT="$OUTDIR/Curiosidad_$K.mp4";; esac
 python3.13 voz.py "voz$N$SUF"
 python3.13 render.py "voz$N$SUF" "out$N$SUF" --preview   # out$N$SUF/preview.png: REVISAR antes de publicar

@@ -134,7 +134,8 @@ def main(out):
             if len(st.split()) <= 3 and quien == "NARRADOR": vel *= 0.94
             vel *= 1 + 0.03 * np.sin(len(parts) * 2.3)
             if con_edge and vname in EDGE:
-                w = edge(s, vel, EDGE_NARRADOR if quien == "NARRADOR" else EDGE[vname])
+                ev = getattr(_G, "EDGE_VOCES", {}).get(quien)     # el guion puede elegir voz de Edge por personaje
+                w = edge(s, vel, ev or (getattr(_G, "EDGE_NARRADOR", EDGE_NARRADOR) if quien == "NARRADOR" else EDGE[vname]))
             elif vname == "piper":
                 w = piper(s, vel)
             else:

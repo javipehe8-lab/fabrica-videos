@@ -446,6 +446,18 @@ def main(voz, out):
                 for i in range(3): put(sfx, impact() * 0.5, a + D * 0.35 + i * 0.35, 0.7)             # alguien golpea la puerta de la 0
             continue
         # ---- Reglas · 1 ----
+        if os.environ.get("EP") == "hilo1":
+            put(sfx, lp(rng.normal(0, 1, int(SR * D)), 160) * 0.5, a, 0.35)          # rodadura del coche, de fondo
+            if n == "titulo": put(sfx, boom(1.8, 55), a, 1.1); put(sfx, sting(1.4) * 0.5, a, 0.6)
+            if n == "pinar": put(sfx, whoosh(0.6), a + D * 0.8, 0.8)
+            if n == "coche": put(sfx, heartbeat(4, 70), a + D * 0.3, 0.6)
+            if n == "puerta": put(sfx, riser(D * 0.7), a, 0.5); put(sfx, sting(1.6), a + D * 0.62, 1.0)
+            if n == "movil":
+                for i in range(int(D / 1.2)):
+                    put(sfx, buzz(0.7) * 0.6, a + 0.1 + i * 1.2, 0.7); put(sfx, beep(0.25, 880), a + 0.1 + i * 1.2, 0.6); put(sfx, beep(0.25, 1100), a + 0.4 + i * 1.2, 0.6)
+            if n == "llamada": put(sfx, static(D) * 0.5, a, 0.6); put(sfx, sting(1.6) * 0.7, a + D * 0.55, 0.8)
+            if n == "final": put(sfx, boom(2.2, 45), a + 0.1, 1.2); put(sfx, impact() * 0.5, a + D * 0.7, 0.6)
+            continue
         if os.environ.get("EP") == "reglas1":
             if n == "arranque": put(sfx, buzz(D) * 0.7, a, 0.8); [put(sfx, beep(0.12, 660), a + 0.2 + i * 0.5, 0.6) for i in range(int(D / 0.5))]
             if n == "panel": [put(sfx, beep(0.12, 660), a + 0.1 + i * 0.5, 0.7) for i in range(int(D / 0.5))]; put(sfx, buzz(D) * 0.5, a, 0.6)
