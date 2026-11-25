@@ -440,7 +440,11 @@ EN = {"LLAMADAS · PLANTA 4": "CALLS · 4TH FLOOR", "FICHA": "FILE", "Visto por 
       "NO MIRES A QUÉ": "DON'T CHECK WHAT", "HORA SE FUE": "TIME THEY LEFT", "EL DE LA PUERTA": "THE ONE AT THE DOOR",
       "No respires fuerte.\nEstá escuchando.": "Don't breathe loud.\nIt's listening.", "está en mi puerta": "it's at my door",
       "QUITA LA\nVIBRACIÓN": "TURN OFF\nVIBRATE", "SI A LAS 3": "IF AT 3AM", "TODO SE CALLA…": "EVERYTHING GOES QUIET…",
-      "CÁLLATE TÚ": "YOU GO QUIET", "TAMBIÉN": "TOO", "LO QUE ESCUCHA": "THE LISTENER"}
+      "CÁLLATE TÚ": "YOU GO QUIET", "TAMBIÉN": "TOO", "LO QUE ESCUCHA": "THE LISTENER",
+      "SALÓN · CÁMARA 1": "LIVING ROOM · CAM 1", "Por la cámara\nvemos a alguien\nsentado contigo": "On the camera\nwe see someone\nsitting with you",
+      "¿Quién es?": "Who is it?", "estoy solo": "i'm alone", "NO LO MIRES": "DON'T LOOK AT IT", "Ahora te\nestá mirando": "Now it's\nlooking at you",
+      "SI A LAS 3 TU CÁMARA": "IF AT 3AM YOUR CAMERA", "VE A ALGUIEN…": "SEES SOMEONE…", "NO MIRES": "DON'T LOOK", "AL SOFÁ": "AT THE COUCH",
+      "LO QUE SE SIENTA": "THE ONE WHO SITS"}
 def tr(s):
     """traduce textos fijos de pantalla al idioma activo"""
     if IDIOMA != "en": return s
