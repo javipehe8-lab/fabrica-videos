@@ -259,3 +259,138 @@ def libro_reservas(img, filas, resalta=None, p_resalta=1.0, fecha="25 NOV 2026",
             d.line((x0 + 220, y + 38, x1, y + 38), fill=(220, 30, 30), width=9)
             d.ellipse((x0 + 30, y - 55, x0 + 120, y + 55), outline=(220, 30, 30), width=7)
     return img
+
+# ---------- piezas de metro (Reglas 3): andén, vías, vagón con puertas y pasajeros sentados, cartel de desaparecidos ----------
+AZULEJO = (196, 188, 160)
+ANDEN = (120, 116, 108)
+
+def anden_metro(esc, largo=30.0, z0=6.0, luces_on=None, reloj="02:40", nombre="CEMENTERIO", alto=3.6, reloj_z=None, nombre_z=None):
+    """estación de metro a lo largo de z (de z0 a z0-largo): andén en x -3..0 (suelo y=0, borde amarillo),
+    foso de vías en x 0..3.4 (y=-1.1), pared de azulejos en x=-3 con carteles, reloj digital colgado y fluorescentes.
+    Devuelve las luces."""
+    zc = z0 - largo / 2
+    esc.add(subdividir(plano(3.0, largo, ANDEN), 8), mover(-1.5, 0.0, zc), fondo=True)
+    esc.add(subdividir(plano(3.4, largo, (46, 42, 38)), 8), mover(1.7, -1.1, zc), fondo=True)
+    esc.add(subdividir(plano(6.4, largo, (64, 64, 60)), 8), cadena(mover(0.2, alto, zc), rot_x(math.pi)), fondo=True)
+    esc.add(subdividir(pared(largo, alto + 1.1, AZULEJO), 8), cadena(mover(-3.0, -1.1, zc), rot_y(math.pi / 2)), fondo=True)
+    esc.add(subdividir(pared(largo, alto + 1.1, (70, 72, 70)), 8), cadena(mover(3.4, -1.1, zc), rot_y(-math.pi / 2)), fondo=True)
+    _caja_en(esc, -0.02, -1.1, z0 - largo, 0.0, 0.0, z0, (90, 88, 84))                       # frente del andén
+    _caja_en(esc, -0.45, 0.0, z0 - largo, -0.15, 0.012, z0, (230, 196, 40), sesgo=0.05)       # línea amarilla
+    for rx in (1.0, 2.4):                                                                     # raíles
+        _caja_en(esc, rx - 0.05, -1.1, z0 - largo, rx + 0.05, -0.95, z0, (130, 130, 136))
+    _caja_en(esc, -2.99, 0.0, z0 - largo, -2.97, 1.0, z0, (40, 90, 120))                      # franja de azulejo azul
+    for k in range(int(largo // 6)):                                                          # carteles y bancos
+        z = z0 - 3 - 6 * k
+        _caja_en(esc, -2.97, 1.3, z - 0.6, -2.95, 2.3, z + 0.6, (180, 60, 50) if k % 2 else (60, 80, 120))
+        _caja_en(esc, -2.8, 0.42, z - 3.6, -2.4, 0.5, z - 2.4, (150, 110, 70))
+        for bz in (-3.5, -2.5): _caja_en(esc, -2.75, 0.0, z + bz - 0.04, -2.45, 0.42, z + bz + 0.04, (60, 60, 64))
+    nz = z0 - 9 if nombre_z is None else nombre_z
+    esc.etiquetas.append(((-2.9, 2.75, nz), nombre, 0.3, (240, 240, 240)))
+    _caja_en(esc, -2.97, 2.5, nz - 1.6, -2.94, 3.0, nz + 1.6, (30, 60, 140))                 # placa azul del nombre
+    if reloj:                                                                                 # reloj digital colgado
+        rz = z0 - 6 if reloj_z is None else reloj_z
+        _caja_en(esc, -1.0, 2.6, rz - 0.04, -0.98, alto, rz + 0.04, (60, 60, 60))
+        _caja_en(esc, -1.55, 2.25, rz - 0.12, -0.45, 2.65, rz + 0.12, (20, 20, 22))
+        esc.etiquetas.append(((-1.0, 2.45, rz + 0.14), reloj, 0.26, (255, 60, 40)))
+    luces = []; n = int(largo // 4)
+    for k in range(n):
+        on = 1.0 if luces_on is None else (luces_on[k] if k < len(luces_on) else 1.0)
+        z = z0 - 2 - 4 * k
+        _caja_en(esc, -1.7, alto - 0.06, z - 0.7, -1.4, alto - 0.01, z + 0.7, tuple(int(30 + v * on * 0.85) for v in FLUOR), emite=on > 0.05)
+        if on > 0.05: luces.append(Luz((-1.5, alto - 0.4, z), FLUOR, 6.0, fuerza=0.7 * on))
+    return luces
+
+VAGON = (176, 178, 182)
+
+def vagon_metro(esc, z0, largo=14.0, puertas=(-2.5, -7.0, -11.5), abierto=0.0, luz=1.0, x=0.25, morro=True, faros=0.0,
+                dentro=(190, 226, 200)):
+    """vagón parado junto al andén (lado de puertas en x, hacia -x), desde z0 hasta z0-largo (puertas: z relativos a z0).
+    Hueco: por las ventanas y las puertas se ve el interior (bancos a lo largo de la pared del fondo).
+    abierto 0-1: las hojas se deslizan. morro: cabina con faros (faros 0-1) en el extremo z0. Devuelve las luces interiores."""
+    x1 = x + 2.7; ya, yb = -0.8, 2.75
+    zs = sorted([z0 + p for p in puertas], reverse=True)
+    lado = lambda za, zb, y0, y1, col=VAGON: _caja_en(esc, x - 0.06, y0, zb, x, y1, za, col)
+    # tiras corridas: faldón y techo exterior
+    lado(z0, z0 - largo, ya, 0.05, (120, 122, 128))
+    lado(z0, z0 - largo, 2.05, yb)
+    _caja_en(esc, x - 0.07, 2.2, z0 - largo, x - 0.06, 2.32, z0, (200, 40, 40))                # franja roja
+    # entre puertas: montantes y ventanas
+    bordes = [z0] + sum([[zp + 0.65, zp - 0.65] for zp in zs], []) + [z0 - largo]
+    for i in range(0, len(bordes), 2):
+        za, zb = bordes[i], bordes[i + 1]
+        lado(za, za - 0.25, 0.05, 2.05); lado(zb + 0.25, zb, 0.05, 2.05)
+        lado(za - 0.25, zb + 0.25, 0.05, 0.95); lado(za - 0.25, zb + 0.25, 1.8, 2.05)
+        n = max(1, int((za - zb - 0.5) / 1.6))
+        for k in range(1, n):
+            zz = za - 0.25 - k * (za - zb - 0.5) / n
+            lado(zz + 0.1, zz - 0.1, 0.95, 1.8)
+    for zp in zs:                                                                             # hojas de las puertas
+        off = 0.33 + 0.62 * abierto
+        for s in (-1, 1):
+            zc = zp + s * off
+            _caja_en(esc, x - 0.11, 0.05, zc - 0.32, x - 0.07, 2.02, zc + 0.32, (150, 152, 158), sesgo=0.05)
+            _caja_en(esc, x - 0.12, 1.05, zc - 0.22, x - 0.115, 1.75, zc + 0.22, tuple(int(v * 0.35 * luz) for v in dentro), emite=True, sesgo=0.06)
+    # interior
+    _caja_en(esc, x, -0.02, z0 - largo, x1, 0.05, z0, (90, 92, 96))
+    _caja_en(esc, x, 2.55, z0 - largo, x1, yb, z0, (200, 202, 200))
+    _caja_en(esc, x1, ya, z0 - largo, x1 + 0.06, yb, z0, (110, 116, 118))
+    for k in range(int(largo // 2)):
+        _caja_en(esc, x1 - 0.01, 0.95, z0 - 0.6 - 2 * k - 1.3, x1, 1.8, z0 - 0.6 - 2 * k, (10, 12, 14), emite=True)   # ventanas del túnel
+    _caja_en(esc, x + 1.2, 2.5, z0 - largo + 0.3, x + 1.5, 2.55, z0 - 0.3, tuple(int(v * luz) for v in (240, 250, 240)), emite=True)
+    _caja_en(esc, x1 - 0.55, 0.38, z0 - largo + 0.2, x1 - 0.02, 0.48, z0 - 0.2, (60, 90, 140))   # banco corrido
+    _caja_en(esc, x1 - 0.12, 0.48, z0 - largo + 0.2, x1 - 0.02, 0.95, z0 - 0.2, (60, 90, 140))
+    for zp in zs:
+        _caja_en(esc, x + 0.3, 0.05, zp - 0.02, x + 0.34, 2.55, zp + 0.02, (200, 200, 60))      # barra amarilla
+    if morro:                                                                                  # frente con cabina y faros
+        _caja_en(esc, x - 0.06, ya, z0, x1 + 0.06, yb, z0 + 0.08, (150, 152, 158))
+        _caja_en(esc, x + 0.3, 1.2, z0 + 0.08, x1 - 0.3, 2.2, z0 + 0.1, (14, 16, 18), emite=True, sesgo=0.1)
+        for fx in (x + 0.5, x1 - 0.5):
+            _caja_en(esc, fx - 0.18, 0.25, z0 + 0.08, fx + 0.18, 0.5, z0 + 0.11,
+                     tuple(int(lerp(a, b, faros)) for a, b in zip((60, 60, 50), (255, 250, 220))), emite=True, sesgo=0.1)
+        esc.etiquetas.append(((x + 1.35, 2.42, z0 + 0.12), "6", 0.22, (255, 160, 40)))
+    return [Luz((x + 1.35, 2.2, z0 - largo * f), tuple(int(v) for v in dentro), 5.0, fuerza=0.65 * luz) for f in (0.15, 0.5, 0.85)]
+
+def sentado(esc, x, z, yaw=0.0, asiento=0.48, ropa=(70, 60, 80), piel=(200, 186, 172), pantalon=None, cara="neutral",
+            pelo=None, head=0.0, brazos=(40, 60, 40, 60), extra_cabeza=None, alto=1.0):
+    """humano sentado en un banco de altura 'asiento' (muslos hacia delante, piernas colgando). Devuelve la matriz de la cabeza."""
+    s = alto * 1.75 / 3.06; u = lambda v: v / 100 * s
+    cad = u(L["ul"] + L["ll"] + 6)
+    p = pose(head=head, a1u=brazos[0], a1l=brazos[1], a2u=brazos[2], a2l=brazos[3], l1u=88, l1l=-86, l2u=88, l2l=-86)
+    return humano(esc, p, x=x, z=z, y=asiento + 0.04 - cad, yaw=yaw, ropa=ropa, piel=piel, pantalon=pantalon or (40, 42, 48),
+                  cara=cara, pelo=pelo, extra_cabeza=extra_cabeza, alto=alto)
+
+def retrato(dibuja, ancho=220, alto=280, cam=None, fondo=(150, 150, 146)):
+    """foto de carnet de un personaje 3D: dibuja(esc) coloca a alguien de pie en el origen mirando a +z. Devuelve una imagen PIL."""
+    esc = Escena(niebla=(fondo, 8.0, 20.0), amb=0.45); esc.etiquetas = []
+    esc.add(pared(4, 4, fondo), mover(0, 0, -0.6))
+    dibuja(esc)
+    cam = cam or Camara(ojo=(0.0, 1.55, 1.25), mira=(0.0, 1.5, 0.0), fov=50)
+    img = esc.render(cam, [Luz((0.6, 2.2, 1.5), (255, 245, 230), 6, fuerza=1.0)])
+    w = W * 0.5; h = w * alto / ancho
+    return img.crop((int(W / 2 - w / 2), int(H * 0.42 - h / 2), int(W / 2 + w / 2), int(H * 0.42 + h / 2))).resize((ancho, alto))
+
+def cartel_desaparecidos(img, fotos, titulo="DESAPARECIDOS · LÍNEA 6", resalta=None, p_resalta=1.0, cy=820, t=0.0, nueva=None, p_nueva=1.0):
+    """cartel de 'SE BUSCA' en primer plano (2D): fotos = [(imagen, nombre, año)] en rejilla de 3 columnas.
+    resalta: índice de la foto rodeada en rojo. nueva: índice de una foto recién pegada (entra con p_nueva)."""
+    d = ImageDraw.Draw(img); cx = W / 2; cols = 3; fw, fh = 250, 318
+    filas = -(-len(fotos) // cols); w = cols * (fw + 40) + 60; h = 200 + filas * (fh + 110) + 20
+    x0, y0 = cx - w / 2, cy - h / 2
+    d.rectangle((x0 + 18, y0 + 22, x0 + w + 18, y0 + h + 22), fill=(6, 6, 6))
+    d.rectangle((x0, y0, x0 + w, y0 + h), fill=(232, 228, 214), outline=(60, 56, 50), width=8)
+    d.text((cx, y0 + 70), tr("SE BUSCA"), font=font(78), fill=(190, 20, 20), anchor="mm")
+    d.text((cx, y0 + 145), tr(titulo), font=font(40), fill=(40, 40, 40), anchor="mm")
+    for i, (foto, nom, anio) in enumerate(fotos):
+        fx = x0 + 50 + (i % cols) * (fw + 40); fy = y0 + 200 + (i // cols) * (fh + 110)
+        if nueva == i:
+            if p_nueva <= 0: continue
+            k = ease_out(p_nueva); fy -= (1 - k) * 160
+        ft = foto.resize((fw - 20, fh - 20))
+        d.rectangle((fx, fy, fx + fw, fy + fh), fill=(250, 250, 246), outline=(120, 120, 110), width=3)
+        img.paste(ft, (int(fx + 10), int(fy + 10)))
+        d.text((fx + fw / 2, fy + fh + 34), nom, font=font(38), fill=(20, 20, 24), anchor="mm")
+        d.text((fx + fw / 2, fy + fh + 76), str(anio), font=font(32), fill=(110, 30, 30), anchor="mm")
+        if resalta == i and p_resalta > 0:
+            r = 1.0 + 0.04 * math.sin(t * 8)
+            ax, ay = fx + fw / 2, fy + fh / 2 + 30
+            d.ellipse((ax - fw * 0.66 * r, ay - fh * 0.66 * r, ax + fw * 0.66 * r, ay + fh * 0.66 * r), outline=(230, 30, 30), width=int(10 * min(1, p_resalta * 2)))
+    return img
