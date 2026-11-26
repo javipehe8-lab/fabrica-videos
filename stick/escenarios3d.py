@@ -394,3 +394,157 @@ def cartel_desaparecidos(img, fotos, titulo="DESAPARECIDOS · LÍNEA 6", resalta
             ax, ay = fx + fw / 2, fy + fh / 2 + 30
             d.ellipse((ax - fw * 0.66 * r, ay - fh * 0.66 * r, ax + fw * 0.66 * r, ay + fh * 0.66 * r), outline=(230, 30, 30), width=int(10 * min(1, p_resalta * 2)))
     return img
+
+# ---------- piezas de piscina (Reglas 4): nave cubierta, vaso con agua "transparente", gente tumbada en el fondo ----------
+BALDOSA = (178, 184, 182)          # playa de la piscina
+AZUL_VASO = (110, 170, 196)        # azulejo del vaso
+AGUA = (34, 140, 180)
+
+def transformado(esc, M, dibuja):
+    """dibuja(esc_temporal) y mete todas sus piezas en esc transformadas por M (para tumbar, girar o volcar a alguien).
+    Si dibuja devuelve una matriz (la cabeza de humano()), devuelve M @ esa matriz."""
+    tmp = escena(); r = dibuja(tmp)
+    for malla, M2, emite, fondo, sesgo in tmp.objs: esc.add(malla, M @ M2, emite, fondo, sesgo)
+    esc.etiquetas += tmp.etiquetas
+    return None if r is None else M @ r
+
+def tumbado(esc, x, y, z, yaw=0.0, boca_abajo=False, **kw):
+    """humano tumbado boca arriba (o boca abajo) con los pies en (x, y, z) y la cabeza hacia -z girada yaw. kw: los de humano()."""
+    a = math.pi / 2 if boca_abajo else -math.pi / 2
+    M = cadena(mover(x, y + 0.11, z), rot_y(yaw), rot_x(a))
+    p = kw.pop("p", STAND)
+    return transformado(esc, M, lambda e: humano(e, p, **kw))
+
+def piscina(esc, x0=-3.5, x1=3.5, z0=-14.0, z1=-2.0, hondo=2.0, luces_on=None, focos=1.0, agua=True, desde_abajo=False,
+            nave=(-7.0, 7.0, -18.0, 4.0, 6.0), col_pared=(132, 158, 170), reloj="00:00"):
+    """nave de piscina cubierta: vaso x0..x1, z0..z1 (fondo en y=-hondo) con calles pintadas, playa de baldosa alrededor,
+    focos subacuáticos (focos 0-1), corcheras, escalerilla, silla de socorrista, ventanales y reloj.
+    agua: lámina de agua opaca (render_piscina la vuelve transparente). desde_abajo: la lámina vista desde dentro.
+    luces_on: 0-1 por fila de focos del techo (6). Devuelve las luces."""
+    X0, X1, Z0, Z1, AL = nave or (-7.0, 7.0, -18.0, 4.0, 6.0)
+    def suelo(xa, xb, za, zb):
+        esc.add(subdividir(plano(xb - xa, zb - za, BALDOSA), 4), mover((xa + xb) / 2, 0, (za + zb) / 2), fondo=True)
+    suelo(X0, x0, Z0, Z1); suelo(x1, X1, Z0, Z1); suelo(x0, x1, z1, Z1); suelo(x0, x1, Z0, z0)
+    # vaso
+    w, d = x1 - x0, z1 - z0; cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    esc.add(subdividir(plano(w, d, AZUL_VASO), 6), mover(cx, -hondo, cz), fondo=True)
+    esc.add(subdividir(pared(w, hondo, AZUL_VASO), 4), mover(cx, -hondo, z0), fondo=True)
+    esc.add(subdividir(pared(w, hondo, AZUL_VASO), 4), cadena(mover(cx, -hondo, z1), rot_y(math.pi)), fondo=True)
+    esc.add(subdividir(pared(d, hondo, AZUL_VASO), 6), cadena(mover(x0, -hondo, cz), rot_y(math.pi / 2)), fondo=True)
+    esc.add(subdividir(pared(d, hondo, AZUL_VASO), 6), cadena(mover(x1, -hondo, cz), rot_y(-math.pi / 2)), fondo=True)
+    n_calles = 4; cw = w / n_calles
+    for i in range(n_calles):                                                 # líneas oscuras del fondo
+        xx = x0 + cw * (i + 0.5)
+        _caja_en(esc, xx - 0.12, -hondo, z0 + 1.2, xx + 0.12, -hondo + 0.01, z1 - 1.2, (30, 60, 110))
+        for zz in (z0 + 1.2, z1 - 1.2): _caja_en(esc, xx - 0.5, -hondo, zz - 0.12, xx + 0.5, -hondo + 0.01, zz + 0.12, (30, 60, 110))
+    for (ax, az, bx, bz) in ((x0 - 0.3, z0 - 0.3, x1 + 0.3, z0), (x0 - 0.3, z1, x1 + 0.3, z1 + 0.3),
+                             (x0 - 0.3, z0, x0, z1), (x1, z0, x1 + 0.3, z1)):          # borde blanco del vaso
+        _caja_en(esc, ax, 0.0, az, bx, 0.06, bz, (226, 228, 224))
+    luces = []
+    for k in range(4):                                                        # focos subacuáticos en las paredes largas
+        zz = z0 + d * (k + 0.5) / 4
+        for xx, s in ((x0, 1), (x1, -1)):
+            _caja_en(esc, xx + s * 0.0, -1.0, zz - 0.18, xx + s * 0.03, -0.7, zz + 0.18,
+                     tuple(int(lerp(a, b, focos)) for a, b in zip((40, 60, 70), (230, 250, 255))), emite=True)
+        if focos > 0.05: luces.append(Luz((cx, -1.1, zz), (120, 220, 255), 6.0, fuerza=0.9 * focos))
+    if focos > 0.05: luces.append(Luz((cx, 1.2, cz), (90, 200, 240), 9.0, fuerza=0.45 * focos))   # resplandor del agua
+    for i in range(1, n_calles):                                              # corcheras rojas y blancas
+        xx = x0 + cw * i
+        for k in range(int(d / 0.5)):
+            zz = z1 - 0.25 - k * 0.5
+            esc.add(caja(0.12, 0.1, 0.4, (220, 40, 40) if (k // 3) % 2 else (236, 236, 230)), mover(xx, -0.1, zz))
+    for s in (-0.3, 0.3):                                                     # escalerilla
+        _caja_en(esc, x1 - 0.08, -1.3, z1 - 1.0 + s - 0.03, x1 - 0.02, 0.9, z1 - 1.0 + s + 0.03, (200, 204, 210), sesgo=0.1)
+        _caja_en(esc, x1 - 0.08, 0.84, z1 - 1.0 + s - 0.03, x1 + 0.35, 0.9, z1 - 1.0 + s + 0.03, (200, 204, 210), sesgo=0.1)
+        _caja_en(esc, x1 + 0.3, 0.0, z1 - 1.0 + s - 0.03, x1 + 0.36, 0.9, z1 - 1.0 + s + 0.03, (200, 204, 210), sesgo=0.1)
+    for k in range(3): _caja_en(esc, x1 - 0.12, -1.1 + k * 0.35, z1 - 1.3, x1 - 0.04, -1.06 + k * 0.35, z1 - 0.7, (200, 204, 210))
+    sx, sz = x1 + 1.6, (z0 + z1) / 2                                          # silla alta de socorrista
+    for dx in (-0.3, 0.3):
+        for dz in (-0.3, 0.3): _caja_en(esc, sx + dx - 0.03, 0, sz + dz - 0.03, sx + dx + 0.03, 1.6, sz + dz + 0.03, (236, 236, 230))
+    _caja_en(esc, sx - 0.36, 1.6, sz - 0.36, sx + 0.36, 1.68, sz + 0.36, (230, 50, 40))
+    _caja_en(esc, sx + 0.3, 1.68, sz - 0.36, sx + 0.36, 2.2, sz + 0.36, (230, 50, 40))
+    if agua:
+        if desde_abajo:
+            esc.add(subdividir(plano(w, d, (150, 225, 245)), 8), cadena(mover(cx, -0.12, cz), rot_x(math.pi)), emite=True, fondo=True)
+        else:
+            col = tuple(int(v * (0.45 + 0.55 * focos)) for v in AGUA)
+            esc.add(subdividir(plano(w, d, col), 8), mover(cx, -0.12, cz), emite=True, fondo=True)
+    if nave:
+        cxn, czn = (X0 + X1) / 2, (Z0 + Z1) / 2
+        esc.add(subdividir(pared(X1 - X0, AL, col_pared), 6), mover(cxn, 0, Z0), fondo=True)
+        esc.add(subdividir(pared(Z1 - Z0, AL, col_pared), 6), cadena(mover(X0, 0, czn), rot_y(math.pi / 2)), fondo=True)
+        esc.add(subdividir(pared(Z1 - Z0, AL, col_pared), 6), cadena(mover(X1, 0, czn), rot_y(-math.pi / 2)), fondo=True)
+        esc.add(subdividir(pared(X1 - X0, AL, col_pared), 4), cadena(mover(cxn, 0, Z1), rot_y(math.pi)), fondo=True)
+        esc.add(subdividir(plano(X1 - X0, Z1 - Z0, (70, 78, 84)), 6), cadena(mover(cxn, AL, czn), rot_x(math.pi)), fondo=True)
+        for xx in (X0 + 0.02, X1 - 0.02):                                     # azulejo bajo y ventanales negros
+            _caja_en(esc, xx - 0.01, 0, Z0, xx + 0.01, 1.2, Z1, (70, 120, 150))
+            for k in range(5):
+                zz = Z0 + 2.0 + k * (Z1 - Z0 - 4) / 4
+                _caja_en(esc, xx - 0.015, 2.6, zz - 1.2, xx + 0.015, 5.2, zz + 1.2, (10, 14, 26), emite=True)
+        _caja_en(esc, X0, 0, Z0 + 0.01, X1, 1.2, Z0 + 0.03, (70, 120, 150))
+        _caja_en(esc, -1.2, 3.6, Z0 + 0.02, 1.2, 4.4, Z0 + 0.06, (20, 20, 22))
+        esc.etiquetas.append(((0.0, 4.0, Z0 + 0.08), reloj, 0.5, (255, 60, 40)))
+        esc.etiquetas.append(((0.0, 5.1, Z0 + 0.08), "PISCINA MUNICIPAL", 0.42, (230, 230, 220)))
+        n = 6
+        for k in range(n):
+            on = 1.0 if luces_on is None else (luces_on[k] if k < len(luces_on) else 1.0)
+            zz = Z1 - 2 - k * (Z1 - Z0 - 4) / (n - 1)
+            for xx in (-3.0, 3.0):
+                _caja_en(esc, xx - 0.5, AL - 0.08, zz - 0.5, xx + 0.5, AL - 0.02, zz + 0.5, tuple(int(30 + v * on * 0.85) for v in FLUOR), emite=on > 0.05)
+            if on > 0.05: luces.append(Luz((0, AL - 0.6, zz), FLUOR, 9.0, fuerza=0.6 * on))
+    return luces
+
+def render_piscina(hacer, cam, t=0.0, transp=0.6, ondas=1.0):
+    """pinta el agua 'transparente': hacer(agua) -> (esc, luces). Se renderiza con y sin lámina de agua; donde la lámina
+    se ve, se mezcla el fondo (ondulado) con la superficie. Devuelve (img, esc_con_agua) para etiquetas()."""
+    eA, LA = hacer(False); A = np.asarray(eA.render(cam, LA)).astype(np.float32)
+    eB, LB = hacer(True); B = np.asarray(eB.render(cam, LB)).astype(np.float32)
+    m = (np.abs(A - B).sum(2) > 6).astype(np.float32)
+    from PIL import ImageFilter
+    m = np.asarray(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(3))).astype(np.float32)[..., None] / 255
+    filas = np.arange(A.shape[0])
+    sh = (np.sin(filas * 0.022 + t * 2.4) * 9 * ondas).astype(int)
+    idx = np.clip(np.arange(A.shape[1])[None, :] - sh[:, None], 0, A.shape[1] - 1)
+    A2 = A[filas[:, None], idx]
+    mezcla = A2 * transp + B * (1 - transp)
+    out = A * (1 - m) + mezcla * m
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)), eB
+
+def bajo_agua(img, t=0.0, k=1.0, col=(16, 90, 130)):
+    """plano visto desde dentro del agua: ondula la imagen, la tiñe de azul y oscurece los bordes"""
+    a = np.asarray(img).astype(np.float32)
+    filas = np.arange(a.shape[0])
+    sh = (np.sin(filas * 0.018 + t * 2.0) * 12 * k).astype(int)
+    a = a[filas[:, None], np.clip(np.arange(a.shape[1])[None, :] - sh[:, None], 0, a.shape[1] - 1)]
+    a = a * (1 - 0.45 * k) + np.array(col, np.float32) * 0.45 * k * 1.6
+    yy, xx = np.mgrid[0:a.shape[0], 0:a.shape[1]]
+    v = 1 - 0.55 * k * (((xx - a.shape[1] / 2) / a.shape[1]) ** 2 + ((yy - a.shape[0] / 2) / a.shape[0]) ** 2) * 2.2
+    return Image.fromarray(np.clip(a * v[..., None], 0, 255).astype(np.uint8))
+
+def ondas_2d(img, cam, centro, t, n=3, f=1.0, col=(230, 250, 255), r_max=1.6):
+    """anillos que se abren en la superficie del agua alrededor de centro (x, y, z)"""
+    d = ImageDraw.Draw(img)
+    q = proyectar(cam, centro)
+    if not q or f <= 0: return img
+    esc_ = 1 / math.tan(math.radians(cam.fov) / 2) * H / 2 / q[2]
+    inclin = max(0.18, abs(cam.ojo[1] - centro[1]) / max(0.1, np.linalg.norm(np.array(cam.ojo) - np.array(centro))))
+    for i in range(n):
+        ph = ((t * 0.9 + i / n) % 1.0)
+        r = r_max * ph * esc_
+        a = int(255 * (1 - ph) * f)
+        if a < 10: continue
+        c = tuple(int(v * a / 255) for v in col)
+        d.ellipse((q[0] - r, q[1] - r * inclin, q[0] + r, q[1] + r * inclin), outline=c, width=max(2, int(6 * (1 - ph))))
+    return img
+
+def burbujas(img, cam, origen, t, n=14, f=1.0, semilla=3):
+    """burbujas que suben desde origen (x, y, z) hasta la superficie (2D)"""
+    rng = np.random.default_rng(semilla); d = ImageDraw.Draw(img)
+    for i in range(n):
+        ph = (t * (0.5 + rng.random() * 0.5) + rng.random()) % 1.0
+        p = (origen[0] + rng.normal(0, 0.18) + math.sin(t * 3 + i) * 0.05, origen[1] + ph * 1.6, origen[2] + rng.normal(0, 0.18))
+        q = proyectar(cam, p)
+        if not q: continue
+        r = (0.02 + rng.random() * 0.04) / q[2] * 1500 * f
+        d.ellipse((q[0] - r, q[1] - r, q[0] + r, q[1] + r), outline=(220, 245, 255), width=max(2, int(r / 4)))
+    return img

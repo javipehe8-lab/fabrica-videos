@@ -403,6 +403,37 @@ def main(voz, out):
             if n == "giro": put(sfx, static(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.6), a, 0.5); put(sfx, sting(1.6), a + D * 0.6, 1.1)
             if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
             continue
+        # ---- Reglas · 4 (piscina, no mires el fondo) ----
+        if os.environ.get("EP") == "reglas4":
+            gota_ = lambda: np.sin(2 * np.pi * (1400 - 900 * T(0.08) / 0.08) * T(0.08)) * np.exp(-T(0.08) * 45) * 0.45
+            eco_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 400) * 0.18                   # zumbido de la nave y el agua
+            chap_ = lambda: bp(rng.normal(0, 1, int(SR * 0.35)), 400, 3000) * np.exp(-T(0.35) * 9) * 0.7
+            plaf_ = lambda: bp(rng.normal(0, 1, int(SR * 1.2)), 150, 2500) * np.exp(-T(1.2) * 3.5)
+            sub_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 220) * 0.6                   # bajo el agua
+            if n == "arranque":
+                put(sfx, eco_(D), a, 0.8); put(sfx, sting(1.4) * 0.6, a + 0.05, 0.8)
+                for i in range(int(D / 0.6)): put(sfx, gota_(), a + 0.2 + i * 0.6, 0.6)
+            if n == "cierre":
+                put(sfx, eco_(D), a, 0.6); put(sfx, buzz(D) * 0.4, a, 0.5)
+                for i in range(int(D / 0.6)): put(sfx, step() * 0.7, a + 0.2 + i * 0.6, 0.7)
+            if n == "grito":
+                put(sfx, impact() * 0.6, a + 0.1, 0.8); put(sfx, eco_(D), a, 0.5)                 # el interruptor
+                for i in range(5): put(sfx, chap_(), a + D * 0.3 + i * 0.28, 0.9)
+                put(sfx, riser(D * 0.5), a + D * 0.4, 0.4)
+            if n == "mira": put(sfx, heartbeat(5, 70), a + 0.2, 0.6); put(sfx, sting(1.5) * 0.8, a + D * 0.5, 0.9)
+            if n == "salta":
+                for i in range(3): put(sfx, step(), a + D * 0.05 + i * 0.25, 0.8)
+                put(sfx, plaf_(), a + D * 0.62, 1.3); put(sfx, sub_(D * 0.35), a + D * 0.65, 0.8)
+            if n == "fondo":
+                put(sfx, sub_(D), a, 0.9); put(sfx, heartbeat(5, 110), a + 0.2, 0.7)
+                put(sfx, impact(), a + D * 0.5, 1.3); put(sfx, boom(1.5, 60), a + D * 0.5, 1.0); put(sfx, scream(1.0) * 0.3, a + D * 0.52, 0.5)
+            if n == "camara":
+                put(sfx, static(D) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.2, 0.5)
+                put(sfx, chap_() * 0.6, a + D * 0.32, 0.7); put(sfx, riser(D * 0.6), a + D * 0.2, 0.4); put(sfx, boom(1.5, 50), a + D * 0.88, 1.1)
+            if n == "final":
+                put(sfx, boom(2.0, 45), a + 0.1, 1.2); put(sfx, impact() * 0.7, a + 1.4, 1.0)
+                for i in range(4): put(sfx, gota_(), a + 0.5 + i * 0.7, 0.5)
+            continue
         # ---- Reglas · 3 (metro, el tren de las 2:40) ----
         if os.environ.get("EP") == "reglas3":
             rumor_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 180) * 0.5                     # zumbido grave del túnel
