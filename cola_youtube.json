@@ -3,7 +3,8 @@
   "horas": {
     "3am": "19:00",
     "turno": "23:00",
-    "reglas": "23:00"
+    "reglas": "23:00",
+    "hilos": "21:00"
   },
   "videos": [
     {
@@ -332,6 +333,17 @@
       "descripcion": "Paras a repostar a las tres de la mañana y el cajero no deja de hacerte señas desde el cristal. Tú crees que te saluda… hasta que te pasa un papel por la ranura.\n¿Tú volverías al coche?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
       "estado": "pendiente",
       "creado": "2026-11-26"
+    },
+    {
+      "serie": "hilos",
+      "parte": 1,
+      "video": "videos/hilos/Hilos_Malditos_1.mp4",
+      "titulo": "Mi abuela desapareció 3 días… y volvió DIFERENTE 😨 #shorts",
+      "descripcion": "Su abuela tenía alzhéimer y llevaba un año sin reconocerla. Desapareció de madrugada y la encontraron tres días después en el pinar, sin un rasguño… y recordándolo todo. ¿Tú habrías dormido tranquilo en esa casa?\n\nHilos Malditos: historias que alguien se atrevió a contar en internet.\n\n#hilosmalditos #terror #historiasdeterror #miedo #creepy #leyendas #shorts",
+      "estado": "programado",
+      "fecha": "2026-11-26 21:00",
+      "url": "https://youtube.com/shorts/mSFDuuLoDZc",
+      "creado": "2026-11-25"
     }
   ]
 }
