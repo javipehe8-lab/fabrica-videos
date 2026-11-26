@@ -5,6 +5,7 @@ TITULO = "HILOS MALDITOS"
 PARTE = None
 ESTILO = "ps2_3d"
 MUSICA = "piano"
+FONDO = "carretera"
 SUBS_Y = 1060                     # subtítulos en el centro, grandes (formato "historia de foro")
 SIN_SUBS = ("titulo",)            # en el arranque el título se lee en la tarjeta del post
 EDGE_NARRADOR = "es-ES-XimenaNeural"

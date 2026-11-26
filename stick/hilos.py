@@ -12,7 +12,7 @@ import math, random
 from PIL import Image, ImageDraw
 from motor import *
 from motor3d import *
-from turno3d import aclarar
+from turno3d import aclarar, etiquetas
 
 FD = "/usr/share/fonts/opentype/inter/"
 def fnt(size, peso="Bold"): return font(size, FD + f"Inter-{peso}.otf")
@@ -56,6 +56,82 @@ def carretera(T, figura=None, faros=1.0, vel=VEL):
     L = [Luz((1.8 + dx, 0.7, -0.5), (255, 244, 220), 34.0, dir=(0, -0.12, -1), cono=30, fuerza=1.7 * faros) for dx in (-0.65, 0.65)]
     L.append(Luz((1.8, 0.8, -6.0), (255, 240, 220), 12.0, fuerza=0.5 * faros))
     return aclarar(esc.render(cam, L), 1.25, 0.85)
+
+# ---------------- más fondos hipnóticos (cambian vídeo a vídeo: ver FONDOS) ----------------
+def tunel(T, figura=None, faros=1.0, vel=17.0):
+    """túnel de autovía con luces de sodio que pasan en ritmo constante (muy hipnótico)."""
+    dist = T * vel; esc = Escena(niebla=((26, 14, 6), 6.0, 44.0), amb=0.08)
+    off = dist % 1.0
+    for i in range(-1, 48):
+        z = -(i * 1.0) + off - 0.5
+        for xx in range(8): esc.add(plano(1.0, 1.0, (58, 56, 54)), mover(-3.5 + xx, 0, z), fondo=True)
+        for s in (-1, 1):
+            esc.add(pared(1.0, 3.2, (150, 140, 120)), cadena(mover(s * 4.6, 0, z), rot_y(-s * math.pi / 2)), fondo=True)
+            esc.add(plano(0.18, 1.0, (225, 215, 190)), mover(s * 3.7, 0.01, z))
+        esc.add(caja(9.6, 0.1, 1.0, (70, 64, 58)), mover(0, 5.3, z), fondo=True)              # techo
+        for s in (-1, 1):
+            esc.add(caja(0.1, 2.4, 1.0, (110, 102, 90)), cadena(mover(s * 3.9, 4.25, z), rot_z(s * 0.75)), fondo=True)
+    sp = 6.0; L = []
+    for idx in range(int(dist // sp) - 1, int((dist + 46) // sp) + 1):
+        z = -(idx * sp - dist)
+        for s in (-1, 1):
+            esc.add(caja(0.18, 0.12, 1.6, (255, 170, 70)), mover(s * 3.55, 4.55, z), emite=True)
+        if -26 < z < 2: L.append(Luz((0, 4.2, z), (255, 165, 80), 9.0, fuerza=0.9))
+    sp = 60.0
+    for idx in range(int(dist // sp), int((dist + 46) // sp) + 1):                         # salida de emergencia verde
+        z = -(idx * sp - dist) - 20
+        esc.add(caja(0.05, 0.5, 1.0, (40, 200, 110)), mover(4.55, 2.2, z), emite=True)
+    if figura: figura(esc)
+    sway = 0.08 * math.sin(T * 0.31)
+    cam = Camara(ojo=(1.8 + sway, 1.3, 0.0), mira=(1.5, 1.6, -30), fov=64, roll=0.01 * math.sin(T * 0.4))
+    L += [Luz((1.8 + dx, 0.7, -0.5), (255, 244, 220), 30.0, dir=(0, -0.1, -1), cono=30, fuerza=1.1 * faros) for dx in (-0.65, 0.65)]
+    return aclarar(esc.render(cam, L), 1.2, 0.88)
+
+def pasillo_infinito(T, figura=None, faros=1.0, vel=1.6):
+    """pasillo de hotel que no acaba: puertas con números que suben, apliques que parpadean a veces."""
+    from escenarios3d import puerta, fluorescente, MOQUETA, MADERA
+    dist = T * vel; per = 3.0; off = dist % per; idx0 = int(dist // per)
+    esc = Escena(niebla=((14, 8, 8), 4.0, 22.0), amb=0.10); esc.etiquetas = []; hw = 1.3; alto = 2.7; L = []
+    for i in range(-1, 26):
+        z = -(i * 1.0) + (dist % 1.0) - 0.5
+        esc.add(plano(2.6, 1.0, MOQUETA if (int(dist) + i) % 2 else (100, 28, 34)), mover(0, 0, z), fondo=True)
+        esc.add(caja(2.6, 0.05, 1.0, (70, 58, 52)), mover(0, alto, z), fondo=True)
+        for s in (-1, 1):
+            esc.add(pared(1.0, alto, (112, 72, 64)), cadena(mover(s * hw, 0, z), rot_y(-s * math.pi / 2)), fondo=True)
+            esc.add(caja(0.04, 0.9, 1.0, MADERA), mover(s * (hw - 0.02), 0.45, z))
+    for k in range(-1, 8):
+        z = -(k * per) + off - 1.5; n = idx0 + k
+        lado = -1 if n % 2 else 1
+        puerta(esc, lado * hw * 0.995, z, lado, 400 + n, 0.0)
+        r = random.Random(n * 31); on = 1.0 if r.random() > 0.15 else (0.25 if (int(T * 12) + n) % 3 else 1.0)
+        esc.add(caja(0.4, 0.1, 0.4, (255, 220, 160) if on > 0.5 else (90, 80, 60)), mover(0, alto - 0.06, z - 1.0), emite=True)
+        if on > 0.3 and z > -16: L.append(Luz((0, alto - 0.3, z - 1.0), (255, 205, 150), 5.0, fuerza=0.8 * on))
+    if figura: figura(esc)
+    bob = 0.025 * math.sin(T * 2 * math.pi * 1.6 / 1.3)
+    cam = Camara(ojo=(0.0, 1.62 + bob, 0.0), mira=(0.0, 1.5, -10), fov=66, roll=0.006 * math.sin(T * 1.2))
+    return aclarar(etiquetas(esc.render(cam, L), esc, cam), 1.3, 0.85)
+
+def escalera(T, figura=None, faros=1.0, vel=1.1):
+    """mirar hacia abajo por el hueco de una escalera que no acaba mientras gira despacio (espiral hipnótica)."""
+    H = 3.0; R = 2.4; r = 0.85; caida = (T * vel) % H; giro = T * 0.22
+    esc = Escena(niebla=((4, 4, 6), 1.5, 17.0), amb=0.05); G = rot_y(giro); L = []
+    for piso in range(0, 7):
+        y0 = 1.0 - piso * H + caida
+        for lado in range(4):
+            M = cadena(G, rot_y(lado * math.pi / 2))
+            for j in range(6):                                                        # peldaños
+                u = -R + (j + 0.5) * (2 * R / 6)
+                y = y0 - (lado * 6 + j) * (H / 24)
+                esc.add(caja(2 * R / 6, 0.14, R - r, (112, 108, 100)), cadena(M, mover(u, y, -(r + (R - r) / 2))))
+            esc.add(caja(2 * R, 0.06, 0.06, (40, 40, 44)), cadena(M, mover(0, y0 - lado * H / 4 + 0.9, -r)))  # barandilla
+            esc.add(pared(2 * R, H, (52, 58, 58)), cadena(M, mover(0, y0 - H, -R)), fondo=True)
+        esc.add(caja(0.25, 0.25, 0.08, (255, 230, 170) if piso % 3 else (255, 120, 90)), cadena(G, mover(0, y0 - 0.4, -R + 0.05)), emite=True)
+        L.append(Luz((0, y0 - 0.6, -R + 0.4), (255, 215, 160), 4.5, fuerza=1.1))
+    if figura: figura(esc)
+    cam = Camara(ojo=(0.0, 1.6, 0.0), mira=(0.0, -10.0, -0.9), fov=70)
+    return aclarar(esc.render(cam, L), 1.25, 0.85)
+
+FONDOS = dict(carretera=carretera, tunel=tunel, pasillo=pasillo_infinito, escalera=escalera)
 
 # ---------------- tarjetas del foro ----------------
 def _envuelve(d, txt, f, ancho):

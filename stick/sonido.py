@@ -66,6 +66,67 @@ def shimmer():
 def chime():
     t = T(2.5); return sum(np.sin(2 * np.pi * f * t) * np.exp(-t * 1.5) for f in (523, 659, 784, 1047)) * 0.12
 
+# ---------- variedad de sustos (26/11): sting() y boom() largos eligen variante distinta en cada vídeo ----------
+import zlib
+_vr = np.random.default_rng(zlib.crc32(os.environ.get("EP", "x").encode()))
+def _saw(f): return 2 * ((np.cumsum(f) / SR) % 1) - 1
+def _cola(x, dec=0.35):                                   # reverberación barata
+    out = x.copy()
+    for k, g in ((0.031, 0.5), (0.047, 0.4), (0.071, 0.33), (0.113, 0.25), (0.17, 0.18)):
+        i = int(SR * k); out[i:] += x[:-i] * g
+    return out * 0.8
+def sting_cluster(d=1.4):
+    t = T(d); s = sum(np.sin(2 * np.pi * (f + 6 * np.sin(2 * np.pi * 7 * t)) * t) for f in (880, 932, 1245, 1319))
+    return np.tanh(s * 0.6) * np.exp(-t * 2.5) * 0.45
+def violines(d=1.4):                                      # chirrido de cuerdas que cae
+    t = T(d); s = sum(_saw((f * (1 - 0.18 * t / d)) * np.ones_like(t) + 9 * np.sin(2 * np.pi * 6.5 * t + f)) for f in (1180, 1250, 1325, 1405))
+    return np.tanh(bp(s, 700, 6000) * 0.9) * np.minimum(1, t * 30) * np.exp(-t * 1.8) * 0.35
+def inverso(d=1.4):                                       # sonido al revés que se corta en seco
+    t = T(d); x = bp(rng.normal(0, 1, len(t)), 300, 5000) * np.exp(-t * 3) + np.sin(2 * np.pi * 220 * t) * np.exp(-t * 2) * 0.6
+    return _cola(x)[::-1] * 0.5
+def metal(d=1.4):                                         # rascado metálico
+    t = T(d); fs = (387, 611, 977, 1433, 2117)
+    s = sum(np.sin(2 * np.pi * f * t + 3 * np.sin(2 * np.pi * 31 * t)) for f in fs) * (0.6 + 0.4 * np.sign(np.sin(2 * np.pi * 13 * t)))
+    return np.tanh(s * 0.5) * np.minimum(1, t * 20) * np.exp(-t * 2.2) * 0.3
+def glitch(d=1.2):                                        # tartamudeo digital
+    base = sting_cluster(0.06) + bp(rng.normal(0, 1, int(SR * 0.06)), 1000, 6000) * 0.3
+    out = np.zeros(int(SR * d)); i = 0
+    while i < len(out) - len(base):
+        g = base * (0.4 + 0.6 * _vr.random()); out[i:i + len(g)] += g[::-1] if _vr.random() < 0.3 else g
+        i += int(SR * (0.035 + 0.05 * _vr.random()))
+    return out * np.linspace(1, 0.2, len(out)) * 0.7
+def susurro(d=1.4):                                       # susurro / aliento muy cerca
+    t = T(d); n = rng.normal(0, 1, len(t))
+    am = np.clip(np.sin(2 * np.pi * (3.1 + 1.7 * np.sin(2 * np.pi * 0.7 * t)) * t), 0, 1) ** 2
+    return (bp(n, 900, 2600) * 0.7 + bp(n, 3000, 7000) * 0.4) * am * np.minimum(1, t * 8) * np.exp(-t * 1.2) * 0.7
+def coro(d=1.6):                                          # racimo de voces graves
+    t = T(d); s = sum(_saw(f * np.ones_like(t) + 3 * np.sin(2 * np.pi * 5 * t + f)) for f in (196, 208, 233, 247, 277))
+    return _cola(bp(s, 400, 1400) * np.minimum(1, t * 6) * np.exp(-t * 1.4)) * 0.3
+def portazo(d=1.4):
+    t = T(d); x = lp(rng.normal(0, 1, len(t)), 500) * np.exp(-t * 18) * 1.4
+    x[:int(SR * 0.5)] += _boom_base(0.5, 95)
+    return np.tanh(_cola(x) * 1.5) * 0.8
+def caida(d=1.8):                                         # sub que se hunde
+    t = T(d); f = 130 * np.exp(-t * 1.6) + 22
+    return np.tanh(np.sin(2 * np.pi * np.cumsum(f) / SR) * 2.5 * np.exp(-t * 1.1)) * 0.9
+def campana(d=2.4):                                       # campana lejana
+    t = T(d); return _cola(sum(np.sin(2 * np.pi * f * t) * np.exp(-t * k) for f, k in ((174, 0.9), (348, 1.2), (418, 1.6), (617, 2.2), (934, 3)))) * 0.18
+def golpe_metal(d=1.4):
+    t = T(d); return np.tanh(sum(np.sin(2 * np.pi * f * t) * np.exp(-t * k) for f, k in ((153, 3), (247, 4), (529, 6), (861, 8), (1229, 11))) * 1.6) * 0.6
+def parada_cinta(d=1.6):                                  # zumbido que se para como una cinta
+    t = T(d); f = 110 * np.maximum(0.05, 1 - t / (d * 0.8)) ** 1.5
+    return lp(np.tanh(_saw(f) * 1.5), 900) * np.exp(-t * 0.8) * 0.5
+_STINGS = [sting_cluster, violines, inverso, metal, glitch, susurro, coro]
+_BOOMS = [None, portazo, caida, campana, golpe_metal, parada_cinta]
+def sting(d=1.4):
+    return _STINGS[_vr.integers(len(_STINGS))](d)
+_boom_base = boom
+def boom(d=1.6, f0=70):
+    if d < 1.2: return _boom_base(d, f0)                  # golpes cortos (impact, latidos) sin cambios
+    v = _BOOMS[_vr.integers(len(_BOOMS))]
+    x = _boom_base(d, f0) if v is None else v(d)
+    return x[:int(SR * d)] if len(x) >= int(SR * d) else np.concatenate([x, np.zeros(int(SR * d) - len(x))])
+
 # ---------- música ----------
 def musica(total, cuts):
     t = T(total); out = np.zeros_like(t)
