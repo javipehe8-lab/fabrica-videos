@@ -536,6 +536,35 @@ def main(voz, out):
             if n == "final": put(sfx, whoosh(0.5), a + D * 0.42, 1.0); put(sfx, ding(), a + D * 0.65, 0.8)
             continue
         # ---- Si oyes esto a las 3AM · 26 ----
+        if os.environ.get("EP") == "3am27":
+            fluo_ = lambda d: (np.sin(2 * np.pi * 100 * T(d)) * 0.05 + bp(rng.normal(0, 1, int(SR * d)), 2000, 6000) * 0.02)   # zumbido del fluorescente
+            golpe_ = lambda: lp(rng.normal(0, 1, int(SR * 0.12)), 500) * np.exp(-T(0.12) * 40) * 1.2                          # palmada en el cristal
+            gas_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 300, 1400) * 0.12                                               # gasolina corriendo
+            resp_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 400, 2000) * np.sin(np.pi * T(d) / d) ** 2 * 0.45
+            if n == "senas":
+                put(sfx, boom(1.4, 50), a, 1.1); put(sfx, sting(1.2) * 0.6, a + 0.05, 0.7); put(sfx, fluo_(D), a, 1.0)
+                for i in range(int(D / 0.45)): put(sfx, golpe_(), a + 0.1 + i * 0.45, 0.6)
+            if n == "saluda": put(sfx, gas_(D), a, 1.0); put(sfx, fluo_(D), a, 0.8)
+            if n == "vaho":
+                put(sfx, gas_(D) * 0.5, a, 1.0)
+                for i in range(int(D / 1.05)): put(sfx, resp_(0.9), a + 0.1 + i * 1.05, 0.8)
+                put(sfx, golpe_(), a + D * 0.75, 1.4); put(sfx, sting(1.2), a + D * 0.76, 0.8)
+            if n == "pagar": put(sfx, fluo_(D), a, 1.0); put(sfx, ding(), a + 0.05, 0.5); put(sfx, heartbeat(4, 90) * 0.5, a + D * 0.5, 0.5)
+            if n == "papel":
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.6)), 2000, 6000) * 0.25, a + D * 0.05, 0.8)                            # papel que roza
+                put(sfx, boom(1.6, 50), a + D * 0.48, 1.1); put(sfx, sting(1.3), a + D * 0.5, 0.9)
+            if n == "monitor":
+                put(sfx, static(D) * 0.25, a, 0.6)
+                put(sfx, bp(rng.normal(0, 1, int(SR * 0.4)), 200, 900) * np.exp(-T(0.4) * 6) * 0.7, a + D * 0.3, 0.9)           # clac de la puerta
+                put(sfx, riser(D * 0.6), a + D * 0.4, 0.4)
+            if n == "sale":
+                put(sfx, static(D) * 0.3, a, 0.6); put(sfx, bp(rng.normal(0, 1, int(SR * 0.5)), 300, 1500) * np.exp(-T(0.5) * 4) * 0.8, a + D * 0.3, 0.9)
+                put(sfx, boom(1.8, 45), a + D * 0.73, 1.2); put(sfx, sting(1.4), a + D * 0.73, 1.0); put(sfx, scream(0.8) * 0.4, a + D * 0.75, 0.6)
+            if n == "volante":
+                put(sfx, impact(), a + D * 0.27, 1.0); put(sfx, beep(0.9, 330) * 3, a + D * 0.3, 0.8); put(sfx, beep(0.9, 415) * 2, a + D * 0.3, 0.8)   # claxon
+                put(sfx, heartbeat(5, 120) * 0.6, a + D * 0.4, 0.6)
+            if n == "final": put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         if os.environ.get("EP") == "3am26":
             vibra_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 120, 260) * (np.sin(2 * np.pi * 9 * T(d)) > 0) * 0.9   # móvil vibrando
             tele_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 400, 3000) * 0.05                                     # murmullo de la tele
