@@ -1,337 +1,337 @@
 {
- "_info": "Cola de vídeos para subir a YouTube Studio desde el Chrome de Javi (ver subir_youtube.md). Las tareas diarias añaden aquí cada vídeo nuevo con estado 'pendiente'. La tarea de subida le asigna fecha y hora y lo pasa a 'programado'.",
- "horas": {
-  "3am": "19:00",
-  "turno": "23:00",
-  "reglas": "23:00"
- },
- "videos": [
-  {
-   "serie": "turno",
-   "parte": 1,
-   "video": "videos/turno/Turno_de_Noche_1.mp4",
-   "titulo": "Regla 1: no existe el surtidor 4 ⛽ Turno de noche (Parte 1) #shorts",
-   "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla. Hay una lista de reglas. La primera: no existe el surtidor 4.\n\n¿Tú le habrías dicho que sí? 👇 Mañana, la regla 2.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "fecha": "2026-11-14 21:00",
-   "url": "https://youtube.com/shorts/o0vq95ctKMw"
+  "_info": "Cola de vídeos para subir a YouTube Studio desde el Chrome de Javi (ver subir_youtube.md). Las tareas diarias añaden aquí cada vídeo nuevo con estado 'pendiente'. La tarea de subida le asigna fecha y hora y lo pasa a 'programado'.",
+  "horas": {
+    "3am": "19:00",
+    "turno": "23:00",
+    "reglas": "23:00"
   },
-  {
-   "serie": "3am",
-   "parte": 13,
-   "video": "videos/3am/Si_Oyes_Esto_13.mp4",
-   "titulo": "Si a las 3AM tu vecino te saluda… no le devuelvas el saludo 😨 #shorts",
-   "descripcion": "Cada noche, a las tres, el vecino de enfrente te saluda desde su ventana. Y tú, por educación, siempre le devuelves el saludo.\n\n¿Tú se lo devolverías? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "fecha": "2026-11-14 19:00",
-   "url": "https://youtube.com/shorts/eQ9SEPFcD-o"
-  },
-  {
-   "serie": "turno",
-   "parte": 2,
-   "video": "videos/turno/Turno_de_Noche_2.mp4",
-   "titulo": "Regla 2: no cojas la cabina a las 3:00 ☎️ Turno de noche (Parte 2) #shorts",
-   "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y hay una lista de reglas. La regla 2 dice: si suena el teléfono de la cabina a las 3:00, no lo cojas. ¿Qué harías tú si te llamara tu propia voz? Mañana, la regla 3.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "fecha": "2026-11-14 23:00"
-  },
-  {
-   "serie": "3am",
-   "parte": 14,
-   "video": "videos/3am/Si_Oyes_Esto_14.mp4",
-   "titulo": "Si a las 3AM tu reflejo llega tarde… no te acerques 😨 #shorts",
-   "descripcion": "Son las tres y te levantas al baño. En el espejo, tu reflejo lo hace todo un segundo tarde. ¿Tú te acercarías a mirar?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "fecha": "2026-11-15 19:00"
-  },
-  {
-   "serie": "turno",
-   "parte": 3,
-   "video": "videos/turno/Turno_de_Noche_3.mp4",
-   "titulo": "Regla 3: el baño está siempre roto 🚽 Turno de noche (Parte 3) #shorts",
-   "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 3 dice que el baño está siempre roto, aunque alguien te pida la llave. ¿Tú le habrías dado la llave a esa niña? Mañana, la regla 4.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "fecha": "2026-11-15 23:00",
-   "url": "https://youtube.com/shorts/ehpqQDBD0Y4"
-  },
-  {
-   "serie": "3am",
-   "parte": 15,
-   "video": "videos/3am/Si_Oyes_Esto_15.mp4",
-   "titulo": "Si a las 3AM se enciende la radio… escucha la dirección 😨 #shorts",
-   "descripcion": "Cada noche, a las tres, la vieja radio del abuelo se enciende sola y da el parte del tiempo. Esta noche no da el tiempo: da un aviso con una dirección que conoces muy bien.\n\n¿Tú te habrías dado cuenta a tiempo? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-14",
-   "fecha": "2026-11-16 19:00",
-   "url": "https://youtube.com/shorts/J5owmFx1G84"
-  },
-  {
-   "serie": "turno",
-   "parte": 4,
-   "video": "videos/turno/Turno_de_Noche_4.mp4",
-   "titulo": "Regla 4: no aceptes monedas antiguas 🪙 Turno de noche (Parte 4) #shorts",
-   "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 4 dice que no sirvas a nadie que pague con monedas antiguas, y esta noche un anciano me pagó con pesetas. ¿Tú le habrías cobrado? Mañana, la regla 5.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-15",
-   "fecha": "2026-11-16 23:00",
-   "url": "https://youtube.com/shorts/qc-K7TuJfts"
-  },
-  {
-   "serie": "3am",
-   "parte": 16,
-   "video": "videos/3am/Si_Oyes_Esto_16.mp4",
-   "titulo": "Si a las 3AM el taxista no parpadea… no te bajes donde él pare 😨 #shorts",
-   "descripcion": "Son las tres y vuelves a casa en taxi. El taxista no dice ni una palabra, y por el retrovisor sus ojos no parpadean nunca.\n\n¿Tú te bajarías donde él parara? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-15",
-   "fecha": "2026-11-17 19:00",
-   "url": "https://youtube.com/shorts/0IB6zeeD5N8"
-  },
-  {
-   "serie": "turno",
-   "parte": 5,
-   "video": "videos/turno/Turno_de_Noche_5.mp4",
-   "titulo": "Regla 5: si entra la niebla, no respires 🌫️ Turno de noche (Parte 5) #shorts",
-   "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 5 dice que, si la niebla entra en la tienda, apagues todas las luces y no respires. ¿Tú habrías aguantado sin respirar? Mañana, la regla 6.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-16",
-   "fecha": "2026-11-17 23:00",
-   "url": "https://youtube.com/shorts/e9Uwt9iEzt0"
-  },
-  {
-   "serie": "3am",
-   "parte": 17,
-   "video": "videos/3am/Si_Oyes_Esto_17.mp4",
-   "titulo": "Si a las 3AM hay un escalón de más… no lo pises 😨 #shorts",
-   "descripcion": "Cada noche bajas a oscuras a la cocina contando los trece escalones de memoria. Esta noche, después del trece, tu pie sigue bajando… y el último escalón está blando.\n\n¿Tú habrías encendido la luz? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-16",
-   "fecha": "2026-11-18 19:00",
-   "url": "https://youtube.com/shorts/pca7-xMX1zg"
-  },
-  {
-   "serie": "turno",
-   "parte": 6,
-   "video": "videos/turno/Turno_de_Noche_6.mp4",
-   "titulo": "Regla 6: el kilómetro 10 no existe 🚗 Turno de noche (Parte 6) #shorts",
-   "descripcion": "Regla 6: si alguien pregunta por el kilómetro 10, di que no existe. Esta noche, el mismo coche ha vuelto a preguntar cuatro veces, y cada vez con uno menos dentro.\n\n¿Tú le habrías dicho cómo llegar? 👇 Mañana, la regla 7.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-17",
-   "fecha": "2026-11-18 23:00",
-   "url": "https://youtube.com/shorts/0PQuToub3V0"
-  },
-  {
-   "serie": "3am",
-   "parte": 18,
-   "video": "videos/3am/Si_Oyes_Esto_18.mp4",
-   "titulo": "Si a las 3AM ves a un niño solo… no llames a nadie 😨 #shorts",
-   "descripcion": "Son las tres y, desde tu ventana, ves a un niño columpiándose solo en el parque, siempre mirando al suelo. Tu cuarto está a oscuras y decides llamar a la policía. ¿Tú habrías llamado?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-17",
-   "fecha": "2026-11-19 19:00",
-   "url": "https://youtube.com/shorts/Nqyec8pnOMs"
-  },
-  {
-   "serie": "turno",
-   "parte": 7,
-   "video": "videos/turno/Turno_de_Noche_7.mp4",
-   "titulo": "Regla 7: no leas nada que no hayas escrito tú 📓 Turno de noche (Parte 7) #shorts",
-   "descripcion": "Regla 7: no leas nada que no hayas escrito tú. Esta noche he abierto el cuaderno de Raúl, y cuenta mis noches aquí… con fecha de 1986.\n\n¿Tú lo habrías leído? 👇 Mañana, la regla 8.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-18",
-   "fecha": "2026-11-19 23:00",
-   "url": "https://youtube.com/shorts/m9fX893Gs1k"
-  },
-  {
-   "serie": "3am",
-   "parte": 19,
-   "video": "videos/3am/Si_Oyes_Esto_19.mp4",
-   "titulo": "Si a las 3AM llama la abuela… créetela 😨 #shorts",
-   "descripcion": "Son las tres y te llama tu abuela, la que tiene alzhéimer: dice que hay un hombre en su cocina que asegura ser tu padre. Imposible, porque tu padre está dormido a tu lado en el sofá.\n\n¿Tú la habrías creído? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-18",
-   "fecha": "2026-11-20 19:00",
-   "url": "https://youtube.com/shorts/J1thzJBOWdw"
-  },
-  {
-   "serie": "turno",
-   "parte": 8,
-   "video": "videos/turno/Turno_de_Noche_8.mp4",
-   "titulo": "Regla 8: si el camión llega antes de las 6, no firmes 🚚 Turno de noche (Parte 8) #shorts",
-   "descripcion": "Regla 8: si el camión de reparto llega antes de las 6, no firmes nada. Son las 5, el conductor es el anciano de las pesetas y el albarán ya lleva mi firma. ¿Tú firmarías? Mañana, la regla 9.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-19",
-   "fecha": "2026-11-20 23:00",
-   "url": "https://youtube.com/shorts/Y19Q1M9170I"
-  },
-  {
-   "serie": "3am",
-   "parte": 20,
-   "video": "videos/3am/Si_Oyes_Esto_20.mp4",
-   "titulo": "Si a las 3AM el GPS insiste en que gires… no gires 😨 #shorts",
-   "descripcion": "Son las tres, conduces solo por el bosque y el GPS te pide que gires hacia un camino de tierra que no sale en el mapa. No giras, pero el GPS insiste cada vez más rápido… y detrás de ti viene otro coche.\n\n¿Tú habrías girado? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-19",
-   "fecha": "2026-11-21 19:00",
-   "url": "https://youtube.com/shorts/daRw6Xp5dZw"
-  },
-  {
-   "serie": "turno",
-   "parte": 9,
-   "video": "videos/turno/Turno_de_Noche_9.mp4",
-   "titulo": "Regla 9: si ves a Raúl, no le dejes entrar 🚪 Turno de noche (Parte 9) #shorts",
-   "descripcion": "Regla 9: si ves a Raúl, no le dejes entrar. Esta noche está en la puerta, empapado, llorando… y lleva una placa con mi nombre. ¿Tú le habrías abierto? Mañana, la regla 10.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-20",
-   "fecha": "2026-11-21 23:00",
-   "url": "https://youtube.com/shorts/LhcRer6J9gk"
-  },
-  {
-   "serie": "3am",
-   "parte": 21,
-   "video": "videos/3am/Si_Oyes_Esto_21.mp4",
-   "titulo": "Si a las 3AM preguntan quién está despierto… no contestes 😨 #shorts",
-   "descripcion": "Son las tres y alguien escribe en el grupo de clase: \"¿Quién está despierto?\". Nadie tiene guardado ese número, y tu portátil sigue abierto en la mesa, mirando a tu cama.\n\n¿Tú habrías contestado? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-20",
-   "fecha": "2026-11-22 19:00",
-   "url": "https://youtube.com/shorts/7dAVWxfjfPE"
-  },
-  {
-   "serie": "turno",
-   "parte": 10,
-   "video": "videos/turno/Turno_de_Noche_10.mp4",
-   "titulo": "Regla 10: si una cámara va por delante, huye 📹 Turno de noche (Parte 10) #shorts",
-   "descripcion": "Regla 10: las cámaras van diez segundos por detrás; si alguna va por delante, sal por la puerta de atrás. Esta noche la cámara uno va adelantada… y en la pantalla hay algo detrás de mí. ¿Tú habrías esperado los diez segundos? Mañana, la regla 11.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-21",
-   "fecha": "2026-11-22 23:00",
-   "url": "https://youtube.com/shorts/lT0AOZ3Bx0s"
-  },
-  {
-   "serie": "3am",
-   "parte": 22,
-   "video": "videos/3am/Si_Oyes_Esto_22.mp4",
-   "titulo": "Si a las 3AM se arrastran muebles… no subas a mirar 😨 #shorts",
-   "descripcion": "Vives solo, en el último piso, y la vecina de abajo sube furiosa: dice que arrastras muebles cada noche. Esa noche, a las tres, el ruido empieza… en tu techo.\n\n¿Tú subirías a mirar? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-21",
-   "fecha": "2026-11-23 19:00",
-   "url": "https://youtube.com/shorts/6JCUwbu_65I"
-  },
-  {
-   "serie": "turno",
-   "parte": 11,
-   "video": "videos/turno/Turno_de_Noche_11.mp4",
-   "titulo": "Regla 11: nunca cruces el kilómetro 10 🪧 Turno de noche (Parte 11) #shorts",
-   "descripcion": "Regla 11: nunca cruces el kilómetro 10. Esta noche lo he cruzado, y al otro lado hay una gasolinera igual que la mía, con tres empleados que llevan mi uniforme. ¿Tú entrarías? Mañana, la regla 12.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-22",
-   "fecha": "2026-11-23 23:00",
-   "url": "https://youtube.com/shorts/UbiuijU7Djc"
-  },
-  {
-   "serie": "3am",
-   "parte": 23,
-   "video": "videos/3am/Si_Oyes_Esto_23.mp4",
-   "titulo": "Si a las 3AM llaman a la pared… no devuelvas los golpes 😨 #shorts",
-   "descripcion": "Tu hermano y tú os dais las buenas noches con tres golpes en la pared. Esta noche suenan a las tres… y tú contestas, como siempre. ¿Tú habrías devuelto los golpes?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-22",
-   "fecha": "2026-11-24 19:00",
-   "url": "https://youtube.com/shorts/jArdMUuf7go"
-  },
-  {
-   "serie": "turno",
-   "parte": 12,
-   "video": "videos/turno/Turno_de_Noche_12.mp4",
-   "titulo": "Regla 12: nunca devuelvas el saludo 👋 Turno de noche (Parte 12) #shorts",
-   "descripcion": "Regla 12: nunca devuelvas el saludo. Esta noche, tres empleados con mi uniforme me saludan desde detrás del mostrador. ¿Tú se lo devolverías? Mañana, la regla 13.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-23",
-   "fecha": "2026-11-24 23:00",
-   "url": "https://youtube.com/shorts/yxeTeXLx7qw"
-  },
-  {
-   "serie": "3am",
-   "parte": 24,
-   "video": "videos/3am/Si_Oyes_Esto_24.mp4",
-   "titulo": "Si a las 3AM hay alguien en tu timbre… no mires a qué hora se fue 😨 #shorts",
-   "descripcion": "Tu timbre con cámara te avisó a las tres: alguien en tu puerta. En la grabación no llama, no se mueve… solo mira fijo a la cámara. ¿Tú adelantarías el vídeo para ver cuándo se fue?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-23",
-   "fecha": "2026-11-25 19:00",
-   "url": "https://youtube.com/shorts/Q75ppuJ_8-c"
-  },
-  {
-   "serie": "reglas",
-   "parte": 1,
-   "video": "videos/reglas/Reglas_1.mp4",
-   "titulo": "Si llaman desde la 414, no vayas 😱 #shorts",
-   "descripcion": "Regla de los celadores de noche de un hospital: si llaman desde la habitación 414, no vayas. Lleva un año vacía. Por el interfono habla su madre, que murió allí. Óscar fue.\n\nCada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "no_antes": "2026-11-25",
-   "creado": "2026-11-23",
-   "fecha": "2026-11-25 23:00",
-   "url": "https://youtube.com/shorts/_t9ARfLXkwk"
-  },
-  {
-   "serie": "reglas",
-   "parte": 2,
-   "video": "videos/reglas/Reglas_2.mp4",
-   "titulo": "Nunca des la llave de la habitación 0 😱 #shorts",
-   "descripcion": "Lucía es recepcionista de noche y tiene una regla: nunca dar la llave de la habitación 0. A las tres entra un huésped empapado que dice que la tiene reservada… y en el libro, la reserva existe. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-24",
-   "fecha": "2026-11-26 23:00",
-   "url": "https://youtube.com/shorts/EPlcWOmcvzs"
-  },
-  {
-   "serie": "3am",
-   "parte": 25,
-   "video": "videos/3am/Si_Oyes_Esto_25.mp4",
-   "titulo": "Si a las 3AM todo se calla… cállate tú también 😨 #shorts",
-   "descripcion": "A las tres, todos los ruidos de tu casa se apagan de golpe. Tu madre te escribe desde su cuarto: \"No respires fuerte. Está escuchando\". ¿Tú habrías aguantado la respiración?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "programado",
-   "creado": "2026-11-24",
-   "fecha": "2026-11-26 19:00",
-   "url": "https://youtube.com/shorts/NUxh4isTSs4"
-  },
-  {
-   "serie": "reglas",
-   "parte": 3,
-   "video": "videos/reglas/Reglas_3.mp4",
-   "titulo": "Si el tren de las 2:40 para, no subas 😱 #shorts",
-   "descripcion": "Andrés es vigilante nocturno del metro y tiene una regla: si el tren de las 2:40 para en el andén, no subas. Esta noche para, y dentro, sentados, están los desaparecidos de la línea… también su hermano. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "pendiente",
-   "creado": "2026-11-25"
-  },
-  {
-   "serie": "3am",
-   "parte": 26,
-   "video": "videos/3am/Si_Oyes_Esto_26.mp4",
-   "titulo": "Si a las 3AM tu cámara ve a alguien… no mires al sofá 😨 #shorts",
-   "descripcion": "Tus padres cenan fuera y, a las tres, te escriben: por la cámara del salón ven a alguien sentado contigo en el sofá. Pero estás solo… o eso crees.\n¿Tú mirarías al sofá?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "pendiente",
-   "creado": "2026-11-25"
-  },
-  {
-   "serie": "reglas",
-   "parte": 4,
-   "video": "videos/reglas/Reglas_4.mp4",
-   "titulo": "Después de cerrar, no mires el fondo de la piscina 😱 #shorts",
-   "descripcion": "Marta es socorrista y tiene una regla: después de cerrar, no mires el fondo de la piscina. Esta noche, al apagar la última luz, una niña pide socorro desde el agua. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
-   "estado": "pendiente",
-   "creado": "2026-11-26"
-  },
-  {
-   "serie": "3am",
-   "parte": 27,
-   "video": "videos/3am/Si_Oyes_Esto_27.mp4",
-   "titulo": "Si a las 3AM el cajero te hace señas… léelas 😨 #shorts",
-   "descripcion": "Paras a repostar a las tres de la mañana y el cajero no deja de hacerte señas desde el cristal. Tú crees que te saluda… hasta que te pasa un papel por la ranura.\n¿Tú volverías al coche?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-   "estado": "pendiente",
-   "creado": "2026-11-26"
-  }
- ]
+  "videos": [
+    {
+      "serie": "turno",
+      "parte": 1,
+      "video": "videos/turno/Turno_de_Noche_1.mp4",
+      "titulo": "Regla 1: no existe el surtidor 4 ⛽ Turno de noche (Parte 1) #shorts",
+      "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla. Hay una lista de reglas. La primera: no existe el surtidor 4.\n\n¿Tú le habrías dicho que sí? 👇 Mañana, la regla 2.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "fecha": "2026-11-14 21:00",
+      "url": "https://youtube.com/shorts/o0vq95ctKMw"
+    },
+    {
+      "serie": "3am",
+      "parte": 13,
+      "video": "videos/3am/Si_Oyes_Esto_13.mp4",
+      "titulo": "Si a las 3AM tu vecino te saluda… no le devuelvas el saludo 😨 #shorts",
+      "descripcion": "Cada noche, a las tres, el vecino de enfrente te saluda desde su ventana. Y tú, por educación, siempre le devuelves el saludo.\n\n¿Tú se lo devolverías? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "fecha": "2026-11-14 19:00",
+      "url": "https://youtube.com/shorts/eQ9SEPFcD-o"
+    },
+    {
+      "serie": "turno",
+      "parte": 2,
+      "video": "videos/turno/Turno_de_Noche_2.mp4",
+      "titulo": "Regla 2: no cojas la cabina a las 3:00 ☎️ Turno de noche (Parte 2) #shorts",
+      "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y hay una lista de reglas. La regla 2 dice: si suena el teléfono de la cabina a las 3:00, no lo cojas. ¿Qué harías tú si te llamara tu propia voz? Mañana, la regla 3.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "fecha": "2026-11-14 23:00"
+    },
+    {
+      "serie": "3am",
+      "parte": 14,
+      "video": "videos/3am/Si_Oyes_Esto_14.mp4",
+      "titulo": "Si a las 3AM tu reflejo llega tarde… no te acerques 😨 #shorts",
+      "descripcion": "Son las tres y te levantas al baño. En el espejo, tu reflejo lo hace todo un segundo tarde. ¿Tú te acercarías a mirar?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "fecha": "2026-11-15 19:00"
+    },
+    {
+      "serie": "turno",
+      "parte": 3,
+      "video": "videos/turno/Turno_de_Noche_3.mp4",
+      "titulo": "Regla 3: el baño está siempre roto 🚽 Turno de noche (Parte 3) #shorts",
+      "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 3 dice que el baño está siempre roto, aunque alguien te pida la llave. ¿Tú le habrías dado la llave a esa niña? Mañana, la regla 4.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "fecha": "2026-11-15 23:00",
+      "url": "https://youtube.com/shorts/ehpqQDBD0Y4"
+    },
+    {
+      "serie": "3am",
+      "parte": 15,
+      "video": "videos/3am/Si_Oyes_Esto_15.mp4",
+      "titulo": "Si a las 3AM se enciende la radio… escucha la dirección 😨 #shorts",
+      "descripcion": "Cada noche, a las tres, la vieja radio del abuelo se enciende sola y da el parte del tiempo. Esta noche no da el tiempo: da un aviso con una dirección que conoces muy bien.\n\n¿Tú te habrías dado cuenta a tiempo? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-14",
+      "fecha": "2026-11-16 19:00",
+      "url": "https://youtube.com/shorts/J5owmFx1G84"
+    },
+    {
+      "serie": "turno",
+      "parte": 4,
+      "video": "videos/turno/Turno_de_Noche_4.mp4",
+      "titulo": "Regla 4: no aceptes monedas antiguas 🪙 Turno de noche (Parte 4) #shorts",
+      "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 4 dice que no sirvas a nadie que pague con monedas antiguas, y esta noche un anciano me pagó con pesetas. ¿Tú le habrías cobrado? Mañana, la regla 5.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-15",
+      "fecha": "2026-11-16 23:00",
+      "url": "https://youtube.com/shorts/qc-K7TuJfts"
+    },
+    {
+      "serie": "3am",
+      "parte": 16,
+      "video": "videos/3am/Si_Oyes_Esto_16.mp4",
+      "titulo": "Si a las 3AM el taxista no parpadea… no te bajes donde él pare 😨 #shorts",
+      "descripcion": "Son las tres y vuelves a casa en taxi. El taxista no dice ni una palabra, y por el retrovisor sus ojos no parpadean nunca.\n\n¿Tú te bajarías donde él parara? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-15",
+      "fecha": "2026-11-17 19:00",
+      "url": "https://youtube.com/shorts/0IB6zeeD5N8"
+    },
+    {
+      "serie": "turno",
+      "parte": 5,
+      "video": "videos/turno/Turno_de_Noche_5.mp4",
+      "titulo": "Regla 5: si entra la niebla, no respires 🌫️ Turno de noche (Parte 5) #shorts",
+      "descripcion": "Trabajo solo, de noche, en una gasolinera perdida en la niebla, y cada regla de la lista tiene un motivo. La regla 5 dice que, si la niebla entra en la tienda, apagues todas las luces y no respires. ¿Tú habrías aguantado sin respirar? Mañana, la regla 6.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-16",
+      "fecha": "2026-11-17 23:00",
+      "url": "https://youtube.com/shorts/e9Uwt9iEzt0"
+    },
+    {
+      "serie": "3am",
+      "parte": 17,
+      "video": "videos/3am/Si_Oyes_Esto_17.mp4",
+      "titulo": "Si a las 3AM hay un escalón de más… no lo pises 😨 #shorts",
+      "descripcion": "Cada noche bajas a oscuras a la cocina contando los trece escalones de memoria. Esta noche, después del trece, tu pie sigue bajando… y el último escalón está blando.\n\n¿Tú habrías encendido la luz? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-16",
+      "fecha": "2026-11-18 19:00",
+      "url": "https://youtube.com/shorts/pca7-xMX1zg"
+    },
+    {
+      "serie": "turno",
+      "parte": 6,
+      "video": "videos/turno/Turno_de_Noche_6.mp4",
+      "titulo": "Regla 6: el kilómetro 10 no existe 🚗 Turno de noche (Parte 6) #shorts",
+      "descripcion": "Regla 6: si alguien pregunta por el kilómetro 10, di que no existe. Esta noche, el mismo coche ha vuelto a preguntar cuatro veces, y cada vez con uno menos dentro.\n\n¿Tú le habrías dicho cómo llegar? 👇 Mañana, la regla 7.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-17",
+      "fecha": "2026-11-18 23:00",
+      "url": "https://youtube.com/shorts/0PQuToub3V0"
+    },
+    {
+      "serie": "3am",
+      "parte": 18,
+      "video": "videos/3am/Si_Oyes_Esto_18.mp4",
+      "titulo": "Si a las 3AM ves a un niño solo… no llames a nadie 😨 #shorts",
+      "descripcion": "Son las tres y, desde tu ventana, ves a un niño columpiándose solo en el parque, siempre mirando al suelo. Tu cuarto está a oscuras y decides llamar a la policía. ¿Tú habrías llamado?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-17",
+      "fecha": "2026-11-19 19:00",
+      "url": "https://youtube.com/shorts/Nqyec8pnOMs"
+    },
+    {
+      "serie": "turno",
+      "parte": 7,
+      "video": "videos/turno/Turno_de_Noche_7.mp4",
+      "titulo": "Regla 7: no leas nada que no hayas escrito tú 📓 Turno de noche (Parte 7) #shorts",
+      "descripcion": "Regla 7: no leas nada que no hayas escrito tú. Esta noche he abierto el cuaderno de Raúl, y cuenta mis noches aquí… con fecha de 1986.\n\n¿Tú lo habrías leído? 👇 Mañana, la regla 8.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-18",
+      "fecha": "2026-11-19 23:00",
+      "url": "https://youtube.com/shorts/m9fX893Gs1k"
+    },
+    {
+      "serie": "3am",
+      "parte": 19,
+      "video": "videos/3am/Si_Oyes_Esto_19.mp4",
+      "titulo": "Si a las 3AM llama la abuela… créetela 😨 #shorts",
+      "descripcion": "Son las tres y te llama tu abuela, la que tiene alzhéimer: dice que hay un hombre en su cocina que asegura ser tu padre. Imposible, porque tu padre está dormido a tu lado en el sofá.\n\n¿Tú la habrías creído? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-18",
+      "fecha": "2026-11-20 19:00",
+      "url": "https://youtube.com/shorts/J1thzJBOWdw"
+    },
+    {
+      "serie": "turno",
+      "parte": 8,
+      "video": "videos/turno/Turno_de_Noche_8.mp4",
+      "titulo": "Regla 8: si el camión llega antes de las 6, no firmes 🚚 Turno de noche (Parte 8) #shorts",
+      "descripcion": "Regla 8: si el camión de reparto llega antes de las 6, no firmes nada. Son las 5, el conductor es el anciano de las pesetas y el albarán ya lleva mi firma. ¿Tú firmarías? Mañana, la regla 9.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-19",
+      "fecha": "2026-11-20 23:00",
+      "url": "https://youtube.com/shorts/Y19Q1M9170I"
+    },
+    {
+      "serie": "3am",
+      "parte": 20,
+      "video": "videos/3am/Si_Oyes_Esto_20.mp4",
+      "titulo": "Si a las 3AM el GPS insiste en que gires… no gires 😨 #shorts",
+      "descripcion": "Son las tres, conduces solo por el bosque y el GPS te pide que gires hacia un camino de tierra que no sale en el mapa. No giras, pero el GPS insiste cada vez más rápido… y detrás de ti viene otro coche.\n\n¿Tú habrías girado? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-19",
+      "fecha": "2026-11-21 19:00",
+      "url": "https://youtube.com/shorts/daRw6Xp5dZw"
+    },
+    {
+      "serie": "turno",
+      "parte": 9,
+      "video": "videos/turno/Turno_de_Noche_9.mp4",
+      "titulo": "Regla 9: si ves a Raúl, no le dejes entrar 🚪 Turno de noche (Parte 9) #shorts",
+      "descripcion": "Regla 9: si ves a Raúl, no le dejes entrar. Esta noche está en la puerta, empapado, llorando… y lleva una placa con mi nombre. ¿Tú le habrías abierto? Mañana, la regla 10.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-20",
+      "fecha": "2026-11-21 23:00",
+      "url": "https://youtube.com/shorts/LhcRer6J9gk"
+    },
+    {
+      "serie": "3am",
+      "parte": 21,
+      "video": "videos/3am/Si_Oyes_Esto_21.mp4",
+      "titulo": "Si a las 3AM preguntan quién está despierto… no contestes 😨 #shorts",
+      "descripcion": "Son las tres y alguien escribe en el grupo de clase: \"¿Quién está despierto?\". Nadie tiene guardado ese número, y tu portátil sigue abierto en la mesa, mirando a tu cama.\n\n¿Tú habrías contestado? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-20",
+      "fecha": "2026-11-22 19:00",
+      "url": "https://youtube.com/shorts/7dAVWxfjfPE"
+    },
+    {
+      "serie": "turno",
+      "parte": 10,
+      "video": "videos/turno/Turno_de_Noche_10.mp4",
+      "titulo": "Regla 10: si una cámara va por delante, huye 📹 Turno de noche (Parte 10) #shorts",
+      "descripcion": "Regla 10: las cámaras van diez segundos por detrás; si alguna va por delante, sal por la puerta de atrás. Esta noche la cámara uno va adelantada… y en la pantalla hay algo detrás de mí. ¿Tú habrías esperado los diez segundos? Mañana, la regla 11.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-21",
+      "fecha": "2026-11-22 23:00",
+      "url": "https://youtube.com/shorts/lT0AOZ3Bx0s"
+    },
+    {
+      "serie": "3am",
+      "parte": 22,
+      "video": "videos/3am/Si_Oyes_Esto_22.mp4",
+      "titulo": "Si a las 3AM se arrastran muebles… no subas a mirar 😨 #shorts",
+      "descripcion": "Vives solo, en el último piso, y la vecina de abajo sube furiosa: dice que arrastras muebles cada noche. Esa noche, a las tres, el ruido empieza… en tu techo.\n\n¿Tú subirías a mirar? 👇\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-21",
+      "fecha": "2026-11-23 19:00",
+      "url": "https://youtube.com/shorts/6JCUwbu_65I"
+    },
+    {
+      "serie": "turno",
+      "parte": 11,
+      "video": "videos/turno/Turno_de_Noche_11.mp4",
+      "titulo": "Regla 11: nunca cruces el kilómetro 10 🪧 Turno de noche (Parte 11) #shorts",
+      "descripcion": "Regla 11: nunca cruces el kilómetro 10. Esta noche lo he cruzado, y al otro lado hay una gasolinera igual que la mía, con tres empleados que llevan mi uniforme. ¿Tú entrarías? Mañana, la regla 12.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-22",
+      "fecha": "2026-11-23 23:00",
+      "url": "https://youtube.com/shorts/UbiuijU7Djc"
+    },
+    {
+      "serie": "3am",
+      "parte": 23,
+      "video": "videos/3am/Si_Oyes_Esto_23.mp4",
+      "titulo": "Si a las 3AM llaman a la pared… no devuelvas los golpes 😨 #shorts",
+      "descripcion": "Tu hermano y tú os dais las buenas noches con tres golpes en la pared. Esta noche suenan a las tres… y tú contestas, como siempre. ¿Tú habrías devuelto los golpes?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-22",
+      "fecha": "2026-11-24 19:00",
+      "url": "https://youtube.com/shorts/jArdMUuf7go"
+    },
+    {
+      "serie": "turno",
+      "parte": 12,
+      "video": "videos/turno/Turno_de_Noche_12.mp4",
+      "titulo": "Regla 12: nunca devuelvas el saludo 👋 Turno de noche (Parte 12) #shorts",
+      "descripcion": "Regla 12: nunca devuelvas el saludo. Esta noche, tres empleados con mi uniforme me saludan desde detrás del mostrador. ¿Tú se lo devolverías? Mañana, la regla 13.\n\n#turnodenoche #terror #historiasdeterror #reglas #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-23",
+      "fecha": "2026-11-24 23:00",
+      "url": "https://youtube.com/shorts/yxeTeXLx7qw"
+    },
+    {
+      "serie": "3am",
+      "parte": 24,
+      "video": "videos/3am/Si_Oyes_Esto_24.mp4",
+      "titulo": "Si a las 3AM hay alguien en tu timbre… no mires a qué hora se fue 😨 #shorts",
+      "descripcion": "Tu timbre con cámara te avisó a las tres: alguien en tu puerta. En la grabación no llama, no se mueve… solo mira fijo a la cámara. ¿Tú adelantarías el vídeo para ver cuándo se fue?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-23",
+      "fecha": "2026-11-25 19:00",
+      "url": "https://youtube.com/shorts/Q75ppuJ_8-c"
+    },
+    {
+      "serie": "reglas",
+      "parte": 1,
+      "video": "videos/reglas/Reglas_1.mp4",
+      "titulo": "Si llaman desde la 414, no vayas 😱 #shorts",
+      "descripcion": "Regla de los celadores de noche de un hospital: si llaman desde la habitación 414, no vayas. Lleva un año vacía. Por el interfono habla su madre, que murió allí. Óscar fue.\n\nCada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "no_antes": "2026-11-25",
+      "creado": "2026-11-23",
+      "fecha": "2026-11-25 23:00",
+      "url": "https://youtube.com/shorts/_t9ARfLXkwk"
+    },
+    {
+      "serie": "reglas",
+      "parte": 2,
+      "video": "videos/reglas/Reglas_2.mp4",
+      "titulo": "Nunca des la llave de la habitación 0 😱 #shorts",
+      "descripcion": "Lucía es recepcionista de noche y tiene una regla: nunca dar la llave de la habitación 0. A las tres entra un huésped empapado que dice que la tiene reservada… y en el libro, la reserva existe. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-24",
+      "fecha": "2026-11-26 23:00",
+      "url": "https://youtube.com/shorts/EPlcWOmcvzs"
+    },
+    {
+      "serie": "3am",
+      "parte": 25,
+      "video": "videos/3am/Si_Oyes_Esto_25.mp4",
+      "titulo": "Si a las 3AM todo se calla… cállate tú también 😨 #shorts",
+      "descripcion": "A las tres, todos los ruidos de tu casa se apagan de golpe. Tu madre te escribe desde su cuarto: \"No respires fuerte. Está escuchando\". ¿Tú habrías aguantado la respiración?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "programado",
+      "creado": "2026-11-24",
+      "fecha": "2026-11-26 19:00",
+      "url": "https://youtube.com/shorts/NUxh4isTSs4"
+    },
+    {
+      "serie": "reglas",
+      "parte": 3,
+      "video": "videos/reglas/Reglas_3.mp4",
+      "titulo": "Si el tren de las 2:40 para, no subas 😱 #shorts",
+      "descripcion": "Andrés es vigilante nocturno del metro y tiene una regla: si el tren de las 2:40 para en el andén, no subas. Esta noche para, y dentro, sentados, están los desaparecidos de la línea… también su hermano. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "pendiente",
+      "creado": "2026-11-25"
+    },
+    {
+      "serie": "3am",
+      "parte": 26,
+      "video": "videos/3am/Si_Oyes_Esto_26.mp4",
+      "titulo": "Si a las 3AM tu cámara ve a alguien… no mires al sofá 😨 #shorts",
+      "descripcion": "Tus padres cenan fuera y, a las tres, te escriben: por la cámara del salón ven a alguien sentado contigo en el sofá. Pero estás solo… o eso crees.\n¿Tú mirarías al sofá?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "pendiente",
+      "creado": "2026-11-25"
+    },
+    {
+      "serie": "reglas",
+      "parte": 4,
+      "video": "videos/reglas/Reglas_4.mp4",
+      "titulo": "Después de cerrar, no mires el fondo de la piscina 😱 #shorts",
+      "descripcion": "Marta es socorrista y tiene una regla: después de cerrar, no mires el fondo de la piscina. Esta noche, al apagar la última luz, una niña pide socorro desde el agua. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
+      "estado": "pendiente",
+      "creado": "2026-11-26"
+    },
+    {
+      "serie": "3am",
+      "parte": 27,
+      "video": "videos/3am/Si_Oyes_Esto_27.mp4",
+      "titulo": "Si a las 3AM el cajero te hace señas… léelas 😨 #shorts",
+      "descripcion": "Paras a repostar a las tres de la mañana y el cajero no deja de hacerte señas desde el cristal. Tú crees que te saluda… hasta que te pasa un papel por la ranura.\n¿Tú volverías al coche?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
+      "estado": "pendiente",
+      "creado": "2026-11-26"
+    }
+  ]
 }
