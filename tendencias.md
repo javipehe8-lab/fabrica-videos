@@ -1,0 +1,9 @@
+# Informes de tendencias (el más reciente arriba)
+
+## 26/11/2026 — Últimas 4 semanas: 31.037 visualizaciones, 43,6 % se quedan, 59,4 % visto de media, +55 subs
+- Top 3: 3AM GPS (2.315 vis., 50,7 % se quedan, 72 % visto, +1) · 3AM niño solo (1.762, 50,1 %, 65,7 %, +2) · 3AM abuela (1.757, 55,3 %, 77,4 %, +3). Mejor en subs: 3AM golpes en la pared (1.531, 78,4 % visto, +5).
+- Peores recientes: Turno 6 "km 10 no existe" (1.025, 24,2 % se quedan, 32 % visto) · Turno 7 "no leas" (1.205, 27,4 % visto) · Turno 8 "camión" (1.213, 31,4 % visto). 3AM timbre (24) solo 544 vis. aún (datos de 1-2 días); Reglas 1 y 3AM 25 todavía no salen en Analytics.
+- Conclusiones: las 3AM (60-80 % visto) retienen más que cualquier Turno (27-60 %). Funcionan el móvil/tecnología cotidiana (GPS, grupo de clase) y la familia (abuela, hermano). Las 3AM más vistas son las de los últimos 7 días: el formato está cogiendo tracción. Turno encadenado retenía poco → bien cambiado a Reglas autoconclusivas.
+- Tendencias: estafas con voz clonada por IA de familiares y la "palabra clave" familiar que recomienda la Policía (https://www.hola.com/al-dia/20251117867912/estafa-voz-clonada-ia-policia-palabra-clave-seguridad/, https://www.que.es/2026/08/19/proteger-familia-voz-ia/); asistentes de IA que llaman y actúan en nombre del usuario (https://www.infobae.com/tecno/2026/11/13/el-asistente-de-ia-de-meta-ya-hace-llamadas-a-negocios-y-servicios-en-lugar-de-sus-usuarios/); terror en TikTok/Shorts de "caso real" y paranormal (https://www.hooked.so/es/trends/tiktok/horror_scary). Fechas: Black Friday (27/11), adviento y Navidad, primeras nevadas.
+- Ideas 3AM añadidas (28-33): La palabra secreta · El altavoz inteligente · La ubicación compartida · El filtro de la videollamada · El calendario de adviento · Las luces de Navidad.
+- Ideas Reglas añadidas (5-10): Almacén Black Friday (Diego) · 112 (Elena) · Faro (Bruno) · Quitanieves (Lorena) · Radio de madrugada (Hugo) · Peaje (Rocío).
