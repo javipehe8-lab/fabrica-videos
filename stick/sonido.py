@@ -464,6 +464,34 @@ def main(voz, out):
             if n == "giro": put(sfx, static(D) * 0.4, a, 0.6); put(sfx, riser(D * 0.6), a, 0.5); put(sfx, sting(1.6), a + D * 0.6, 1.1)
             if n == "final": put(sfx, boom(2.0, 50), a + 0.15, 1.3); put(sfx, impact(), a + 0.15, 1.0); put(sfx, ding() * 0.6, a + D * 0.6, 0.7)
             continue
+        # ---- Reglas · 5 (almacén de paquetería, el paquete con tu dirección) ----
+        if os.environ.get("EP") == "reglas5":
+            nave_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 300) * 0.22                    # zumbido de la nave
+            cinta_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 90, 400) * (0.7 + 0.3 * np.sin(2 * np.pi * 6 * T(d))) * 0.35
+            golpe_ = lambda: bp(rng.normal(0, 1, int(SR * 0.12)), 120, 900) * np.exp(-T(0.12) * 35) * 0.9   # golpe dentro de la caja
+            cuter_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 2500, 7000) * np.exp(-T(d) * 2) * 0.35
+            if n == "arranque":
+                put(sfx, nave_(D), a, 0.8); put(sfx, sting(1.4) * 0.6, a + 0.05, 0.8)
+                for i in range(int(D / 0.7)): put(sfx, golpe_(), a + 0.3 + i * 0.7, 0.6)
+            if n == "turno":
+                put(sfx, nave_(D), a, 0.6); put(sfx, cinta_(D), a, 0.8)
+                for i in range(int(D / 0.55)): put(sfx, step() * 0.7, a + 0.1 + i * 0.55, 0.7)
+            if n == "etiqueta": put(sfx, cinta_(D * 0.4), a, 0.6); put(sfx, beep(0.1, 1800), a + 0.3, 0.6); put(sfx, heartbeat(4, 72), a + D * 0.3, 0.6); put(sfx, sting(1.3) * 0.6, a + D * 0.55, 0.8)
+            if n == "voz":
+                put(sfx, nave_(D), a, 0.5)
+                for i in range(6): put(sfx, golpe_(), a + D * 0.35 + i * 0.22, 0.9)
+                put(sfx, riser(D * 0.6), a + D * 0.3, 0.4)
+            if n == "abre": put(sfx, cuter_(D * 0.35), a + D * 0.15, 0.9); put(sfx, whoosh(0.4), a + D * 0.5, 0.8); put(sfx, sting(1.5), a + D * 0.5, 1.0)
+            if n == "dentro":
+                put(sfx, heartbeat(5, 110), a + 0.1, 0.7); put(sfx, scream(1.0) * 0.3, a + D * 0.55, 0.5)
+                put(sfx, impact(), a + D * 0.72, 1.4); put(sfx, boom(1.5, 60), a + D * 0.72, 1.1)
+                for i in range(3): put(sfx, golpe_(), a + D * 0.8 + i * 0.18, 0.8)
+            if n == "camara":
+                put(sfx, static(D) * 0.35, a, 0.6); put(sfx, beep(0.08, 1000), a + 0.2, 0.5); put(sfx, cinta_(D), a, 0.6)
+                put(sfx, golpe_(), a + D * 0.58, 0.8); put(sfx, golpe_(), a + D * 0.63, 0.8); put(sfx, boom(1.5, 50), a + D * 0.88, 1.1)
+            if n == "final":
+                put(sfx, ding() * 0.6, a + 0.2, 0.7); put(sfx, boom(2.0, 45), a + 0.4, 1.2); put(sfx, impact() * 0.7, a + 1.4, 1.0)
+            continue
         # ---- Reglas · 4 (piscina, no mires el fondo) ----
         if os.environ.get("EP") == "reglas4":
             gota_ = lambda: np.sin(2 * np.pi * (1400 - 900 * T(0.08) / 0.08) * T(0.08)) * np.exp(-T(0.08) * 45) * 0.45

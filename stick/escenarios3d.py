@@ -13,7 +13,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from motor import *
 from motor3d import *
-from turno3d import _caja_en, etiquetas, proyectar, cctv, aclarar, rotulo_regla, _envolver
+from turno3d import _caja_en, etiquetas, proyectar, cctv, aclarar, rotulo_regla, _envolver, caja_carton
 
 FLUOR = (236, 246, 236)
 VERDE_HOSP = (118, 140, 128)
@@ -547,4 +547,117 @@ def burbujas(img, cam, origen, t, n=14, f=1.0, semilla=3):
         if not q: continue
         r = (0.02 + rng.random() * 0.04) / q[2] * 1500 * f
         d.ellipse((q[0] - r, q[1] - r, q[0] + r, q[1] + r), outline=(220, 245, 255), width=max(2, int(r / 4)))
+    return img
+
+# ---------- piezas de almacén (Reglas 5): nave logística, estanterías de palés, cinta transportadora, etiqueta de envío ----------
+CARTON = (170, 128, 82)
+NARANJA_RACK = (214, 110, 30)
+AZUL_RACK = (40, 80, 150)
+HORMIGON = (112, 112, 108)
+
+def estanteria(esc, x, z0, z1, alto=4.2, niveles=4, fondo=1.0, semilla=1, cajas=True):
+    """estantería de palés a lo largo de z (de z0 a z1 < z0), centrada en x: pilares naranjas cada 2,7 m,
+    largueros azules por nivel y cajas de cartón de tamaños distintos en cada balda."""
+    import random as _r
+    r_ = _r.Random(semilla)
+    n = max(1, int(round((z0 - z1) / 2.7)))
+    paso = (z0 - z1) / n
+    for i in range(n + 1):
+        zz = z0 - i * paso
+        for sx in (-1, 1):
+            _caja_en(esc, x + sx * fondo / 2 - 0.05, 0, zz - 0.05, x + sx * fondo / 2 + 0.05, alto, zz + 0.05, NARANJA_RACK)
+    for k in range(niveles):
+        y = 0.15 + k * (alto - 0.3) / niveles
+        for sx in (-1, 1):
+            _caja_en(esc, x + sx * fondo / 2 - 0.04, y, z1, x + sx * fondo / 2 + 0.04, y + 0.12, z0, AZUL_RACK)
+        if not cajas: continue
+        for i in range(n):
+            zz = z0 - i * paso - 0.15
+            while zz > z0 - (i + 1) * paso + 0.5:
+                w = r_.uniform(0.45, 0.9); h = r_.uniform(0.35, (alto - 0.3) / niveles - 0.25)
+                if r_.random() < 0.85:
+                    c = tuple(int(v * r_.uniform(0.75, 1.05)) for v in CARTON)
+                    _caja_en(esc, x - fondo * 0.42, y + 0.12, zz - w, x + fondo * 0.42, y + 0.12 + h, zz, c)
+                zz -= w + r_.uniform(0.05, 0.2)
+
+def cinta(esc, x, z0, z1, y=0.8, ancho=0.9, t=0.0, vel=0.6):
+    """cinta transportadora a lo largo de z (de z0 a z1 < z0), banda en y. Las marcas de la banda avanzan hacia +z con t*vel."""
+    _caja_en(esc, x - ancho / 2 - 0.06, y - 0.22, z1, x - ancho / 2, y + 0.06, z0, (150, 150, 146))
+    _caja_en(esc, x + ancho / 2, y - 0.22, z1, x + ancho / 2 + 0.06, y + 0.06, z0, (150, 150, 146))
+    _caja_en(esc, x - ancho / 2 - 0.065, y + 0.02, z1, x - ancho / 2 - 0.055, y + 0.06, z0, (226, 190, 40), sesgo=0.1)
+    _caja_en(esc, x + ancho / 2 + 0.055, y + 0.02, z1, x + ancho / 2 + 0.065, y + 0.06, z0, (226, 190, 40), sesgo=0.1)
+    _caja_en(esc, x - ancho / 2, y - 0.05, z1, x + ancho / 2, y, z0, (40, 42, 44))
+    off = (t * vel) % 0.6
+    zz = z1 + off
+    while zz < z0 - 0.05:
+        _caja_en(esc, x - ancho / 2 + 0.02, y, zz, x + ancho / 2 - 0.02, y + 0.004, zz + 0.04, (66, 68, 70), sesgo=0.05)
+        zz += 0.6
+    k = 0
+    while z0 - k * 2.0 > z1:
+        zz = z0 - 0.3 - k * 2.0
+        for sx in (-1, 1): _caja_en(esc, x + sx * (ancho / 2 - 0.02) - 0.04, 0, zz - 0.04, x + sx * (ancho / 2 - 0.02) + 0.04, y - 0.22, zz + 0.04, (90, 90, 92))
+        k += 1
+
+def caja_envio(esc, x, y, z, s=1.0, abierta=0.0, yaw=0.0, vibra=0.0, t=0.0, etiqueta=None, vacio=False):
+    """caja de reparto grande (caja_carton escalada s). vibra (0-1): tiembla como si algo se moviera dentro.
+    etiqueta: texto 3D sobre la tapa. vacio: al abrirla, dentro solo hay negro (no tiene fondo)."""
+    dx = 0.012 * vibra * math.sin(t * 47); dz = 0.01 * vibra * math.sin(t * 31 + 1)
+    M = cadena(mover(x + dx, y, z + dz), rot_y(yaw), rot_z(0.02 * vibra * math.sin(t * 23)), escala(s))
+    transformado(esc, M, lambda e: caja_carton(e, 0, 0, 0, abierta=abierta, dentro=None))
+    if vacio and abierta > 0.1:
+        esc.add(caja(0.53 * s, 0.01, 0.4 * s, (0, 0, 0)), cadena(mover(x + dx, y + 0.36 * s, z + dz), rot_y(yaw)), emite=True, sesgo=0.45)
+    if abierta < 0.2:
+        esc.add(caja(0.56 * s, 0.006, 0.07 * s, (196, 170, 120)), cadena(mover(x + dx, y + 0.385 * s, z + dz), rot_y(yaw)), sesgo=0.95)   # cinta adhesiva
+        if etiqueta: esc.etiquetas.append(((x + dx - 0.12 * s, y + 0.42 * s, z + dz + 0.05 * s), etiqueta, 0.05 * s, (20, 20, 20)))
+
+def nave_almacen(esc, luces_on=None, largo=26.0, rotulo="BLACK FRIDAY", reloj="03:10"):
+    """nave logística de noche: suelo de hormigón con líneas amarillas, techo alto con campanas de luz, estanterías
+    de palés a x=±3,2 y ±7, cinta transportadora por el centro (x=0, añádela con cinta()), pancarta y reloj al fondo.
+    Va de z=4 a z=-largo. Devuelve las luces."""
+    habitacion(esc, -9, 9, -largo, 4, 7.0, (88, 92, 96), HORMIGON, (46, 48, 52), sin=('s',), div=8)
+    for lx in (-1.7, 1.7): _caja_en(esc, lx - 0.06, 0, -largo, lx + 0.06, 0.012, 4, (210, 180, 40), sesgo=0.05)
+    for sx, sem in ((-3.2, 2), (3.2, 3), (-7.0, 4), (7.0, 5)):
+        estanteria(esc, sx, 2.0, -largo + 2.0, alto=4.6 if abs(sx) < 5 else 5.4, semilla=sem)
+    esc.etiquetas.append(((0, 5.2, -largo + 0.1), rotulo, 0.9, (255, 220, 60)))
+    _caja_en(esc, -4.2, 4.6, -largo + 0.02, 4.2, 5.8, -largo + 0.06, (170, 24, 30))
+    if reloj:
+        _caja_en(esc, 5.2, 4.7, -largo + 0.02, 7.2, 5.5, -largo + 0.08, (20, 20, 22))
+        esc.etiquetas.append(((6.2, 5.1, -largo + 0.1), reloj, 0.5, (255, 60, 40)))
+    luces = []; n = int(largo // 5)
+    for k in range(n):
+        on = 1.0 if luces_on is None else (luces_on[k] if k < len(luces_on) else 1.0)
+        z = 1.0 - 5 * k
+        for lx in (-2.0, 2.0):
+            esc.add(prisma(0.1, 0.4, 0.35, (60, 62, 66), n=6), mover(lx, 5.9, z))
+            esc.add(caja(0.5, 0.02, 0.5, tuple(int(40 + v * on * 0.8) for v in (255, 226, 170))), mover(lx, 5.88, z), emite=on > 0.05)
+        if on > 0.05: luces.append(Luz((0, 5.4, z), (255, 226, 170), 9.0, fuerza=0.75 * on))
+    return luces
+
+def etiqueta_envio(img, nombre, lineas, cy=820, p_resalta=0.0, t=0.0, remite="REMITE: —", escala=1.0, rot=-3):
+    """etiqueta de envío en primer plano (2D): logo, código de barras, destinatario en grande y dirección.
+    p_resalta (0-1): rodea el nombre con un círculo rojo."""
+    s = lambda v: int(v * escala)
+    w, h = s(900), s(1000)
+    hoja = Image.new("RGBA", (w + 40, h + 40), (0, 0, 0, 0)); d = ImageDraw.Draw(hoja)
+    d.rectangle((26, 30, w + 26, h + 30), fill=(10, 8, 6, 200))
+    d.rectangle((0, 0, w, h), fill=(240, 238, 230), outline=(60, 60, 60), width=6)
+    d.rectangle((0, 0, w, s(130)), fill=(30, 30, 34))
+    d.text((s(40), s(65)), tr("ENVÍO URGENTE"), font=font(s(60)), fill=(255, 220, 60), anchor="lm")
+    d.text((w - s(40), s(65)), "24H", font=font(s(60)), fill=(255, 255, 255), anchor="rm")
+    import random as _r
+    r_ = _r.Random(11); xx = s(50)
+    while xx < w - s(50):                                    # código de barras
+        bw = r_.choice((4, 6, 10, 14)) * escala
+        d.rectangle((xx, s(170), xx + bw, s(330)), fill=(10, 10, 10)); xx += bw + r_.choice((4, 6, 10)) * escala
+    d.text((s(50), s(380)), remite, font=font(s(36)), fill=(110, 110, 110), anchor="lm")
+    d.line((s(40), s(420), w - s(40), s(420)), fill=(60, 60, 60), width=4)
+    d.text((s(50), s(475)), tr("DESTINATARIO:"), font=font(s(40)), fill=(80, 80, 80), anchor="lm")
+    d.text((s(50), s(570)), nombre, font=font(s(84)), fill=(10, 10, 10), anchor="lm")
+    for i, ln in enumerate(lineas):
+        d.text((s(50), s(680) + i * s(80)), ln, font=font(s(58)), fill=(20, 20, 20), anchor="lm")
+    if p_resalta > 0:
+        tw = d.textlength(nombre, font=font(s(84)))
+        d.ellipse((s(20), s(500), s(80) + tw, s(640)), outline=(220, 30, 30), width=max(2, int(12 * min(1, p_resalta))))
+    hoja = hoja.rotate(rot + 0.6 * math.sin(t * 1.3), expand=True, resample=Image.BICUBIC)
+    img.paste(hoja, (int(W / 2 - hoja.width / 2), int(cy - hoja.height / 2)), hoja)
     return img
