@@ -38,6 +38,11 @@ Partes 3-5: la gente se queda 39-42 s de media, dure el vídeo 1:10 o 1:18; solo
 - Al empezar el episodio siguiente: si el anterior tenía ELECCION, elige la opción AL AZAR con `python3 -c "import random; print(random.choice('AB'))"` (da igual lo que vote la gente), apúntala en biblia.md ("Elección Parte N: salió X") y haz que el episodio arranque siguiendo esa opción. NUNCA digas en el vídeo ni en la descripción que "ganó la mayoría".
 - Primer comentario (firstCommentText) de un episodio con elección: "¿A o B? 👇 Mañana lo descubres."
 
+## Voz y ritmo (desde el 28/11/2026)
+- `voz.py` da ritmo frase a frase al narrador (voz Edge): las frases que acaban en "…" van más lentas y graves con una pausa detrás, las cortas (≤ 4 palabras) llevan pausa y las "!" van algo más rápidas. Escribe pensando en eso: corta en frases breves y usa "…" justo antes del susto o del giro.
+- Marcas opcionales delante de una frase (no salen en los subtítulos): `{lento}`, `{rapido}`, `{grave}`, `{susurro}`, `{pausa}`. Ej.: `"Tu madre te escribe. {susurro} No respires fuerte… {pausa} Pero tu madre… lleva toda la noche fuera."` Úsalas 2-3 veces por episodio como mucho, en el pico de tensión.
+- El ritmo alarga ~2 s la narración: tenlo en cuenta con los límites de duración. Un guion puede desactivarlo con `RITMO = False`.
+
 ## Música
 - `sonido.py` tiene varios estilos: "tension", "piano", "caja" (caja de música), "persecucion" y "curioso" (para curiosidades). Si el guion no define `MUSICA = "<estilo>"`, se elige uno según el episodio, así que cambia de un vídeo a otro. Elige a mano el que pegue con el episodio (persecución → "persecucion", misterio → "piano" o "caja") y no repitas el del episodio anterior.
 

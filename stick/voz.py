@@ -84,14 +84,14 @@ def piper(texto, vel):
 EDGE = {"em_alex": "es-ES-AlvaroNeural", "em_santa": "es-MX-JorgeNeural", "ef_dora": "es-ES-ElviraNeural"}
 EDGE_NARRADOR = os.environ.get("EDGE_NARRADOR", "es-ES-AlvaroNeural")
 
-def edge(texto, vel, voz):
+def edge(texto, vel, voz, hz=0):
     import asyncio, subprocess, tempfile, certifi
     ca = os.path.expanduser("~/.ccr/ca-bundle.crt")      # proxy de la nube: certificado propio
     if os.path.exists(ca): certifi.where = lambda: ca
     import edge_tts
     pct = int(round((vel / 1.15 - 1) * 100)) - 12  # Edge habla más rápido que Kokoro: -12 % deja el ritmo parecido
     with tempfile.NamedTemporaryFile(suffix=".mp3") as mp3:
-        asyncio.run(asyncio.wait_for(edge_tts.Communicate(texto, voz, rate=f"{pct:+d}%").save(mp3.name), 25))
+        asyncio.run(asyncio.wait_for(edge_tts.Communicate(texto, voz, rate=f"{pct:+d}%", pitch=f"{int(hz):+d}Hz").save(mp3.name), 25))
         raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp3.name, "-f", "f32le", "-ac", "1", "-ar", "24000", "-"],
                              check=True, capture_output=True).stdout
     w = np.frombuffer(raw, np.float32).copy()
@@ -105,15 +105,37 @@ def usar_edge():
     except Exception as e:
         print("Voz Edge no disponible, uso Kokoro:", type(e).__name__, str(e)[:120], flush=True); return False
 
+MARCAS = ("lento", "rapido", "grave", "pausa", "susurro")
+
 def trozos(texto):
-    """[(hablante, frase limpia)]"""
+    """[(hablante, frase limpia, marcas)]. Marcas de ritmo opcionales delante de una frase: {lento} {rapido} {grave} {susurro} {pausa}
+    (se quitan del texto y de los subtítulos)."""
     res, quien = [], "NARRADOR"
     for parte in re.split(r"(\[[A-ZÁÉÍÓÚÑ]+\])", texto):
         m = re.fullmatch(r"\[(\w+)\]", parte.strip())
         if m: quien = m.group(1); continue
         for s in nar.split_sentences(parte):
-            res.append((quien, s))
+            mk = set(re.findall(r"\{(\w+)\}", s)) & set(MARCAS)
+            s = re.sub(r"\s*\{\w+\}\s*", " ", s).strip()
+            if s: res.append((quien, s, mk))
     return res
+
+def ritmo(st, quien, mk, k, n):
+    """Ritmo frase a frase (solo narrador con Edge): suspense lento y grave, frases cortas con pausa, golpes rápidos.
+    Devuelve (factor de velocidad, Hz de tono, pausa después en s)."""
+    f, hz, pausa = 1.0, -2, 0.16
+    pal = len(st.split())
+    if st.endswith("…") or st.endswith("..."): f, hz, pausa = 0.86, -5, 0.5
+    elif st.endswith("!"): f, hz, pausa = 1.06, 1, 0.22
+    elif st.endswith("?"): f, hz, pausa = 0.97, 0, 0.3
+    if pal <= 4: f *= 0.9; pausa = max(pausa, 0.38)
+    if k == n - 1: pausa = 0.0
+    if "lento" in mk: f *= 0.85; hz -= 2
+    if "rapido" in mk: f *= 1.1; pausa = min(pausa, 0.12)
+    if "grave" in mk: hz -= 6
+    if "susurro" in mk: f *= 0.88; hz -= 4
+    if "pausa" in mk: pausa += 0.6
+    return f, hz, pausa
 
 def main(out):
     os.makedirs(out, exist_ok=True)
@@ -124,8 +146,10 @@ def main(out):
     print("Voz:", "Edge (Microsoft)" if con_edge else "Kokoro", flush=True)
     for i, (_, texto) in enumerate(ESCENAS):
         parts = []
-        for quien, s in trozos(texto):
+        tz = trozos(texto)
+        for quien, s, mk in tz:
             vname, vel, semis = REPARTO.get(quien, REPARTO["OTRO"])
+            hz, pausa = 0, None
             # prosodia: exclamaciones más rápidas, suspense más lento, pequeña variación natural
             st = s.strip()
             if st.endswith("!"): vel *= 1.07
@@ -133,9 +157,12 @@ def main(out):
             elif st.endswith("?"): vel *= 1.03
             if len(st.split()) <= 3 and quien == "NARRADOR": vel *= 0.94
             vel *= 1 + 0.03 * np.sin(len(parts) * 2.3)
+            if con_edge and quien == "NARRADOR" and getattr(_G, "RITMO", True):
+                vel = REPARTO[quien][1]          # el ritmo sustituye a la prosodia genérica de arriba
+                f, hz, pausa = ritmo(st, quien, mk, len(parts), len(tz)); vel *= f
             if con_edge and vname in EDGE:
                 ev = getattr(_G, "EDGE_VOCES", {}).get(quien)     # el guion puede elegir voz de Edge por personaje
-                w = edge(s, vel, ev or (getattr(_G, "EDGE_NARRADOR", EDGE_NARRADOR) if quien == "NARRADOR" else EDGE[vname]))
+                w = edge(s, vel, ev or (getattr(_G, "EDGE_NARRADOR", EDGE_NARRADOR) if quien == "NARRADOR" else EDGE[vname]), hz)
             elif vname == "piper":
                 w = piper(s, vel)
             else:
@@ -147,7 +174,7 @@ def main(out):
             if len(nz): w = w[max(0, nz[0] - 600): nz[-1] + 1200]
             w = monstruo(tono(w, semis + 5)) if quien in MONSTRUOS and quien != "SONRIENTE" else (monstruo(w) if quien == "SONRIENTE" else tono(w, semis))
             if quien in RADIOS: w = radio(w)
-            parts.append({"text": s, "wav": w, "quien": quien})
+            parts.append({"text": s, "wav": w, "quien": quien, "pausa": pausa})
         sub, t, chunks = [], 0.0, []
         for k, p in enumerate(parts):
             d = len(p["wav"]) / 24000
@@ -155,6 +182,7 @@ def main(out):
             chunks.append(p["wav"]); t += d
             if k < len(parts) - 1:
                 gap = 0.28 if parts[k + 1]["quien"] != p["quien"] else 0.14
+                if p["pausa"] is not None: gap = max(gap, p["pausa"])
                 chunks.append(np.zeros(int(24000 * gap), np.float32)); t += gap
         wav = np.concatenate(chunks)
         wav48 = resample_poly(wav, 2, 1).astype(np.float32)
