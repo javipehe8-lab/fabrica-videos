@@ -8,7 +8,7 @@ Metricool gratis solo deja 20 publicaciones al mes, y se agotaron. Ahora los ví
 ## Cómo asignar fecha a cada vídeo pendiente
 - Hora fija por serie: `cola_youtube.json["horas"]` (3am → 19:00, turno → 23:00, reglas → 23:00, hora de España).
 - **turno y reglas comparten la franja de las 23:00**: cuentan como UNA sola serie a efectos de días (nunca dos vídeos a las 23:00 el mismo día). Primero van los "turno" pendientes; "reglas" después. Turno de noche terminó en la Parte 12 (24/11); desde el 25/11 la franja es de Reglas.
-- **hilos** (Hilos Malditos) → 21:00, como mucho uno al día (salen ~2 por semana).
+- **Días por serie (desde el 28/11/2026, `cola_youtube.json["dias"]`)**: 3am todos los días; **reglas solo martes, jueves y sábado** (23:00); **hilos lunes, miércoles, viernes y domingo** (21:00). Al buscar el primer día libre de esas series, salta los días que no les tocan.
 - **NUNCA subas dos veces el mismo vídeo** (aunque la primera copia esté en privado): YouTube trata la segunda como duplicada y no la enseña en el feed (pasó con Reglas 1: 9 visualizaciones). Antes de subir, busca en Contenido si ya hay un vídeo con ese título; si lo hay, márcalo "programado" en la cola con su enlace y no lo subas.
 - En la descripción, después de escribir el último hashtag, pulsa Escape: el autocompletado de hashtags de YouTube puede cambiar "#shorts" por "#shortsfunny".
 - Si un vídeo tiene `"no_antes": "AAAA-MM-DD"`, no lo programes antes de ese día.

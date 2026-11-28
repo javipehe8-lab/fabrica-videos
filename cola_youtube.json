@@ -304,8 +304,10 @@
       "video": "videos/reglas/Reglas_3.mp4",
       "titulo": "Si el tren de las 2:40 para, no subas 😱 #shorts",
       "descripcion": "Andrés es vigilante nocturno del metro y tiene una regla: si el tren de las 2:40 para en el andén, no subas. Esta noche para, y dentro, sentados, están los desaparecidos de la línea… también su hermano. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
-      "estado": "pendiente",
-      "creado": "2026-11-25"
+      "estado": "programado",
+      "creado": "2026-11-25",
+      "fecha": "2026-11-28 02:07",
+      "url": "https://youtube.com/shorts/8_D6TamjReE"
     },
     {
       "serie": "3am",
@@ -313,8 +315,10 @@
       "video": "videos/3am/Si_Oyes_Esto_26.mp4",
       "titulo": "Si a las 3AM tu cámara ve a alguien… no mires al sofá 😨 #shorts",
       "descripcion": "Tus padres cenan fuera y, a las tres, te escriben: por la cámara del salón ven a alguien sentado contigo en el sofá. Pero estás solo… o eso crees.\n¿Tú mirarías al sofá?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-      "estado": "pendiente",
-      "creado": "2026-11-25"
+      "estado": "programado",
+      "creado": "2026-11-25",
+      "fecha": "2026-11-28 14:00",
+      "url": "https://youtube.com/shorts/zjEM-dOjrFY"
     },
     {
       "serie": "reglas",
@@ -322,8 +326,10 @@
       "video": "videos/reglas/Reglas_4.mp4",
       "titulo": "Después de cerrar, no mires el fondo de la piscina 😱 #shorts",
       "descripcion": "Marta es socorrista y tiene una regla: después de cerrar, no mires el fondo de la piscina. Esta noche, al apagar la última luz, una niña pide socorro desde el agua. Cada noche, un trabajo distinto y unas reglas que no se pueden romper.\n\n#reglas #terror #historiasdeterror #miedo #ps2 #creepy #animacion #shorts",
-      "estado": "pendiente",
-      "creado": "2026-11-26"
+      "estado": "programado",
+      "creado": "2026-11-26",
+      "fecha": "2026-11-28 23:00",
+      "url": "https://youtube.com/shorts/S7i0w8iID1E"
     },
     {
       "serie": "3am",
@@ -331,8 +337,10 @@
       "video": "videos/3am/Si_Oyes_Esto_27.mp4",
       "titulo": "Si a las 3AM el cajero te hace señas… léelas 😨 #shorts",
       "descripcion": "Paras a repostar a las tres de la mañana y el cajero no deja de hacerte señas desde el cristal. Tú crees que te saluda… hasta que te pasa un papel por la ranura.\n¿Tú volverías al coche?\n\n#terror #historiasdeterror #miedo #paranormal #creepy #3am #stickman #animacion #shorts",
-      "estado": "pendiente",
-      "creado": "2026-11-26"
+      "estado": "programado",
+      "creado": "2026-11-26",
+      "fecha": "2026-11-28 19:00",
+      "url": "https://youtube.com/shorts/zl-2TACdlDE"
     },
     {
       "serie": "hilos",
@@ -363,5 +371,18 @@
       "estado": "pendiente",
       "creado": "2026-11-27"
     }
-  ]
+  ],
+  "dias": {
+    "reglas": [
+      "mar",
+      "jue",
+      "sab"
+    ],
+    "hilos": [
+      "lun",
+      "mie",
+      "vie",
+      "dom"
+    ]
+  }
 }
