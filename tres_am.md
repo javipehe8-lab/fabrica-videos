@@ -1,5 +1,7 @@
 # Serie 2: "SI OYES ESTO A LAS 3AM"
 
+> **Voz y español neutro (desde el 28/11/2026):** ~75 % de la audiencia es latinoamericana (México 22 %, España 21 %, Argentina, Colombia, Perú). Narrador por defecto: **es-MX-JorgeNeural**; narradora: **es-MX-DaliaNeural**; personajes con otras voces latinas (es-CO-GonzaloNeural, es-AR-TomasNeural, es-US-PalomaNeural…), nunca la misma que el narrador. Escribe en **español neutro**: "ustedes" (nunca "vosotros"/"os"), nada de "vale", "tío", "flipar", "móvil" → "celular" o "teléfono", "coche" → "auto" o "carro" solo si hace falta (mejor evitar la palabra). Usa el ritmo de CLAUDE.md ("Voz y ritmo").
+
 Historias de terror **autoconclusivas** (cada vídeo empieza y acaba), en el mismo canal que El Sonriente. Se publica a las **19:00** (Europe/Madrid); El Sonriente sale a las 23:00.
 
 ## Qué tiene que tener cada historia (OBLIGATORIO)

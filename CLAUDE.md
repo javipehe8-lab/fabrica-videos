@@ -39,6 +39,7 @@ Partes 3-5: la gente se queda 39-42 s de media, dure el vídeo 1:10 o 1:18; solo
 - Primer comentario (firstCommentText) de un episodio con elección: "¿A o B? 👇 Mañana lo descubres."
 
 ## Voz y ritmo (desde el 28/11/2026)
+- Narrador por defecto **es-MX-JorgeNeural** (narradora es-MX-DaliaNeural) y guiones en **español neutro** (sin "vosotros", "vale", "tío"…): ~75 % de la audiencia es latinoamericana.
 - `voz.py` da ritmo frase a frase al narrador (voz Edge): las frases que acaban en "…" van más lentas y graves con una pausa detrás, las cortas (≤ 4 palabras) llevan pausa y las "!" van algo más rápidas. Escribe pensando en eso: corta en frases breves y usa "…" justo antes del susto o del giro.
 - Marcas opcionales delante de una frase (no salen en los subtítulos): `{lento}`, `{rapido}`, `{grave}`, `{susurro}`, `{pausa}`. Ej.: `"Tu madre te escribe. {susurro} No respires fuerte… {pausa} Pero tu madre… lleva toda la noche fuera."` Úsalas 2-3 veces por episodio como mucho, en el pico de tensión.
 - El ritmo alarga ~2 s la narración: tenlo en cuenta con los límites de duración. Un guion puede desactivarlo con `RITMO = False`.

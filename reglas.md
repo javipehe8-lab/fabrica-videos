@@ -1,5 +1,7 @@
 # Serie 3D: "REGLAS" (sustituye a "Turno de noche" desde el 25/11/2026, a las 23:00)
 
+> **Voz y español neutro (desde el 28/11/2026):** ~75 % de la audiencia es latinoamericana (México 22 %, España 21 %, Argentina, Colombia, Perú). Narrador por defecto: **es-MX-JorgeNeural**; narradora: **es-MX-DaliaNeural**; personajes con otras voces latinas (es-CO-GonzaloNeural, es-AR-TomasNeural, es-US-PalomaNeural…), nunca la misma que el narrador. Escribe en **español neutro**: "ustedes" (nunca "vosotros"/"os"), nada de "vale", "tío", "flipar", "móvil" → "celular" o "teléfono", "coche" → "auto" o "carro" solo si hace falta (mejor evitar la palabra). Usa el ritmo de CLAUDE.md ("Voz y ritmo").
+
 Terror en 3D de pocos polígonos con look de PlayStation 2 (`stick/motor3d.py` + kit `stick/escenarios3d.py` + piezas de `stick/turno3d.py`). Historias **autoconclusivas**: cada noche, un sitio distinto, un trabajador distinto con nombre propio y una lista de reglas. **Alguien rompe una regla y paga un precio drástico e irreversible.**
 
 ## Por qué existe (datos del 23/11)

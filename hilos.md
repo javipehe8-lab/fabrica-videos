@@ -1,5 +1,7 @@
 # Serie "HILOS MALDITOS" (prueba desde el 25/11/2026)
 
+> **Voz y español neutro (desde el 28/11/2026):** ~75 % de la audiencia es latinoamericana (México 22 %, España 21 %, Argentina, Colombia, Perú). Narrador por defecto: **es-MX-JorgeNeural**; narradora: **es-MX-DaliaNeural**; personajes con otras voces latinas (es-CO-GonzaloNeural, es-AR-TomasNeural, es-US-PalomaNeural…), nunca la misma que el narrador. Escribe en **español neutro**: "ustedes" (nunca "vosotros"/"os"), nada de "vale", "tío", "flipar", "móvil" → "celular" o "teléfono", "coche" → "auto" o "carro" solo si hace falta (mejor evitar la palabra). Usa el ritmo de CLAUDE.md ("Voz y ritmo").
+
 Historias de terror contadas como un post de un **foro propio del canal** (ficción: "h/relatos", logo HM). NO imitamos Reddit ni ninguna web real, NO usamos posts ni usuarios reales y NO usamos gameplay ni vídeos de otros: el fondo en bucle lo hace nuestro motor 3D. Así no hay reclamaciones de copyright ni "contenido reutilizado".
 
 ## Qué tiene que tener cada historia (OBLIGATORIO)

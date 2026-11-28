@@ -81,8 +81,8 @@ def piper(texto, vel):
 # Voces neuronales gratis de Microsoft (paquete edge-tts). Se usan solas si el paquete está instalado y
 # speech.platform.bing.com responde (hay que permitir ese dominio en la red del entorno). Si algo falla,
 # el episodio ENTERO se hace con Kokoro (nunca mezcladas). VOZ_ES=kokoro las desactiva.
-EDGE = {"em_alex": "es-ES-AlvaroNeural", "em_santa": "es-MX-JorgeNeural", "ef_dora": "es-ES-ElviraNeural"}
-EDGE_NARRADOR = os.environ.get("EDGE_NARRADOR", "es-ES-AlvaroNeural")
+EDGE = {"em_alex": "es-MX-JorgeNeural", "em_santa": "es-CO-GonzaloNeural", "ef_dora": "es-MX-DaliaNeural"}
+EDGE_NARRADOR = os.environ.get("EDGE_NARRADOR", "es-MX-JorgeNeural")  # 28/11: ~75 % de la audiencia es de Latinoamérica
 
 def edge(texto, vel, voz, hz=0):
     import asyncio, subprocess, tempfile, certifi
