@@ -626,6 +626,27 @@ def main(voz, out):
             continue
         # ---- Si oyes esto a las 3AM · 26 ----
         # ---- Si oyes esto a las 3AM · 28 ----
+        if os.environ.get("EP") == "3am29":
+            aro_ = lambda: np.concatenate([beep(0.07, 880), beep(0.09, 1320)]) * 0.6                                       # el altavoz se activa
+            ronq_ = lambda d: lp(rng.normal(0, 1, int(SR * d)), 220) * np.maximum(0, np.sin(2 * np.pi * 0.42 * T(d))) ** 3 * 1.4   # ronquidos
+            click_ = lambda: np.pad(hp(rng.normal(0, 1, int(SR * 0.03)), 1800) * np.exp(-T(0.03) * 120), (0, int(SR * 0.1))) * 1.3
+            if n == "luz": put(sfx, sting(1.2) * 0.6, a, 1.0); put(sfx, aro_(), a + 0.1, 0.9)
+            if n == "orden": put(sfx, aro_(), a, 0.6); put(sfx, ding() * 0.6, a + D * 0.5, 0.8); put(sfx, beep(0.15, 600), a + D * 0.52, 0.5)
+            if n == "solo": put(sfx, click_(), a + D * 0.35, 1.0); put(sfx, heartbeat(4, 80) * 0.5, a + D * 0.4, 0.5)
+            if n == "preguntas": put(sfx, aro_(), a + D * 0.55, 0.8); put(sfx, static(D * 0.3) * 0.15, a + D * 0.7, 0.6)
+            if n == "voz": put(sfx, static(D) * 0.1, a, 0.5); put(sfx, ronq_(D * 0.6), a + D * 0.4, 1.0); put(sfx, riser(D * 0.6), a + D * 0.4, 0.4)
+            if n == "ronca":
+                put(sfx, ronq_(D), a, 0.9); put(sfx, static(D) * 0.12, a, 0.5)
+                put(sfx, boom(1.6, 50), a + D * 0.56, 1.1); put(sfx, sting(1.2) * 0.8, a + D * 0.57, 0.8)
+            if n == "clic":
+                put(sfx, click_(), a + D * 0.1, 1.4); put(sfx, click_(), a + D * 0.14, 1.0)
+                for i in range(int(D * 0.55 / 0.5)): put(sfx, step(), a + D * 0.45 + i * 0.5, 1.0)
+            if n == "apaga":
+                put(sfx, bp(rng.normal(0, 1, int(SR * D * 0.35)), 400, 1200) * 0.35, a + D * 0.05, 0.8)                      # bisagra
+                put(sfx, aro_(), a + D * 0.5, 0.8); put(sfx, click_(), a + D * 0.84, 1.4)
+                put(sfx, boom(2.0, 50), a + D * 0.84, 1.3); put(sfx, sting(1.6), a + D * 0.84, 1.1)
+            if n == "final": put(sfx, static(D * 0.5) * 0.3, a, 0.4); put(sfx, boom(2.2, 45), a + D * 0.45, 1.3); put(sfx, sting(1.4), a + D * 0.45, 1.0)
+            continue
         if os.environ.get("EP") == "3am28":
             vibra_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 120, 260) * (np.sin(2 * np.pi * 9 * T(d)) > 0) * 0.9   # móvil vibrando
             llanto_ = lambda d: bp(rng.normal(0, 1, int(SR * d)), 500, 2200) * (0.4 + 0.6 * np.abs(np.sin(2 * np.pi * 1.7 * T(d)))) * 0.12
